@@ -1,6 +1,6 @@
 package declarser.typedvalue;
 
-public class TypedValue<O> {
+public final class TypedValue<O> {
 	
 	private final O value;
 	private final Class<O> clazz;
@@ -12,7 +12,7 @@ public class TypedValue<O> {
 	}
 
 	public static <O> TypedValue<O> of(O value, Class<O> clazz) {
-		return new TypedValue<O>(value, clazz);
+		return new TypedValue<>(value, clazz);
 	}
 	
 	public O getValue() {
