@@ -2,25 +2,29 @@ package declarser.toobject;
 
 import java.util.Map;
 
-import declarser.tomap.destructor.Destructor;
 import declarser.toobject.restructor.Restructor;
+import declarser.typedvalue.TypedValue;
 import declarser.validator.Validator;
 import utils.tryapi.Try;
 
-public class ToObject<K,V,O> {
+public class ToObject<K,O> {
 
 	private final Validator<O> outputValidator;
-	private final Restructor<K,V,O> restructor;
-
-	public Try<Map<K,V>> ToObject(I input){
-		return inputValidator.validate(input).map(destructor::destruct).flatMap(mapValidator::validate);
+	private final Restructor<K,O> restructor;
+	
+	private ToObject(final Validator<O> outputValidator, final Restructor<K,O> restructor) {
+		super();
+		this.outputValidator = outputValidator;
+		this.restructor = restructor;
 	}
 	
-	private ToObject(Validator<O> outputValidator) {
-		super();
-		this.inputValidator = inputValidator;
-		this.mapValidator = mapValidator;
-		this.destructor = destructor;
+	public static <K,V,O> ToObject<K,O> of(final Validator<O> outputValidator, final Restructor<K,O> restructor){
+		return new ToObject<>(outputValidator, restructor);
 	}
+	
+	public Try<O> apply(final Map<K,TypedValue<?>> map){
+		return restructor.restruct(map).flatMap(outputValidator::validate);
+	}
+
 	
 }

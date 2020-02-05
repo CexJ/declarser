@@ -2,9 +2,10 @@ package declarser.toobject.restructor;
 
 import java.util.Map;
 
+import declarser.typedvalue.TypedValue;
 import utils.tryapi.Try;
 
-public interface Restructor<K,V,O> {
+public interface Restructor<K,O> {
 	
-	Try<O> restruct(Map<K,Map<K,Try<V>>> map);
+	Try<O> restruct(final Map<K,TypedValue<?>> map);
 }

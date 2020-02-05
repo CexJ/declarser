@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface Destructor<I,K,V> {
 
-	Map<K,V> destruct(I input);
+	Map<K,V> destruct(final I input);
 }

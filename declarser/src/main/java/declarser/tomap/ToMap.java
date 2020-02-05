@@ -12,23 +12,22 @@ public final class ToMap<I,K,V>{
 	private final Validator<Map<K,V>> mapValidator;
 	private final Destructor<I,K,V> destructor;
 	
-	public Try<Map<K,V>> toMap(I input){
-		return inputValidator.validate(input).map(destructor::destruct).flatMap(mapValidator::validate);
-	}
-	
-	private ToMap(Validator<I> inputValidator,
-			Validator<Map<K, V>> mapValidator, Destructor<I, K, V> destructor) {
+	private ToMap(final Validator<I> inputValidator,
+			final Validator<Map<K, V>> mapValidator, final Destructor<I, K, V> destructor) {
 		super();
 		this.inputValidator = inputValidator;
 		this.mapValidator = mapValidator;
 		this.destructor = destructor;
 	}
 
-	private static <I,K,V> ToMap<I,K,V> of(Validator<I> inputValidator, 
-			Validator<Map<K, V>> mapValidator, Destructor<I, K, V> destructor) {
+	private static <I,K,V> ToMap<I,K,V> of(final Validator<I> inputValidator, 
+			final Validator<Map<K, V>> mapValidator, final Destructor<I, K, V> destructor) {
 		return new ToMap<>(inputValidator, mapValidator, destructor);
 	}
 	
+	public Try<Map<K,V>> apply(final I input){
+		return inputValidator.validate(input).map(destructor::destruct).flatMap(mapValidator::validate);
+	}
 
 	public static class Builder<I,K,V>{
 		
@@ -37,18 +36,18 @@ public final class ToMap<I,K,V>{
 		@SuppressWarnings("unchecked")
 		private Validator<Map<K,V>> mapValidator = (Validator<Map<K,V>>) Validator.ok;
 			
-		public Builder<I,K,V> withInputValidator(Validator<I> inputValidator){
+		public Builder<I,K,V> withInputValidator(final Validator<I> inputValidator){
 			this.inputValidator = inputValidator;
 			return this;
 		}
 		
 		
-		public Builder<I,K,V> withMapValidator(Validator<Map<K,V>> mapValidator){
+		public Builder<I,K,V> withMapValidator(final Validator<Map<K,V>> mapValidator){
 			this.mapValidator = mapValidator;
 			return this;
 		}
 		
-		public ToMap<I,K,V> build(Destructor<I,K,V> destructor){
+		public ToMap<I,K,V> build(final Destructor<I,K,V> destructor){
 			return ToMap.of(inputValidator, mapValidator, destructor);
 		}
 	}

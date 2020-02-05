@@ -1,10 +1,8 @@
 package declarser;
 
-import java.util.List;
-
-import utils.eitherapi.Either;
+import utils.tryapi.Try;
 
 public interface Declarser<I,O> {
 
-	Either<List<Exception>, O> parse(I input);
+	Try<O> parse(I input);
 }
