@@ -1,4 +1,4 @@
-package declarser.tomap.destructor;
+package kernel.tomap.destructor;
 
 import java.util.Map;
 
