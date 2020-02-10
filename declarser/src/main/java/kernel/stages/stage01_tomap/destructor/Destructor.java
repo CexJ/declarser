@@ -1,4 +1,4 @@
-package kernel.tomap.destructor;
+package kernel.stages.stage01_tomap.destructor;
 
 import java.util.Map;
 

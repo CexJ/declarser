@@ -1,10 +1,9 @@
-package kernel.toobject;
+package kernel.stages.stage04_toobject;
 
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
-import kernel.tomap.ToMap;
-import kernel.toobject.restructor.Restructor;
+import kernel.stages.stage04_toobject.restructor.Restructor;
 import kernel.validator.Validator;
 import utils.tryapi.Try;
 

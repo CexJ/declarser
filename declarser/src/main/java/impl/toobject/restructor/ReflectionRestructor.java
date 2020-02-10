@@ -3,11 +3,10 @@ package impl.toobject.restructor;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import kernel.toobject.restructor.Restructor;
+import kernel.stages.stage04_toobject.restructor.Restructor;
 import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 

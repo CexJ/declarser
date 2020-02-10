@@ -1,9 +1,9 @@
 package kernel;
 
-import kernel.combinator.Combinator;
-import kernel.tomap.ToMap;
-import kernel.toobject.ToObject;
-import kernel.totypedmap.ToTypedMap;
+import kernel.stages.stage03_combinator.Combinator;
+import kernel.stages.stage01_tomap.ToMap;
+import kernel.stages.stage04_toobject.ToObject;
+import kernel.stages.stage02_totypedmap.ToTypedMap;
 import utils.tryapi.Try;
 
 public final class Declarser<I,K,V,O>{

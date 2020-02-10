@@ -1,4 +1,4 @@
-package kernel.combinator;
+package kernel.stages.stage03_combinator;
 
 import java.util.Map;
 

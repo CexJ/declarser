@@ -1,9 +1,9 @@
-package kernel.tomap;
+package kernel.stages.stage01_tomap;
 
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
-import kernel.tomap.destructor.Destructor;
+import kernel.stages.stage01_tomap.destructor.Destructor;
 import kernel.validator.Validator;
 import utils.tryapi.Try;
 
@@ -27,7 +27,9 @@ public final class ToMap<I,K,V>{
 	}
 
 	public Try<Map<K,V>> apply(final I input){
-		return inputValidator.validate(input).map(destructor::destruct).flatMap(mapValidator::validate);
+		return inputValidator.validate(input)
+				.map(destructor::destruct)
+				.flatMap(mapValidator::validate);
 	}
 
 	public ToMap<I,K,V> changeInputValidator(final UnaryOperator<Validator<I>> operator){
