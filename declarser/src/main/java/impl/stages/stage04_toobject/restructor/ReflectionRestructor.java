@@ -1,4 +1,4 @@
-package impl.toobject.restructor;
+package impl.stages.stage04_toobject.restructor;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class ReflectionRestructor<K,O> implements Restructor<K,O> {
 				});
 
 		return exceptions.isEmpty() ? Try.success(object)
-											 : (Try<O>) Try.fail(GroupedException.of(exceptions));
+				                    : (Try<O>) Try.fail(GroupedException.of(exceptions));
 	}
 }
 

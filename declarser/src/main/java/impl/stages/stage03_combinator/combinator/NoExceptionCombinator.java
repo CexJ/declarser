@@ -1,4 +1,4 @@
-package impl.combinator;
+package impl.stages.stage03_combinator.combinator;
 
 import kernel.conf.ParallelizationStrategy;
 import kernel.stages.stage03_combinator.Combinator;
