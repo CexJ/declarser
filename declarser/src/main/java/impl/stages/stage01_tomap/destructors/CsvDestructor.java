@@ -1,4 +1,4 @@
-package impl.stages.stage01_tomap.destructor;
+package impl.stages.stage01_tomap.destructors;
 
 import kernel.stages.stage01_tomap.destructor.Destructor;
 

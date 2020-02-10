@@ -1,4 +1,4 @@
-package impl.stages.stage04_toobject.restructor;
+package impl.stages.stage04_toobject.restructors;
 
 import java.util.LinkedList;
 import java.util.List;
