@@ -2,13 +2,13 @@ package kernel.conf;
 
 import java.util.stream.Stream;
 
-public enum ParallelizationStrategy {
+public enum ParallelizationStrategyEnum {
     PARALLEL{
         @Override
         public <T> Stream<T> exec(Stream<T> stream){
             return stream.parallel();
         }
-    }, NOT_PARALLEL;
+    }, SEQUENTIAL;
 
 
     public <T> Stream<T> exec(Stream<T> stream){

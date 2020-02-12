@@ -1,16 +1,15 @@
 package kernel.stages.stage02_totypedmap.utils;
 
-import kernel.conf.ParallelizationStrategy;
+import kernel.conf.ParallelizationStrategyEnum;
 import utils.tryapi.Try;
 
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class ToTypedMapUtils {
 
-    public static <K,V> Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(final Map<K, Function<V, Try<?>>> functionMap, ParallelizationStrategy parallelizationStrategy) {
+    public static <K,V> Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(final Map<K, Function<V, Try<?>>> functionMap, ParallelizationStrategyEnum parallelizationStrategy) {
         return kvMap -> parallelizationStrategy.exec(kvMap.entrySet().stream())
                         .map(kv -> (ToTypedMapComposition<K,V>) ToTypedMapComposition.of(kv.getKey(), kv.getValue(), functionMap.get(kv.getKey())))
                         .collect(Collectors.toMap(ToTypedMapComposition::getKey, ToTypedMapComposition::apply));

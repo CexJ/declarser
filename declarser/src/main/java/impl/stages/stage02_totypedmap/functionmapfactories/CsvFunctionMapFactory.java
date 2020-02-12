@@ -7,6 +7,7 @@ import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringTo
 import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringToBigInteger;
 import impl.stages.stage02_totypedmap.functions.fromString.toprimitives.*;
 import impl.stages.stage02_totypedmap.functions.fromString.tostring.FromStringToString;
+import kernel.Declarser;
 import utils.tryapi.Try;
 
 import java.util.HashMap;

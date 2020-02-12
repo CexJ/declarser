@@ -1,6 +1,6 @@
 package impl.stages.stage03_combinator.combinators;
 
-import kernel.conf.ParallelizationStrategy;
+import kernel.conf.ParallelizationStrategyEnum;
 import kernel.stages.stage03_combinator.Combinator;
 import utils.exceptions.GroupedException;
 import utils.exceptions.LabeledException;
@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 
 public class NoExceptionCombinator<K> implements Combinator<K> {
 
-    private final ParallelizationStrategy parallelizationStrategy;
+    private final ParallelizationStrategyEnum parallelizationStrategy;
 
-    private NoExceptionCombinator(final ParallelizationStrategy parallelizationStrategy) {
+    private NoExceptionCombinator(final ParallelizationStrategyEnum parallelizationStrategy) {
         this.parallelizationStrategy = parallelizationStrategy;
     }
 
-    public static <K> NoExceptionCombinator<K> of(final ParallelizationStrategy parallelizationStrategy){
+    public static <K> NoExceptionCombinator<K> of(final ParallelizationStrategyEnum parallelizationStrategy){
         return new NoExceptionCombinator<>(parallelizationStrategy);
     }
 

@@ -21,7 +21,7 @@ public final class ToMap<I,K,V>{
 		this.destructor = destructor;
 	}
 
-	private static <I,K,V> ToMap<I,K,V> of(final Validator<I> inputValidator,
+	public static <I,K,V> ToMap<I,K,V> of(final Validator<I> inputValidator,
 			final Validator<Map<K, V>> mapValidator, final Destructor<I, K, V> destructor) {
 		return new ToMap<>(inputValidator, mapValidator, destructor);
 	}
