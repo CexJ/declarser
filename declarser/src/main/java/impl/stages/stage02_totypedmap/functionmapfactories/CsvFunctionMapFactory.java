@@ -1,5 +1,6 @@
 package impl.stages.stage02_totypedmap.functionmapfactories;
 
+import impl.stages.annotations.fields.CsvField;
 import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDate;
 import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDateTime;
 import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToZonedDateTime;
@@ -8,11 +9,18 @@ import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringTo
 import impl.stages.stage02_totypedmap.functions.fromString.toprimitives.*;
 import impl.stages.stage02_totypedmap.functions.fromString.tostring.FromStringToString;
 import kernel.Declarser;
+import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static utils.constants.Constants.EMPTY;
 
 public class CsvFunctionMapFactory {
 
@@ -42,7 +50,52 @@ public class CsvFunctionMapFactory {
         return new CsvFunctionMapFactory(customMap);
     }
 
-    public Map<Integer, Function<String, Try<?>>> getMap(Class<?> clazz){
-        return null;
+    public Try<Map<Integer, Function<String, Try<?>>>> getMap(Class<?> clazz){
+        final var partition = Stream.of(clazz.getDeclaredFields())
+                .map(f -> Optional.ofNullable(f.getAnnotation(CsvField.class)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(ann -> CsvFieldImpl.of(ann, functionClassMap))
+                .collect(Collectors.partitioningBy(Try::isSuccess));
+        final var errors = partition.get(false);
+        if(errors.isEmpty())
+            return Try.success(partition.get(true).stream()
+                    .map(Try::getValue)
+                    .collect(Collectors.toMap(CsvFieldImpl::getKey,CsvFieldImpl::getFunction)));
+        else
+            return (Try<Map<Integer, Function<String, Try<?>>>>) Try.fail(GroupedException.of(errors.stream()
+                    .map(Try::getException)
+                    .collect(Collectors.toList())));
+    }
+
+}
+
+
+class CsvFieldImpl{
+    private final Integer key;
+    private final Function<String, Try<?>> function;
+
+    private CsvFieldImpl(int key, Function<String, Try<?>> function) {
+        this.key = key;
+        this.function = function;
+    }
+
+    static Try<CsvFieldImpl> of(final CsvField csvField,
+                           final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+
+        return Optional.ofNullable(functionClassMap.get(csvField.function()))
+                .map(f -> Try.success(f.apply(csvField.params())))
+                .orElse(Try.go(() -> csvField.function().getConstructor(EMPTY).newInstance(csvField.params())))
+                .map(f -> new CsvFieldImpl(csvField.key(),f));
+
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public Function<String, Try<?>> getFunction() {
+        return function;
     }
 }
+

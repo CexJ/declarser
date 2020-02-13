@@ -13,6 +13,6 @@ import java.util.function.Function;
 @Target({ElementType.FIELD})
 public @interface CsvField {
     int key();
-    Class<? extends BiFunction<Class<?>, String[], ? extends Function<?, Try<?>>>> function();
+    Class<? extends Function<String, Try<?>>> function();
     String[] params() default {};
 }

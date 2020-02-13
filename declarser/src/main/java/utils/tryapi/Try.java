@@ -1,5 +1,7 @@
 package utils.tryapi;
 
+import utils.exceptions.ExceptionalSupplier;
+
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -14,7 +16,7 @@ public interface Try<T> {
 		return Failure.of(exception);
 	}
 	
-	static <T> Try<T> go(Supplier<T> supplier){
+	static <T> Try<T> go(ExceptionalSupplier<T> supplier){
 		try {
 			return Success.of(supplier.get());
 		}catch(Exception exception) {
