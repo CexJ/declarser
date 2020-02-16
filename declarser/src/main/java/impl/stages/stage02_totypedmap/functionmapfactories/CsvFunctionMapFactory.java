@@ -1,5 +1,6 @@
 package impl.stages.stage02_totypedmap.functionmapfactories;
 
+import impl.stages.annotations.fields.CsvArrayField;
 import impl.stages.annotations.fields.CsvField;
 import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDate;
 import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDateTime;
@@ -12,9 +13,7 @@ import kernel.Declarser;
 import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -51,19 +50,28 @@ public class CsvFunctionMapFactory {
     }
 
     public Try<Map<Integer, Function<String, Try<?>>>> getMap(Class<?> clazz){
-        final var partition = Stream.of(clazz.getDeclaredFields())
+        final var partitionCsvField = Stream.of(clazz.getDeclaredFields())
                 .map(f -> Optional.ofNullable(f.getAnnotation(CsvField.class)))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(ann -> CsvFieldImpl.of(ann, functionClassMap))
                 .collect(Collectors.partitioningBy(Try::isSuccess));
-        final var errors = partition.get(false);
-        if(errors.isEmpty())
-            return Try.success(partition.get(true).stream()
+        final var csvFieldErrors = partitionCsvField.get(false);
+
+        final var partitionCsvArrayField = Stream.of(clazz.getDeclaredFields())
+                .map(f -> Optional.ofNullable(f.getAnnotation(CsvArrayField.class)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(ann -> CsvArrayFieldImpl.of(ann, functionClassMap))
+                .collect(Collectors.partitioningBy(Try::isSuccess));
+        final var csvArrayFieldErrors = partitionCsvArrayField.get(false);
+
+        if(csvFieldErrors.isEmpty())
+            return Try.success(partitionCsvField.get(true).stream()
                     .map(Try::getValue)
                     .collect(Collectors.toMap(CsvFieldImpl::getKey,CsvFieldImpl::getFunction)));
         else
-            return (Try<Map<Integer, Function<String, Try<?>>>>) Try.fail(GroupedException.of(errors.stream()
+            return (Try<Map<Integer, Function<String, Try<?>>>>) Try.fail(GroupedException.of(csvFieldErrors.stream()
                     .map(Try::getException)
                     .collect(Collectors.toList())));
     }
@@ -99,3 +107,46 @@ class CsvFieldImpl{
     }
 }
 
+class CsvArrayFieldImpl{
+    private final Integer key;
+    private final Function<String, Try<?>> function;
+
+    private CsvArrayFieldImpl(int key, Function<String, Try<?>> function) {
+        this.key = key;
+        this.function = function;
+    }
+
+    static Try<CsvArrayFieldImpl> of(final CsvArrayField csvArrayFieldImpl,
+                                     final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+
+        return Optional.ofNullable(functionClassMap.get(csvArrayFieldImpl.function()))
+                .map(f -> Try.success(getArrayFunction(f.apply(csvArrayFieldImpl.params()), csvArrayFieldImpl.separator())))
+                .orElse(Try.go(() -> csvArrayFieldImpl.function().getConstructor(EMPTY).newInstance(csvArrayFieldImpl.params())))
+                .map(f -> new CsvArrayFieldImpl(csvArrayFieldImpl.key(),f));
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public Function<String, Try<?>> getFunction() {
+        return function;
+    }
+
+    private static Function<String, Try<?>> getArrayFunction(Function<String, Try<?>> function, String arraySeparator){
+        return s -> Try.go(() -> combine(Arrays.stream(s.split(arraySeparator))
+                        .map(function)
+                        .collect(Collectors.toList()))
+                        .map(l -> l.toArray()));
+    }
+
+    private static Try<List<?>> combine(List<Try<?>> list){
+        Map<Boolean, List<Try<?>>> partition = list.stream().collect(Collectors.partitioningBy(el -> el.isSuccess()));
+        if(partition.get(false).isEmpty()){
+            return Try.success(list.stream().map(Try::getValue).collect(Collectors.toList()));
+        } else {
+            List<Exception> errors = partition.get(false).stream().map(Try::getException).collect(Collectors.toList());
+            return (Try<List<?>>) Try.fail(GroupedException.of(errors));
+        }
+    }
+}
