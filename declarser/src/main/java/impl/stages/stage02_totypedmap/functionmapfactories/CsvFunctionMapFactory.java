@@ -9,10 +9,10 @@ import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringTo
 import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringToBigInteger;
 import impl.stages.stage02_totypedmap.functions.fromString.toprimitives.*;
 import impl.stages.stage02_totypedmap.functions.fromString.tostring.FromStringToString;
-import kernel.Declarser;
 import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -50,94 +50,77 @@ public class CsvFunctionMapFactory {
     }
 
     public Try<Map<Integer, Function<String, Try<?>>>> getMap(Class<?> clazz){
-        final var partitionCsvField = Stream.of(clazz.getDeclaredFields())
-                .map(f -> Optional.ofNullable(f.getAnnotation(CsvField.class)))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(ann -> CsvFieldImpl.of(ann, functionClassMap))
-                .collect(Collectors.partitioningBy(Try::isSuccess));
+        final var partitionCsvField = getPartition(CsvField.class,
+                ann -> CsvAnnotationImpl.ofField(ann, functionClassMap));
+        final var partitionCsvArrayField = getPartition(CsvArrayField.class,
+                ann -> CsvAnnotationImpl.ofArrayField(ann, functionClassMap));
+
+        final var csvFieldSuccess = partitionCsvField.get(true);
+        final var csvArrayFieldSuccess = partitionCsvArrayField.get(true);
+        final var fields = Stream.of(csvFieldSuccess.stream(), csvArrayFieldSuccess.stream())
+                .flatMap(Function.identity()).collect(Collectors.toList());
+
         final var csvFieldErrors = partitionCsvField.get(false);
-
-        final var partitionCsvArrayField = Stream.of(clazz.getDeclaredFields())
-                .map(f -> Optional.ofNullable(f.getAnnotation(CsvArrayField.class)))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(ann -> CsvArrayFieldImpl.of(ann, functionClassMap))
-                .collect(Collectors.partitioningBy(Try::isSuccess));
         final var csvArrayFieldErrors = partitionCsvArrayField.get(false);
+        final var errors = Stream.of(csvFieldErrors.stream(), csvArrayFieldErrors.stream())
+                .flatMap(Function.identity()).collect(Collectors.toList());
 
-        if(csvFieldErrors.isEmpty())
-            return Try.success(partitionCsvField.get(true).stream()
+        if(errors.isEmpty())
+            return Try.success(fields.stream()
                     .map(Try::getValue)
-                    .collect(Collectors.toMap(CsvFieldImpl::getKey,CsvFieldImpl::getFunction)));
+                    .collect(Collectors.toMap(CsvAnnotationImpl::getKey, CsvAnnotationImpl::getFunction)));
         else
-            return (Try<Map<Integer, Function<String, Try<?>>>>) Try.fail(GroupedException.of(csvFieldErrors.stream()
+            return (Try<Map<Integer, Function<String, Try<?>>>>) Try.fail(GroupedException.of(errors.stream()
                     .map(Try::getException)
                     .collect(Collectors.toList())));
     }
 
+    private <T extends Annotation> Map<Boolean, List<Try<CsvAnnotationImpl>>> getPartition(Class<T> clazz,
+                                                                                           Function<T, Try<CsvAnnotationImpl>> constructor){
+        return Stream.of(clazz.getDeclaredFields())
+                .map(f -> Optional.ofNullable(f.getAnnotation(clazz)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(ann -> constructor.apply(ann))
+                .collect(Collectors.partitioningBy(Try::isSuccess));
+    }
+
 }
 
 
-class CsvFieldImpl{
+class CsvAnnotationImpl {
     private final Integer key;
     private final Function<String, Try<?>> function;
 
-    private CsvFieldImpl(int key, Function<String, Try<?>> function) {
+    private CsvAnnotationImpl(int key, Function<String, Try<?>> function) {
         this.key = key;
         this.function = function;
     }
 
-    static Try<CsvFieldImpl> of(final CsvField csvField,
-                           final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+    static Try<CsvAnnotationImpl> ofField(final CsvField csvField,
+                                          final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
 
         return Optional.ofNullable(functionClassMap.get(csvField.function()))
                 .map(f -> Try.success(f.apply(csvField.params())))
                 .orElse(Try.go(() -> csvField.function().getConstructor(EMPTY).newInstance(csvField.params())))
-                .map(f -> new CsvFieldImpl(csvField.key(),f));
+                .map(f -> new CsvAnnotationImpl(csvField.key(),f));
 
     }
 
-    public int getKey() {
-        return key;
-    }
-
-    public Function<String, Try<?>> getFunction() {
-        return function;
-    }
-}
-
-class CsvArrayFieldImpl{
-    private final Integer key;
-    private final Function<String, Try<?>> function;
-
-    private CsvArrayFieldImpl(int key, Function<String, Try<?>> function) {
-        this.key = key;
-        this.function = function;
-    }
-
-    static Try<CsvArrayFieldImpl> of(final CsvArrayField csvArrayFieldImpl,
-                                     final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+    static Try<CsvAnnotationImpl> ofArrayField(final CsvArrayField csvArrayFieldImpl,
+                                               final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
 
         return Optional.ofNullable(functionClassMap.get(csvArrayFieldImpl.function()))
                 .map(f -> Try.success(getArrayFunction(f.apply(csvArrayFieldImpl.params()), csvArrayFieldImpl.separator())))
                 .orElse(Try.go(() -> csvArrayFieldImpl.function().getConstructor(EMPTY).newInstance(csvArrayFieldImpl.params())))
-                .map(f -> new CsvArrayFieldImpl(csvArrayFieldImpl.key(),f));
-    }
-
-    public int getKey() {
-        return key;
-    }
-
-    public Function<String, Try<?>> getFunction() {
-        return function;
+                .map(f -> new CsvAnnotationImpl(csvArrayFieldImpl.key(),f));
     }
 
     private static Function<String, Try<?>> getArrayFunction(Function<String, Try<?>> function, String arraySeparator){
         return s -> Try.go(() -> combine(Arrays.stream(s.split(arraySeparator))
-                        .map(function)
-                        .collect(Collectors.toList()))
-                        .map(l -> l.toArray()));
+                .map(function)
+                .collect(Collectors.toList()))
+                .map(l -> l.toArray()));
     }
 
     private static Try<List<?>> combine(List<Try<?>> list){
@@ -149,4 +132,13 @@ class CsvArrayFieldImpl{
             return (Try<List<?>>) Try.fail(GroupedException.of(errors));
         }
     }
+
+    public int getKey() {
+        return key;
+    }
+
+    public Function<String, Try<?>> getFunction() {
+        return function;
+    }
 }
+
