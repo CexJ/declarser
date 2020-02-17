@@ -19,13 +19,12 @@ import utils.tryapi.Try;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static utils.constants.Constants.EMPTY;
 
-public class CsvDeclarserFactory<O> implements BiFunction<Class<O>, String[], Declarser<String, Integer, String, O>> {
+public class CsvDeclarserFactory<O> {
 
     private final String cellSeparator;
     private final ParallelizationStrategyEnum parallelizationStrategy;
@@ -46,8 +45,7 @@ public class CsvDeclarserFactory<O> implements BiFunction<Class<O>, String[], De
         this.mapFieldFactory = mapFieldFactory;
     }
 
-    @Override
-    public Declarser<String, Integer, String, O> apply(final Class<O> clazz, final String[] params) {
+    public Try<Declarser<String, Integer, String, O>> apply(final Class<O> clazz, final String[] params) {
         final var preValidator = getPreValidator(clazz);
         final var mapValidator = getMapValidator(clazz);
         final var postValidator = getPostValidator(clazz);
@@ -56,16 +54,23 @@ public class CsvDeclarserFactory<O> implements BiFunction<Class<O>, String[], De
         final var mapFileds = mapFieldFactory.getMap(clazz);
 
         final var destructor = CsvDestructor.of(cellSeparator);
-        final var toMap = ToMap.of(preValidator.getValue(), mapValidator.getValue(), destructor);
+        final var toMap = preValidator.flatMap( pv ->
+                          mapValidator.map( mv ->
+                                  ToMap.of(pv, mv, destructor)));
 
-        final var toTypedMap = ToTypedMap.of(mapFunction.getValue(), parallelizationStrategy);
+        final var toTypedMap = mapFunction.map(mf ->
+                          ToTypedMap.of(mf, parallelizationStrategy));
 
         final var combinator = NoExceptionCombinator.<Integer>of(parallelizationStrategy);
 
         final var restructor = ReflectionRestructor.of(clazz, outputSupplier, mapFileds);
-        final var  toObject = ToObject.of(postValidator.getValue(),restructor);
+        final var toObject = postValidator.map( pv ->
+                          ToObject.of(pv,restructor));
 
-        return Declarser.of(toMap, toTypedMap,combinator,toObject);
+        return toMap.flatMap(      tm  ->
+               toTypedMap.flatMap( ttm ->
+               toObject.map(       to  ->
+                               Declarser.of(tm, ttm, combinator, to)))) ;
     }
 
     private Try<? extends Validator<String>> getPreValidator(final Class<O> clazz) {
