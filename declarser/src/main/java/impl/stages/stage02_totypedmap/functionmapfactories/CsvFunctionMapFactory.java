@@ -63,7 +63,7 @@ public class CsvFunctionMapFactory {
                     .map(Try::getValue)
                     .collect(Collectors.toMap(CsvAnnotationImpl::getKey, CsvAnnotationImpl::getFunction)));
         else
-            return (Try<Map<Integer, Function<String, Try<?>>>>) Try.fail(GroupedException.of(errors.stream()
+            return Try.fail(GroupedException.of(errors.stream()
                     .map(Try::getException)
                     .collect(Collectors.toList())));
     }
@@ -123,7 +123,7 @@ class CsvAnnotationImpl {
         return s -> Try.go(() -> combine(Arrays.stream(s.split(arraySeparator))
                 .map(function)
                 .collect(Collectors.toList()))
-                .map(l -> l.toArray()));
+                .map(List::toArray));
     }
 
     private static Try<List<?>> combine(List<Try<?>> list){
@@ -132,7 +132,7 @@ class CsvAnnotationImpl {
             return Try.success(list.stream().map(Try::getValue).collect(Collectors.toList()));
         } else {
             List<Exception> errors = partition.get(false).stream().map(Try::getException).collect(Collectors.toList());
-            return (Try<List<?>>) Try.fail(GroupedException.of(errors));
+            return Try.fail(GroupedException.of(errors));
         }
     }
 

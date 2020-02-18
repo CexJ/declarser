@@ -20,6 +20,6 @@ public class FromStringToCharacter implements Function<String, Try<?>> {
     @Override
     public Try<Character> apply(String s) {
         return s.length() == 1 ? Try.success(Character.valueOf(s.charAt(0)))
-                               : (Try<Character>) Try.fail(new InvalidAttributesException("Expecting a char but found: "+s));
+                               : Try.fail(new InvalidAttributesException("Expecting a char but found: "+s));
     }
 }

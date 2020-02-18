@@ -31,6 +31,6 @@ public class NoExceptionCombinator<K> implements Combinator<K> {
         return mapExceptions.isEmpty() ? Try.success(parallelizationStrategy.exec(map.entrySet().stream())
                                                                             .collect(Collectors.toMap(Map.Entry::getKey,
                                                                                     kv -> kv.getValue().getValue())))
-                                       : (Try<Map<K, ?>>) Try.fail(GroupedException.of(mapExceptions));
+                                       : Try.fail(GroupedException.of(mapExceptions));
     }
 }

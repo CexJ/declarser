@@ -42,7 +42,7 @@ public class ReflectionRestructor<K,O> implements Restructor<K,O> {
 				});
 
 		return exceptions.isEmpty() ? Try.success(object)
-				                    : (Try<O>) Try.fail(GroupedException.of(exceptions));
+				                    : Try.fail(GroupedException.of(exceptions));
 	}
 }
 

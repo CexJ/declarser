@@ -4,16 +4,16 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class Failure<T,E extends Exception> implements Try<T> {
+public class Failure<T> implements Try<T> {
 
-	private final E exception;
+	private final Exception exception;
 	
-	private Failure(E exception) {
+	private Failure(Exception exception) {
 		this.exception = exception;
 	}
 	
 	
-	static <T,E extends Exception> Failure<T,E> of(E exception) {
+	static <T> Failure<T> of(Exception exception) {
 		return new Failure<>(exception);
 	}
 
