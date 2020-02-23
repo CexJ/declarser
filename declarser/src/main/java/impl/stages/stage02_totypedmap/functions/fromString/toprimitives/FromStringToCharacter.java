@@ -19,7 +19,7 @@ public class FromStringToCharacter implements Function<String, Try<?>> {
 
     @Override
     public Try<Character> apply(String s) {
-        return s.length() == 1 ? Try.success(Character.valueOf(s.charAt(0)))
+        return s.length() == 1 ? Try.success(s.charAt(0))
                                : Try.fail(new InvalidAttributesException("Expecting a char but found: "+s));
     }
 }

@@ -2,6 +2,7 @@ package utils.tryapi;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -71,6 +72,10 @@ public class Failure<T> implements Try<T> {
 		return exception;
 	}
 
+	@Override
+	public void ifPresent(Consumer<T> consumer) {
 
-	
+	}
+
+
 }

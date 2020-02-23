@@ -4,5 +4,5 @@ public final class Constants {
 
     private Constants(){}
 
-    public final static Class[] EMPTY = new Class[]{};
+    public final static Class<?>[] EMPTY = new Class[]{};
 }

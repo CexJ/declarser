@@ -15,10 +15,11 @@ import java.util.function.Function;
 
 public class CsvFunctionMapFactoryConst {
 
+    private CsvFunctionMapFactoryConst(){}
 
-
-    static final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> sharedFunctionClassMap = new HashMap<>();
+    public static final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> sharedFunctionClassMap;
     static {
+        sharedFunctionClassMap = new HashMap<>();
         sharedFunctionClassMap.put(FromStringToLocalDate.class, arr -> FromStringToLocalDate.getInstance(arr[0]));
         sharedFunctionClassMap.put(FromStringToLocalDateTime.class, arr -> FromStringToLocalDateTime.getInstance(arr[0]));
         sharedFunctionClassMap.put(FromStringToZonedDateTime.class, arr -> FromStringToZonedDateTime.getInstance(arr[0]));

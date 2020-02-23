@@ -14,4 +14,8 @@ public final class GroupedException extends Exception {
     public static GroupedException of(final Collection<? extends Exception> exceptions){
         return new GroupedException(exceptions);
     }
+
+    public Collection<? extends Exception> getExceptions() {
+        return exceptions;
+    }
 }

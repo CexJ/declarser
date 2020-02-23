@@ -11,7 +11,7 @@ public class CsvFieldMapFactory {
 
     public <O> Map<String, Integer> getMap(Class<O> clazz) {
         return Arrays.stream(clazz.getDeclaredFields())
-                .map(f -> NameKey.of(f.getName(), Optional.of(f.getAnnotation(CsvField.class)).map(CsvField::key)))
+                .map(f -> NameKey.of(f.getName(), f.getAnnotation(CsvField.class).key()))
                 .filter(nk -> nk.getKey().isPresent())
                 .collect(Collectors.toMap(NameKey::getName, nk -> nk.getKey().get()));
     }
@@ -19,14 +19,14 @@ public class CsvFieldMapFactory {
 
 class NameKey{
     private final String name;
-    private final Optional<Integer> key;
+    private final Integer key;
 
-    private NameKey(final String name, final Optional<Integer> key) {
+    private NameKey(final String name, final Integer key) {
         this.name = name;
         this.key = key;
     }
 
-    public static NameKey of(final String name, final Optional<Integer> key) {
+    public static NameKey of(final String name, final Integer key) {
         return new NameKey(name,key);
     }
 
@@ -35,6 +35,6 @@ class NameKey{
     }
 
     public Optional<Integer> getKey() {
-        return key;
+        return Optional.ofNullable(key);
     }
 }

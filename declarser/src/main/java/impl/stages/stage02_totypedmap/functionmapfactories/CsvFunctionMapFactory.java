@@ -15,24 +15,28 @@ import static utils.constants.Constants.EMPTY;
 
 public class CsvFunctionMapFactory {
 
-    private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap = new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
+    private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;
 
-    private CsvFunctionMapFactory(Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> customMap) {
-        customMap.entrySet().forEach(kv -> functionClassMap.put(kv.getKey(),kv.getValue()));
+    private CsvFunctionMapFactory(Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap) {
+        this.functionClassMap = new HashMap<>(functionClassMap);
     }
 
-    public static CsvFunctionMapFactory of(Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> customMap){
-        return new CsvFunctionMapFactory(customMap);
+    public static CsvFunctionMapFactory of(Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+        return new CsvFunctionMapFactory(functionClassMap);
     }
 
     public Try<Map<Integer, Function<String, Try<?>>>> getMap(Class<?> clazz){
-        final var partitionCsvField = getPartition(CsvField.class,
+        final var partitionCsvField = getPartition(
+                clazz,
+                CsvField.class,
                 ann -> CsvAnnotationImpl.ofField(ann, functionClassMap));
 
-        final var partitionCsvArrayField = getPartition(CsvArrayField.class,
+        final var partitionCsvArrayField = getPartition(
+                clazz,
+                CsvArrayField.class,
                 ann -> CsvAnnotationImpl.ofArrayField(ann, functionClassMap));
 
-        final var partition = merge(partitionCsvField, partitionCsvArrayField);
+        final var partition = merge(List.of(partitionCsvField, partitionCsvArrayField));
 
         final var fields = partition.get(true);
         final var errors = partition.get(false);
@@ -48,9 +52,9 @@ public class CsvFunctionMapFactory {
     }
 
 
-    private Map<Boolean, List<Try<CsvAnnotationImpl>>> merge(Map<Boolean, List<Try<CsvAnnotationImpl>>>... partitions) {
+    private Map<Boolean, List<Try<CsvAnnotationImpl>>> merge(List<Map<Boolean, List<Try<CsvAnnotationImpl>>>> partitions) {
 
-        return Stream.of(partitions)
+        return partitions.stream()
                 .map(Map::entrySet)
                 .map(Set::stream)
                 .flatMap(Function.identity())
@@ -58,14 +62,15 @@ public class CsvFunctionMapFactory {
     }
 
     private <T extends Annotation> Map<Boolean, List<Try<CsvAnnotationImpl>>> getPartition(
-            Class<T> clazz,
+            Class<?> clazz,
+            Class<T> annClazz,
             Function<T, Try<CsvAnnotationImpl>> constructor){
 
         return Stream.of(clazz.getDeclaredFields())
-                .map(f -> Optional.ofNullable(f.getAnnotation(clazz)))
+                .map(f -> Optional.ofNullable(f.getAnnotation(annClazz)))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(ann -> constructor.apply(ann))
+                .map(constructor)
                 .collect(Collectors.partitioningBy(Try::isSuccess));
     }
 
@@ -108,7 +113,7 @@ class CsvAnnotationImpl {
     }
 
     private static Try<List<?>> combine(List<Try<?>> list){
-        Map<Boolean, List<Try<?>>> partition = list.stream().collect(Collectors.partitioningBy(el -> el.isSuccess()));
+        Map<Boolean, List<Try<?>>> partition = list.stream().collect(Collectors.partitioningBy(Try::isSuccess));
         if(partition.get(false).isEmpty()){
             return Try.success(list.stream().map(Try::getValue).collect(Collectors.toList()));
         } else {

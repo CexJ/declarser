@@ -28,7 +28,6 @@ public class FromStringToZonedDateTime implements Function<String, Try<?>> {
 
     @Override
     public Try<ZonedDateTime> apply(String s) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        return Try.go(() -> ZonedDateTime.parse(s));
+        return Try.go(() -> ZonedDateTime.parse(s,DateTimeFormatter.ofPattern(format)));
     }
 }

@@ -16,4 +16,12 @@ public final class LabeledException extends Exception {
     public static  LabeledException of(final Object label, final Exception exception){
         return new LabeledException(label, exception);
     }
+
+    public Object getLabel() {
+        return label;
+    }
+
+    public Exception getException() {
+        return exception;
+    }
 }

@@ -28,7 +28,6 @@ public class FromStringToLocalDateTime implements Function<String, Try<?>> {
 
     @Override
     public Try<LocalDateTime> apply(String s) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        return Try.go(() -> LocalDateTime.parse(s));
+        return Try.go(() -> LocalDateTime.parse(s,DateTimeFormatter.ofPattern(format)));
     }
 }

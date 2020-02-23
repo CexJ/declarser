@@ -6,8 +6,6 @@ import kernel.stages.stage04_toobject.ToObject;
 import kernel.stages.stage02_totypedmap.ToTypedMap;
 import utils.tryapi.Try;
 
-import java.util.function.Function;
-
 public final class Declarser<I,K,V,O> {
 
 	private final ToMap<I, K, V> toMap;

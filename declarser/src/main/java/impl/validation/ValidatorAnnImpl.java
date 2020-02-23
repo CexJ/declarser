@@ -12,8 +12,16 @@ public class ValidatorAnnImpl<T> {
         this.params = params;
     }
 
+    public static ValidatorAnnImpl<String> pre(Class<? extends Validator<String>> clazz, String[] params) {
+        return new ValidatorAnnImpl<>(clazz, params);
+    }
+
     public static <T> ValidatorAnnImpl<T> of(Class<? extends Validator<T>> clazz, String[] params) {
         return new ValidatorAnnImpl<>(clazz, params);
+    }
+
+    public static ValidatorAnnImpl<?> post(Class<? extends Validator<?>> clazz, String[] params) {
+        return new ValidatorAnnImpl(clazz, params);
     }
 
     public Class<? extends Validator<T>> getClazz() {

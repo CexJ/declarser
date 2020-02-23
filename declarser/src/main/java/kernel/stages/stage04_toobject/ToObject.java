@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import kernel.stages.stage04_toobject.restructor.Restructor;
+import kernel.validation.Validator;
 import utils.tryapi.Try;
 
 public final class ToObject<K,O> {
@@ -18,7 +19,7 @@ public final class ToObject<K,O> {
 		this.restructor = restructor;
 	}
 	
-	public static <K,O> ToObject<K,O> of(final Function<O, Optional<? extends Exception>> outputValidator, final Restructor<K,O> restructor){
+	public static <K,O> ToObject<K,O> of(final Validator<O> outputValidator, final Restructor<K,O> restructor){
 		return new ToObject<>(outputValidator, restructor);
 	}
 	
