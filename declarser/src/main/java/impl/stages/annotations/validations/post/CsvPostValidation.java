@@ -1,6 +1,4 @@
-package impl.stages.annotations.fields.validations.post;
-
-import utils.tryapi.Try;
+package impl.stages.annotations.validations.post;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,7 +9,7 @@ import java.util.function.Function;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface CsvFieldPostValidation {
+public @interface CsvPostValidation {
     Class<? extends Function<?, Optional<? extends Exception>>> validator();
     String[] params() default {};
 }

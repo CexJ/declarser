@@ -1,6 +1,7 @@
 package utils.tryapi;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -24,6 +25,13 @@ public final class Success<T> implements Try<T> {
 	@Override
 	public boolean isFailure() {
 		return false;
+	}
+
+	@Override
+	public Try<T> continueIf(Function<T, Optional<? extends Exception>> validator) {
+		return validator.apply(value)
+				.map(ex -> (Try<T>) Try.fail(ex))
+				.orElse(this);
 	}
 
 	@Override

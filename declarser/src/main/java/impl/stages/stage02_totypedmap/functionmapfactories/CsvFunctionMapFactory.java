@@ -28,8 +28,10 @@ public class CsvFunctionMapFactory {
     public Try<Map<Integer, Function<String, Try<?>>>> getMap(Class<?> clazz){
         final var partitionCsvField = getPartition(CsvField.class,
                 ann -> CsvAnnotationImpl.ofField(ann, functionClassMap));
+
         final var partitionCsvArrayField = getPartition(CsvArrayField.class,
                 ann -> CsvAnnotationImpl.ofArrayField(ann, functionClassMap));
+
         final var partition = merge(partitionCsvField, partitionCsvArrayField);
 
         final var fields = partition.get(true);
@@ -55,8 +57,10 @@ public class CsvFunctionMapFactory {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private <T extends Annotation> Map<Boolean, List<Try<CsvAnnotationImpl>>> getPartition(Class<T> clazz,
-                                                                                           Function<T, Try<CsvAnnotationImpl>> constructor){
+    private <T extends Annotation> Map<Boolean, List<Try<CsvAnnotationImpl>>> getPartition(
+            Class<T> clazz,
+            Function<T, Try<CsvAnnotationImpl>> constructor){
+
         return Stream.of(clazz.getDeclaredFields())
                 .map(f -> Optional.ofNullable(f.getAnnotation(clazz)))
                 .filter(Optional::isPresent)
