@@ -30,25 +30,29 @@ public class CsvFunctionMapFactory {
                 ann -> CsvAnnotationImpl.ofField(ann, functionClassMap));
         final var partitionCsvArrayField = getPartition(CsvArrayField.class,
                 ann -> CsvAnnotationImpl.ofArrayField(ann, functionClassMap));
+        final var partition = merge(partitionCsvField, partitionCsvArrayField);
 
-        final var csvFieldSuccess = partitionCsvField.get(true);
-        final var csvArrayFieldSuccess = partitionCsvArrayField.get(true);
-        final var fields = Stream.of(csvFieldSuccess.stream(), csvArrayFieldSuccess.stream())
-                .flatMap(Function.identity()).collect(Collectors.toList());
-
-        final var csvFieldErrors = partitionCsvField.get(false);
-        final var csvArrayFieldErrors = partitionCsvArrayField.get(false);
-        final var errors = Stream.of(csvFieldErrors.stream(), csvArrayFieldErrors.stream())
-                .flatMap(Function.identity()).collect(Collectors.toList());
+        final var fields = partition.get(true);
+        final var errors = partition.get(false);
 
         if(errors.isEmpty())
             return Try.success(fields.stream()
                     .map(Try::getValue)
                     .collect(Collectors.toMap(CsvAnnotationImpl::getKey, CsvAnnotationImpl::getFunction)));
         else
-            return (Try<Map<Integer, Function<String, Try<?>>>>) Try.fail(GroupedException.of(errors.stream()
+            return Try.fail(GroupedException.of(errors.stream()
                     .map(Try::getException)
                     .collect(Collectors.toList())));
+    }
+
+
+    private Map<Boolean, List<Try<CsvAnnotationImpl>>> merge(Map<Boolean, List<Try<CsvAnnotationImpl>>>... partitions) {
+
+        return Stream.of(partitions)
+                .map(Map::entrySet)
+                .map(Set::stream)
+                .flatMap(Function.identity())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private <T extends Annotation> Map<Boolean, List<Try<CsvAnnotationImpl>>> getPartition(Class<T> clazz,
@@ -96,7 +100,7 @@ class CsvAnnotationImpl {
         return s -> Try.go(() -> combine(Arrays.stream(s.split(arraySeparator))
                 .map(function)
                 .collect(Collectors.toList()))
-                .map(l -> l.toArray()));
+                .map(List::toArray));
     }
 
     private static Try<List<?>> combine(List<Try<?>> list){
@@ -105,7 +109,7 @@ class CsvAnnotationImpl {
             return Try.success(list.stream().map(Try::getValue).collect(Collectors.toList()));
         } else {
             List<Exception> errors = partition.get(false).stream().map(Try::getException).collect(Collectors.toList());
-            return (Try<List<?>>) Try.fail(GroupedException.of(errors));
+            return Try.fail(GroupedException.of(errors));
         }
     }
 

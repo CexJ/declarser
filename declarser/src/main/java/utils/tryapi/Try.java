@@ -4,7 +4,6 @@ import utils.exceptions.ExceptionalSupplier;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public interface Try<T> {
 
@@ -12,7 +11,7 @@ public interface Try<T> {
 		return Success.of(value);
 	}
 	
-	static <E extends Exception> Failure<?,E> fail(E exception){
+	static <T> Failure<T> fail(Exception exception){
 		return Failure.of(exception);
 	}
 	
