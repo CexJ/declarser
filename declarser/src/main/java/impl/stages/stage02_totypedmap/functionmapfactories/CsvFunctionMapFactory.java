@@ -2,19 +2,11 @@ package impl.stages.stage02_totypedmap.functionmapfactories;
 
 import impl.stages.annotations.fields.CsvArrayField;
 import impl.stages.annotations.fields.CsvField;
-import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDate;
-import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDateTime;
-import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToZonedDateTime;
-import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringToBigDecimal;
-import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringToBigInteger;
-import impl.stages.stage02_totypedmap.functions.fromString.toprimitives.*;
-import impl.stages.stage02_totypedmap.functions.fromString.tostring.FromStringToString;
 import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,23 +15,7 @@ import static utils.constants.Constants.EMPTY;
 
 public class CsvFunctionMapFactory {
 
-    private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap = new HashMap<>();
-    {
-        functionClassMap.put(FromStringToLocalDate.class, arr -> FromStringToLocalDate.getInstance(arr[0]));
-        functionClassMap.put(FromStringToLocalDateTime.class, arr -> FromStringToLocalDateTime.getInstance(arr[0]));
-        functionClassMap.put(FromStringToZonedDateTime.class, arr -> FromStringToZonedDateTime.getInstance(arr[0]));
-        functionClassMap.put(FromStringToBigDecimal.class, arr -> FromStringToBigDecimal.getInstance());
-        functionClassMap.put(FromStringToBigInteger.class, arr -> FromStringToBigInteger.getInstance());
-        functionClassMap.put(FromStringToBoolean.class, arr -> FromStringToBoolean.getInstance());
-        functionClassMap.put(FromStringToCharacter.class, arr -> FromStringToCharacter.getInstance());
-        functionClassMap.put(FromStringToDouble.class, arr -> FromStringToDouble.getInstance());
-        functionClassMap.put(FromStringToFloat.class, arr -> FromStringToFloat.getInstance());
-        functionClassMap.put(FromStringToInteger.class, arr -> FromStringToInteger.getInstance());
-        functionClassMap.put(FromStringToLong.class, arr -> FromStringToLong.getInstance());
-        functionClassMap.put(FromStringToShort.class, arr -> FromStringToShort.getInstance());
-        functionClassMap.put(FromStringToString.class, arr -> FromStringToString.getInstance());
-    }
-
+    private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap = new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
 
     private CsvFunctionMapFactory(Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> customMap) {
         customMap.entrySet().forEach(kv -> functionClassMap.put(kv.getKey(),kv.getValue()));
