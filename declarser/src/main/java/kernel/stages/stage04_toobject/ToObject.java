@@ -10,21 +10,21 @@ import utils.tryapi.Try;
 
 public final class ToObject<K,O> {
 
-	private final Function<O, Optional<? extends Exception>> outputValidator;
+	private final Validator<Object> outputValidator;
 	private final Restructor<K,O> restructor;
 	
-	private ToObject(final Function<O, Optional<? extends Exception>> outputValidator, final Restructor<K,O> restructor) {
+	private ToObject(final Validator<Object> outputValidator, final Restructor<K,O> restructor) {
 		super();
 		this.outputValidator = outputValidator;
 		this.restructor = restructor;
 	}
 	
-	public static <K,O> ToObject<K,O> of(final Validator<O> outputValidator, final Restructor<K,O> restructor){
+	public static <K,O> ToObject<K,O> of(final Validator<Object> outputValidator, final Restructor<K,O> restructor){
 		return new ToObject<>(outputValidator, restructor);
 	}
 	
 	public Try<O> apply(final Map<K,?> map){
 		return restructor.restruct(map)
-				.continueIf(outputValidator);
+				.continueIf(o -> outputValidator.apply(o));
 	}
 }

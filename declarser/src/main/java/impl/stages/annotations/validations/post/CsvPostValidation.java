@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface CsvPostValidation {
-    Class<? extends Validator<?>> validator();
+    Class<? extends Validator<Object>> validator();
     String[] params() default {};
 }

@@ -29,15 +29,15 @@ public class CsvDeclarserFactory<O> {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
     private final CsvValidatorsFactory<String> csvPreValidatorsFactory;
-    private final CsvValidatorsFactory<O> csvPostValidatorsFactory;
+    private final CsvValidatorsFactory<Object> csvPostValidatorsFactory;
     private final CsvFunctionMapFactory mapFunctionFactory;
     private final CsvFieldMapFactory mapFieldFactory;
 
     private CsvDeclarserFactory(final ParallelizationStrategyEnum parallelizationStrategy,
                                 final Map<Class<? extends Validator<String>>,
                                         Function<String[], Validator<String>>> customPreValidatorsMap,
-                                final Map<Class<? extends Validator<O>>,
-                                        Function<String[], Validator<O>>> customPostValidatorsMap,
+                                final Map<Class<? extends Validator<Object>>,
+                                        Function<String[], Validator<Object>>> customPostValidatorsMap,
                                 final Map<Class<? extends Function<String, Try<?>>>,
                                         Function<String[], Function<String, Try<?>>>> customConstructorMap,
                                 final CsvFieldMapFactory mapFieldFactory) {
@@ -47,7 +47,10 @@ public class CsvDeclarserFactory<O> {
         Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> classFunctionMap =
                 new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
         classFunctionMap.putAll(customConstructorMap);
-        this.mapFunctionFactory =  CsvFunctionMapFactory.of(classFunctionMap);
+        this.mapFunctionFactory =  CsvFunctionMapFactory.of(
+                csvPreValidatorsFactory,
+                csvPostValidatorsFactory,
+                classFunctionMap);
         this.mapFieldFactory = mapFieldFactory;
     }
 
@@ -55,31 +58,25 @@ public class CsvDeclarserFactory<O> {
 
         final var typeAnn = Try.go(() -> clazz.getAnnotation(CsvType.class));
         final var cellSeparator = typeAnn.map(CsvType::cellSeparator);
-        final var preList = typeAnn.map(ann ->
-                Stream.of(ann.csvPreValidations().preValidations())
-                        .map(pre -> ValidatorAnnImpl.pre(pre.validator(),pre.params()))
-                        .collect(Collectors.toList()));
-        final var preValidator = preList
+
+        final var preValidator = typeAnn.map(ann -> Stream.of(ann.csvPreValidations().preValidations())
+                .map(pre -> ValidatorAnnImpl.pre(pre.validator(),pre.params()))
+                .collect(Collectors.toList()))
                 .flatMap(csvPreValidatorsFactory::function);
 
-        final var postList = typeAnn.map(ann ->
-                Stream.of(ann.csvPostValidations().validations())
-                        .map(post ->
-                                ValidatorAnnImpl.of((Class<? extends Validator<O>>) post.validator(),post.params()))
-                        .collect(Collectors.toList()));
-        final var postValidator = postList
-                .flatMap(csvPostValidatorsFactory::function);
+        final var postValidator = typeAnn.map(ann -> Stream.of(ann.csvPostValidations().validations())
+                        .map(post -> ValidatorAnnImpl.of(post.validator(),post.params()))
+                        .collect(Collectors.toList())).flatMap(csvPostValidatorsFactory::function);
 
         final var mapFunction = mapFunctionFactory.getMap(clazz);
         final var mapFileds = mapFieldFactory.getMap(clazz);
 
         final var destructor = cellSeparator.map(CsvDestructor::of);
         final var toMap = preValidator.flatMap( pv  ->
-                          destructor.map(       des ->
-                                                       ToMap.of(pv, des)));
+                          destructor.map(       des -> ToMap.of(pv, des)));
 
-        final var toTypedMap = mapFunction.map(mf ->
-                          ToTypedMap.of(mf, parallelizationStrategy));
+        final var toTypedMap = mapFunction.map( mf ->
+                          ToTypedMap.of( mf, parallelizationStrategy));
 
         final var combinator = NoExceptionCombinator.<Integer>of(parallelizationStrategy);
 
@@ -89,8 +86,7 @@ public class CsvDeclarserFactory<O> {
 
         return toMap.flatMap(      tm  ->
                toTypedMap.flatMap( ttm ->
-               toObject.map(       to  ->
-                                          Declarser.of(tm, ttm, combinator, to)))) ;
+               toObject.map(       to  -> Declarser.of(tm, ttm, combinator, to)))) ;
     }
 
 

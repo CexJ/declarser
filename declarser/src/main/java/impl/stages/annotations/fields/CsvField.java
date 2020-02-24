@@ -15,7 +15,7 @@ import java.util.function.Function;
 public @interface CsvField {
     int key();
     CsvPreValidations csvPreValidations() default @CsvPreValidations();
-    Class<? extends Function<String, Try<?>>> function();
+    Class<? extends Function<String, Try<Object>>> function();
     CsvPostValidations csvPostValidations() default @CsvPostValidations();
     String[] params() default {};
 }

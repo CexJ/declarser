@@ -2,6 +2,9 @@ package impl.stages.stage02_totypedmap.functionmapfactories;
 
 import impl.stages.annotations.fields.CsvArrayField;
 import impl.stages.annotations.fields.CsvField;
+import impl.validation.CsvValidatorsFactory;
+import impl.validation.ValidatorAnnImpl;
+import kernel.validation.Validator;
 import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 
@@ -15,26 +18,45 @@ import static utils.constants.Constants.EMPTY;
 
 public class CsvFunctionMapFactory {
 
+    private final CsvValidatorsFactory<String> preValidatorFactory;
+    private final CsvValidatorsFactory<Object> postValidatorFactory;
     private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;
 
-    private CsvFunctionMapFactory(Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap) {
+    private CsvFunctionMapFactory(
+            final CsvValidatorsFactory<String> preValidatorFactory,
+            final CsvValidatorsFactory<Object> postValidatorFactory,
+            final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap) {
+        this.preValidatorFactory = preValidatorFactory;
+        this.postValidatorFactory = postValidatorFactory;
         this.functionClassMap = new HashMap<>(functionClassMap);
     }
 
-    public static CsvFunctionMapFactory of(Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
-        return new CsvFunctionMapFactory(functionClassMap);
+    public static CsvFunctionMapFactory of(
+            final CsvValidatorsFactory<String> preValidatorFactory,
+            final CsvValidatorsFactory<Object> postValidatorFactory,
+            final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+        return new CsvFunctionMapFactory(
+                preValidatorFactory,
+                postValidatorFactory,
+                functionClassMap);
     }
 
-    public Try<Map<Integer, Function<String, Try<?>>>> getMap(Class<?> clazz){
+    public Try<Map<Integer, Function<String, Try<?>>>> getMap(final Class<?> clazz){
         final var partitionCsvField = getPartition(
-                clazz,
-                CsvField.class,
-                ann -> CsvAnnotationImpl.ofField(ann, functionClassMap));
+                clazz, CsvField.class,
+                ann -> CsvAnnotationImpl.ofField(
+                        ann,
+                        preValidatorFactory,
+                        postValidatorFactory,
+                        functionClassMap));
 
         final var partitionCsvArrayField = getPartition(
-                clazz,
-                CsvArrayField.class,
-                ann -> CsvAnnotationImpl.ofArrayField(ann, functionClassMap));
+                clazz, CsvArrayField.class,
+                ann -> CsvAnnotationImpl.ofArrayField(
+                        ann,
+                        preValidatorFactory,
+                        postValidatorFactory,
+                        functionClassMap));
 
         final var partition = merge(List.of(partitionCsvField, partitionCsvArrayField));
 
@@ -52,7 +74,7 @@ public class CsvFunctionMapFactory {
     }
 
 
-    private Map<Boolean, List<Try<CsvAnnotationImpl>>> merge(List<Map<Boolean, List<Try<CsvAnnotationImpl>>>> partitions) {
+    private Map<Boolean, List<Try<CsvAnnotationImpl>>> merge(final List<Map<Boolean, List<Try<CsvAnnotationImpl>>>> partitions) {
 
         return partitions.stream()
                 .map(Map::entrySet)
@@ -62,9 +84,9 @@ public class CsvFunctionMapFactory {
     }
 
     private <T extends Annotation> Map<Boolean, List<Try<CsvAnnotationImpl>>> getPartition(
-            Class<?> clazz,
-            Class<T> annClazz,
-            Function<T, Try<CsvAnnotationImpl>> constructor){
+            final Class<?> clazz,
+            final Class<T> annClazz,
+            final Function<T, Try<CsvAnnotationImpl>> constructor){
 
         return Stream.of(clazz.getDeclaredFields())
                 .map(f -> Optional.ofNullable(f.getAnnotation(annClazz)))
@@ -86,8 +108,33 @@ class CsvAnnotationImpl {
         this.function = function;
     }
 
-    static Try<CsvAnnotationImpl> ofField(final CsvField csvField,
-                                          final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+    static Try<CsvAnnotationImpl> ofField(
+            final CsvField csvField,
+            final CsvValidatorsFactory<String> preValidatorFactory,
+            final CsvValidatorsFactory<Object> postValidatorFactory,
+            final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+
+
+        final var preValidator = preValidatorFactory.function(Stream.of(csvField.csvPreValidations().preValidations())
+                .map(pre -> ValidatorAnnImpl.pre(pre.validator(),pre.params()))
+                .collect(Collectors.toList()));
+
+        final var postValidator = postValidatorFactory.function(Stream.of(csvField.csvPostValidations().validations())
+                .map(post -> ValidatorAnnImpl.of(post.validator(),post.params()))
+                .collect(Collectors.toList()));
+
+        final var transformer = Optional.ofNullable(functionClassMap.get(csvField.function()))
+                .map(f -> Try.success(f.apply(csvField.params())))
+                .orElse(Try.go(() -> csvField.function().getConstructor(EMPTY).newInstance(csvField.params())));
+
+        final Try<Function<String, Try<Object>>> function =
+                preValidator.flatMap( pre  ->
+                transformer.flatMap(  tras ->
+                postValidator.map(    post ->
+                        s -> Try.success(s)
+                                .continueIf(pre)
+                                .flatMap(tras)
+                                .continueIf(post))));
 
         return Optional.ofNullable(functionClassMap.get(csvField.function()))
                 .map(f -> Try.success(f.apply(csvField.params())))
@@ -96,13 +143,16 @@ class CsvAnnotationImpl {
 
     }
 
-    static Try<CsvAnnotationImpl> ofArrayField(final CsvArrayField csvArrayFieldImpl,
-                                               final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
+    static Try<CsvAnnotationImpl> ofArrayField(
+            final CsvArrayField csvArrayFieldImpl,
+            final CsvValidatorsFactory<String> preValidatorFactory,
+            final CsvValidatorsFactory<?> postValidatorFactory,
+            final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
 
         return Optional.ofNullable(functionClassMap.get(csvArrayFieldImpl.function()))
-                .map(f -> Try.success(getArrayFunction(f.apply(csvArrayFieldImpl.params()), csvArrayFieldImpl.separator())))
+                .map(f -> Try.success(f.apply( csvArrayFieldImpl.params())))
                 .orElse(Try.go(() -> csvArrayFieldImpl.function().getConstructor(EMPTY).newInstance(csvArrayFieldImpl.params())))
-                .map(f -> new CsvAnnotationImpl(csvArrayFieldImpl.key(),f));
+                .map(f -> new CsvAnnotationImpl(csvArrayFieldImpl.key(),getArrayFunction(f, csvArrayFieldImpl.separator())));
     }
 
     private static Function<String, Try<?>> getArrayFunction(Function<String, Try<?>> function, String arraySeparator){
