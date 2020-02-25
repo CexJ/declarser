@@ -1,6 +1,5 @@
 package impl.stages.annotations.fields;
 
-import impl.stages.annotations.validations.post.CsvPostValidations;
 import impl.stages.annotations.validations.pre.CsvPreValidations;
 import utils.tryapi.Try;
 
@@ -15,7 +14,6 @@ import java.util.function.Function;
 public @interface CsvField {
     int key();
     CsvPreValidations csvPreValidations() default @CsvPreValidations();
-    Class<? extends Function<String, Try<Object>>> function();
-    CsvPostValidations csvPostValidations() default @CsvPostValidations();
+    Class<? extends Function<String, Try<?>>> function();
     String[] params() default {};
 }

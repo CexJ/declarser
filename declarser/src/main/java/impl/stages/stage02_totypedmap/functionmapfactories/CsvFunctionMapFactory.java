@@ -19,12 +19,12 @@ import static utils.constants.Constants.EMPTY;
 public class CsvFunctionMapFactory {
 
     private final CsvValidatorsFactory<String> preValidatorFactory;
-    private final CsvValidatorsFactory<Object> postValidatorFactory;
+    private final CsvValidatorsFactory<?> postValidatorFactory;
     private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;
 
     private CsvFunctionMapFactory(
             final CsvValidatorsFactory<String> preValidatorFactory,
-            final CsvValidatorsFactory<Object> postValidatorFactory,
+            final CsvValidatorsFactory<?> postValidatorFactory,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap) {
         this.preValidatorFactory = preValidatorFactory;
         this.postValidatorFactory = postValidatorFactory;
@@ -33,7 +33,7 @@ public class CsvFunctionMapFactory {
 
     public static CsvFunctionMapFactory of(
             final CsvValidatorsFactory<String> preValidatorFactory,
-            final CsvValidatorsFactory<Object> postValidatorFactory,
+            final CsvValidatorsFactory<?> postValidatorFactory,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
         return new CsvFunctionMapFactory(
                 preValidatorFactory,
@@ -111,7 +111,7 @@ class CsvAnnotationImpl {
     static Try<CsvAnnotationImpl> ofField(
             final CsvField csvField,
             final CsvValidatorsFactory<String> preValidatorFactory,
-            final CsvValidatorsFactory<Object> postValidatorFactory,
+            final CsvValidatorsFactory<?> postValidatorFactory,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
 
 
@@ -119,22 +119,17 @@ class CsvAnnotationImpl {
                 .map(pre -> ValidatorAnnImpl.pre(pre.validator(),pre.params()))
                 .collect(Collectors.toList()));
 
-        final var postValidator = postValidatorFactory.function(Stream.of(csvField.csvPostValidations().validations())
-                .map(post -> ValidatorAnnImpl.of(post.validator(),post.params()))
-                .collect(Collectors.toList()));
 
         final var transformer = Optional.ofNullable(functionClassMap.get(csvField.function()))
                 .map(f -> Try.success(f.apply(csvField.params())))
                 .orElse(Try.go(() -> csvField.function().getConstructor(EMPTY).newInstance(csvField.params())));
 
-        final Try<Function<String, Try<Object>>> function =
+        final Try<Function<String, Try<?>>> function =
                 preValidator.flatMap( pre  ->
-                transformer.flatMap(  tras ->
-                postValidator.map(    post ->
+                transformer.map(  tras ->
                         s -> Try.success(s)
                                 .continueIf(pre)
-                                .flatMap(tras)
-                                .continueIf(post))));
+                                .map(tras)));
 
         return Optional.ofNullable(functionClassMap.get(csvField.function()))
                 .map(f -> Try.success(f.apply(csvField.params())))
