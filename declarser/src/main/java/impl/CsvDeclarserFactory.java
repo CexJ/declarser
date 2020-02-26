@@ -49,7 +49,6 @@ public class CsvDeclarserFactory<O> {
         classFunctionMap.putAll(customConstructorMap);
         this.mapFunctionFactory =  CsvFunctionMapFactory.of(
                 csvPreValidatorsFactory,
-                csvPostValidatorsFactory,
                 classFunctionMap);
         this.mapFieldFactory = mapFieldFactory;
     }

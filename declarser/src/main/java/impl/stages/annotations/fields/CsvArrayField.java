@@ -11,8 +11,5 @@ import java.util.function.Function;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface CsvArrayField {
-    int key();
     String separator() default " ";
-    Class<? extends Function<String, Try<?>>> function();
-    String[] params() default {};
 }
