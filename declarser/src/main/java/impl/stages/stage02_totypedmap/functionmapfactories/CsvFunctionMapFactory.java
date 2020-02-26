@@ -1,7 +1,9 @@
 package impl.stages.stage02_totypedmap.functionmapfactories;
 
-import impl.stages.annotations.fields.CsvArrayField;
+import impl.stages.annotations.fields.CsvColumn;
+import impl.stages.annotations.fields.CsvArray;
 import impl.stages.annotations.fields.CsvField;
+import impl.stages.annotations.fields.CsvNode;
 import impl.validation.CsvValidatorsFactory;
 import impl.validation.ValidatorAnnImpl;
 import utils.exceptions.GroupedException;
@@ -40,7 +42,7 @@ public class CsvFunctionMapFactory {
 
     public Try<Map<Integer, Function<String, Try<?>>>> getMap(final Class<?> clazz){
         final Map<Boolean, List<Try<CsvAnnotationImpl>>> partition = Stream.of(clazz.getDeclaredFields())
-                .filter(f -> f.getAnnotation(CsvField.class) != null)
+                .filter(f -> f.getAnnotation(CsvColumn.class) != null)
                 .map( f -> computeFunction(f))
                 .collect(Collectors.partitioningBy(Try::isSuccess));
 
@@ -59,18 +61,30 @@ public class CsvFunctionMapFactory {
     }
 
     private Try<CsvAnnotationImpl> computeFunction(Field field) {
-        final var csvArrayField = field.getAnnotation(CsvArrayField.class);
+
+        final var csvArrayField = field.getAnnotation(CsvArray.class);
         final UnaryOperator<Function<String, Try<?>>> modifier =
                 csvArrayField != null ? fun -> getArrayFunction(fun, csvArrayField.separator())
                                       : UnaryOperator.identity();
+
         final var csvField = field.getAnnotation(CsvField.class);
+        final var csvNode = field.getAnnotation(CsvNode.class);
         final Try<Function<String, Try<?>>> function =
-                csvField != null ? function(csvField)
-                                 : Try.fail(new NullPointerException());
-        return function.map(fun -> CsvAnnotationImpl.of(csvField.key(), modifier.apply(fun)));
+                csvField != null ? fieldTransformer(csvField) :
+                 csvNode != null ? nodeTransformer(csvNode) :
+                                   Try.fail(new NullPointerException());
+
+        final var csvColumn = field.getAnnotation(CsvColumn.class);
+
+        return function.map(fun -> CsvAnnotationImpl.of(csvColumn.key(), modifier.apply(fun)));
     }
 
-    private Try<Function<String, Try<?>>> function(CsvField csvField) {
+    private Try<Function<String, Try<?>>> nodeTransformer(CsvNode csvNode) {
+
+        return null;
+    }
+
+    private Try<Function<String, Try<?>>> fieldTransformer(CsvField csvField) {
 
         final var annPrevalidators = csvField.csvPreValidations().preValidations();
         final var annFunction = csvField.function();

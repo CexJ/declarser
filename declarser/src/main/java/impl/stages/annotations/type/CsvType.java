@@ -14,7 +14,6 @@ import static kernel.conf.ParallelizationStrategyEnum.SEQUENTIAL;
 public @interface CsvType {
     String CELL_SEPARATOR_DEFAULT = ";";
     String cellSeparator() default CELL_SEPARATOR_DEFAULT;
-
     CsvPreValidations csvPreValidations() default @CsvPreValidations();
     CsvPostValidations csvPostValidations() default @CsvPostValidations();
 

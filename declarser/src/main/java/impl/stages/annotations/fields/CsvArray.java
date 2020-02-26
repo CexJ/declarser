@@ -1,6 +1,5 @@
 package impl.stages.annotations.fields;
 
-import impl.stages.annotations.validations.pre.CsvPreValidations;
 import utils.tryapi.Try;
 
 import java.lang.annotation.ElementType;
@@ -11,8 +10,6 @@ import java.util.function.Function;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface CsvField {
-    CsvPreValidations csvPreValidations() default @CsvPreValidations();
-    Class<? extends Function<String, Try<?>>> function();
-    String[] params() default {};
+public @interface CsvArray {
+    String separator() default " ";
 }
