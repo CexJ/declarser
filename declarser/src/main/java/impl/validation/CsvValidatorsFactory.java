@@ -30,8 +30,8 @@ public class CsvValidatorsFactory<T> {
         return new CsvValidatorsFactory<>(validatorClassMap, customMap);
     }
 
-    public static <T> CsvValidatorsFactory<T> of(final Map<Class<? extends Validator<T>>, Function<String[], Validator<T>>> customMap){
-        return new CsvValidatorsFactory<>(customMap);
+    public static CsvValidatorsFactory<?> of(final Map<Class<? extends Validator<?>>, Function<String[], Validator<?>>> customMap){
+        return new CsvValidatorsFactory(customMap);
     }
 
     public Try<Validator<T>> function(List<? extends ValidatorAnnImpl<T>> validatorAnns){
@@ -49,6 +49,10 @@ public class CsvValidatorsFactory<T> {
         } else {
             return Try.fail(GroupedException.of(errors));
         }
+    }
+
+    public Try<Validator<T>> function(ValidatorAnnImpl<?> validatorAnn){
+       return getPreValidator(validatorAnn.getClazz(), validatorAnn.getParams());
     }
 
     private Validator<T> ok() {

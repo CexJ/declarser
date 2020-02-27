@@ -86,7 +86,7 @@ public class CsvFunctionMapFactory {
 
     private Try<Function<String, Try<?>>> fieldTransformer(CsvField csvField) {
 
-        final var annPrevalidators = csvField.csvPreValidations().preValidations();
+        final var annPrevalidators = csvField.csvPreValidations().validations();
         final var annFunction = csvField.function();
         final var annParams = csvField.params();
 
