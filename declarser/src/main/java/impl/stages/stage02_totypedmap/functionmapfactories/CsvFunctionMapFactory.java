@@ -1,5 +1,6 @@
 package impl.stages.stage02_totypedmap.functionmapfactories;
 
+import impl.CsvDeclarserFactory;
 import impl.stages.annotations.fields.CsvColumn;
 import impl.stages.annotations.fields.CsvArray;
 import impl.stages.annotations.fields.CsvField;
@@ -20,20 +21,25 @@ import static utils.constants.Constants.EMPTY;
 
 public class CsvFunctionMapFactory {
 
-    private final CsvPreValidatorsFactory<String> preValidatorFactory;
+    private final CsvPreValidatorsFactory preValidatorFactory;
     private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;
+    private final CsvDeclarserFactory csvDeclarserFactory;
 
     private CsvFunctionMapFactory(
-            final CsvPreValidatorsFactory<String> preValidatorFactory,
+            final CsvDeclarserFactory csvDeclarserFactory,
+            final CsvPreValidatorsFactory preValidatorFactory,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap) {
+        this.csvDeclarserFactory = csvDeclarserFactory;
         this.preValidatorFactory = preValidatorFactory;
         this.functionClassMap = new HashMap<>(functionClassMap);
     }
 
     public static CsvFunctionMapFactory of(
-            final CsvPreValidatorsFactory<String> preValidatorFactory,
+            final CsvDeclarserFactory csvDeclarserFactory,
+            final CsvPreValidatorsFactory preValidatorFactory,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
         return new CsvFunctionMapFactory(
+                csvDeclarserFactory,
                 preValidatorFactory,
                 functionClassMap);
     }
@@ -71,7 +77,7 @@ public class CsvFunctionMapFactory {
         final var csvNode = field.getAnnotation(CsvNode.class);
         final Try<Function<String, Try<?>>> function =
                 csvField != null ? fieldTransformer(csvField) :
-                 csvNode != null ? nodeTransformer(csvNode)   :
+                 csvNode != null ? nodeTransformer(field, csvNode)   :
                                    Try.fail(new NullPointerException());
 
         final var csvColumn = field.getAnnotation(CsvColumn.class);
@@ -79,10 +85,10 @@ public class CsvFunctionMapFactory {
         return function.map(fun -> CsvAnnotationImpl.of(csvColumn.key(), modifier.apply(fun)));
     }
 
-    private Try<Function<String, Try<?>>> nodeTransformer(CsvNode csvNode) {
-        csvNode.cellSeparator();
-
-        return null;
+    private Try<Function<String, Try<?>>> nodeTransformer(Field field, CsvNode csvNode) {
+        final var cellSeparator = csvNode.cellSeparator();
+        return csvDeclarserFactory.apply(field.getClass(), o -> Optional.empty(), cellSeparator)
+                .map( dec -> (String s) ->  dec.apply(s));
     }
 
     private Try<Function<String, Try<?>>> fieldTransformer(CsvField csvField) {
@@ -100,10 +106,8 @@ public class CsvFunctionMapFactory {
                 .orElse(Try.go(() -> annFunction.getConstructor(EMPTY).newInstance()));
 
         return preValidator.flatMap( pre  ->
-                transformer.map(  tras ->
-                        s -> Try.success(s)
-                                .continueIf(pre)
-                                .map(tras)));
+                transformer.map(     tras ->
+                                        s -> Try.success(s).continueIf(pre).map(tras)));
     }
 
     private Function<String, Try<?>> getArrayFunction(Function<String, Try<?>> function, String arraySeparator){

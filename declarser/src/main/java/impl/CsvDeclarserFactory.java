@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class CsvDeclarserFactory<O> {
+public class CsvDeclarserFactory {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
-    private final CsvPreValidatorsFactory<String> csvPreValidatorsFactory;
+    private final CsvPreValidatorsFactory csvPreValidatorsFactory;
     private final CsvFunctionMapFactory mapFunctionFactory;
     private final CsvFieldMapFactory mapFieldFactory;
 
@@ -47,12 +47,13 @@ public class CsvDeclarserFactory<O> {
                 new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
         classFunctionMap.putAll(customConstructorMap);
         this.mapFunctionFactory =  CsvFunctionMapFactory.of(
+                this,
                 csvPreValidatorsFactory,
                 classFunctionMap);
         this.mapFieldFactory = mapFieldFactory;
     }
 
-    public Try<Declarser<String, Integer, String, O>> apply(final Class<O> clazz,
+    public <O> Try<Declarser<String, Integer, String, O>> apply(final Class<O> clazz,
                                                             final Validator<O> postValidator,
                                                             final String cellSeparator) {
 

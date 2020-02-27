@@ -1,5 +1,6 @@
 package impl.stages.stage04_toobject;
 
+import impl.stages.annotations.fields.CsvColumn;
 import impl.stages.annotations.fields.CsvField;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ public class CsvFieldMapFactory {
 
     public <O> Map<String, Integer> getMap(Class<O> clazz) {
         return Arrays.stream(clazz.getDeclaredFields())
-                .map(f -> NameKey.of(f.getName(), f.getAnnotation(CsvField.class).key()))
+                .map(f -> NameKey.of(f.getName(), f.getAnnotation(CsvColumn.class).key()))
                 .filter(nk -> nk.getKey().isPresent())
                 .collect(Collectors.toMap(NameKey::getName, nk -> nk.getKey().get()));
     }
