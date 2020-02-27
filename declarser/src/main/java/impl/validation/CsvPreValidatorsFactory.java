@@ -11,30 +11,27 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CsvValidatorsFactory<T> {
+public class CsvPreValidatorsFactory {
 
-    private final Map<Class<? extends Validator<T>>,
-            Function<String[], Validator<T>>> validatorClassMap;
+    private final Map<Class<? extends Validator<String>>,
+            Function<String[], Validator<String>>> validatorClassMap;
 
-    private CsvValidatorsFactory(final Map<Class<? extends Validator<T>>, Function<String[], Validator<T>>> validatorClassMap,
-                                 final Map<Class<? extends Validator<T>>, Function<String[], Validator<T>>> customMap) {
+    private CsvPreValidatorsFactory(final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
+                                    final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap) {
         this(validatorClassMap);
         customMap.forEach(validatorClassMap::put);
     }
-    private CsvValidatorsFactory(final Map<Class<? extends Validator<T>>, Function<String[], Validator<T>>> validatorClassMap) {
+    private CsvPreValidatorsFactory(final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap) {
         this.validatorClassMap = new HashMap<>(validatorClassMap);
     }
 
-    public static CsvValidatorsFactory<String> pre(final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
-                                              final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap){
-        return new CsvValidatorsFactory<>(validatorClassMap, customMap);
+    public static CsvPreValidatorsFactory of(final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
+                                             final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap){
+        return new CsvPreValidatorsFactory(validatorClassMap, customMap);
     }
 
-    public static CsvValidatorsFactory<?> of(final Map<Class<? extends Validator<?>>, Function<String[], Validator<?>>> customMap){
-        return new CsvValidatorsFactory(customMap);
-    }
 
-    public Try<Validator<T>> function(List<? extends ValidatorAnnImpl<T>> validatorAnns){
+    public Try<Validator<String>> function(List<? extends ValidatorAnnImpl<String>> validatorAnns){
         final var tryValidators = validatorAnns.stream()
                 .map(ann -> getPreValidator(ann.getClazz(), ann.getParams()))
                 .collect(Collectors.toList());
@@ -51,19 +48,19 @@ public class CsvValidatorsFactory<T> {
         }
     }
 
-    public Try<Validator<T>> function(ValidatorAnnImpl<?> validatorAnn){
+    public Try<Validator<String>> function(ValidatorAnnImpl<String> validatorAnn){
        return getPreValidator(validatorAnn.getClazz(), validatorAnn.getParams());
     }
 
-    private Validator<T> ok() {
-        return (T s) -> Optional.empty();
+    private Validator<String> ok() {
+        return s -> Optional.empty();
     }
 
-    private Validator<T> compose(Validator<T> v1, Validator<T> v2) {
-        return (T s) -> v1.apply(s).isEmpty() ? v2.apply(s) : v1.apply(s);
+    private Validator<String> compose(Validator<String> v1, Validator<String> v2) {
+        return s -> v1.apply(s).isEmpty() ? v2.apply(s) : v1.apply(s);
     }
 
-    private Try<Validator<T>> getPreValidator(Class<? extends Validator<T>> clazz, String[] params){
+    private Try<Validator<String>> getPreValidator(Class<? extends Validator<String>> clazz, String[] params){
 
         final var map = fromMap(clazz, params);
         if(map != null){
@@ -82,12 +79,12 @@ public class CsvValidatorsFactory<T> {
         return Try.fail(new ClassNotFoundException());
     }
 
-    private Validator<T> fromMap(Class<? extends Validator<T>> clazz, String[] params) {
+    private Validator<String> fromMap(Class<? extends Validator<String>> clazz, String[] params) {
         return Optional.ofNullable(validatorClassMap.get(clazz)).map(v -> v.apply(params)).orElse(null);
     }
 
 
-    private Validator<T> fromParamsConstructor(Class<? extends Validator<T>> clazz, String[] params) {
+    private Validator<String> fromParamsConstructor(Class<? extends Validator<String>> clazz, String[] params) {
         try {
             return clazz.getConstructor(String[].class)
                     .newInstance((Object) params);
@@ -96,7 +93,7 @@ public class CsvValidatorsFactory<T> {
         }
     }
 
-    private Validator<T> fromNoArgsConstructor(Class<? extends Validator<T>> clazz) {
+    private Validator<String> fromNoArgsConstructor(Class<? extends Validator<String>> clazz) {
         try {
             return clazz.getConstructor()
                     .newInstance();

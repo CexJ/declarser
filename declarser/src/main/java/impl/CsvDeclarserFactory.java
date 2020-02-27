@@ -8,7 +8,7 @@ import impl.stages.stage03_combinator.combinators.NoExceptionCombinator;
 import impl.stages.stage04_toobject.CsvFieldMapFactory;
 import impl.stages.stage04_toobject.restructors.ReflectionRestructor;
 import impl.validation.CsvValidationConst;
-import impl.validation.CsvValidatorsFactory;
+import impl.validation.CsvPreValidatorsFactory;
 import impl.validation.ValidatorAnnImpl;
 import kernel.Declarser;
 import kernel.conf.ParallelizationStrategyEnum;
@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 public class CsvDeclarserFactory<O> {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
-    private final CsvValidatorsFactory<String> csvPreValidatorsFactory;
+    private final CsvPreValidatorsFactory<String> csvPreValidatorsFactory;
     private final CsvFunctionMapFactory mapFunctionFactory;
     private final CsvFieldMapFactory mapFieldFactory;
 
@@ -42,7 +42,7 @@ public class CsvDeclarserFactory<O> {
                                         Function<String[], Function<String, Try<?>>>> customConstructorMap,
                                 final CsvFieldMapFactory mapFieldFactory) {
         this.parallelizationStrategy = parallelizationStrategy;
-        this.csvPreValidatorsFactory = CsvValidatorsFactory.pre(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
+        this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
         Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> classFunctionMap =
                 new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
         classFunctionMap.putAll(customConstructorMap);
@@ -52,7 +52,9 @@ public class CsvDeclarserFactory<O> {
         this.mapFieldFactory = mapFieldFactory;
     }
 
-    public Try<Declarser<String, Integer, String, O>> apply(final Class<O> clazz, final Validator<O> postValidator, final String cellSeparator) {
+    public Try<Declarser<String, Integer, String, O>> apply(final Class<O> clazz,
+                                                            final Validator<O> postValidator,
+                                                            final String cellSeparator) {
 
         final var preValidator = Optional.ofNullable(clazz.getAnnotation(CsvPreValidations.class))
                 .map(ann -> Stream.of(ann.validations())
