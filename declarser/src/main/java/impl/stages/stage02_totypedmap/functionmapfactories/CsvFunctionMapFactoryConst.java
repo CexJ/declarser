@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class CsvFunctionMapFactoryConst {
+public final class CsvFunctionMapFactoryConst {
 
     private CsvFunctionMapFactoryConst(){}
 

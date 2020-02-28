@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ZonedDateTimeParser implements Function<String, Try<?>> {
+public final class ZonedDateTimeParser implements Function<String, Try<?>> {
 
     private final String format;
 
@@ -27,7 +27,7 @@ public class ZonedDateTimeParser implements Function<String, Try<?>> {
     }
 
     @Override
-    public Try<ZonedDateTime> apply(String s) {
+    public Try<ZonedDateTime> apply(final String s) {
         return Try.go(() -> ZonedDateTime.parse(s,DateTimeFormatter.ofPattern(format)));
     }
 }

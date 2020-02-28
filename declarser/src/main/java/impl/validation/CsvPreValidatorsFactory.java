@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CsvPreValidatorsFactory {
+public final class CsvPreValidatorsFactory {
 
     private final Map<Class<? extends Validator<String>>,
             Function<String[], Validator<String>>> validatorClassMap;
@@ -32,7 +32,7 @@ public class CsvPreValidatorsFactory {
     }
 
 
-    public Try<Validator<String>> function(List<? extends CsvPreValidation> validatorAnns){
+    public Try<Validator<String>> function(final List<? extends CsvPreValidation> validatorAnns){
         final var tryValidators = validatorAnns.stream()
                 .map(ann -> stringValidator(ann.validator(), ann.params()))
                 .collect(Collectors.toList());
@@ -43,20 +43,20 @@ public class CsvPreValidatorsFactory {
                            composedFunction(tryValidators);
         }
 
-    private Try<Validator<String>> composedFunction(List<Try<Validator<String>>> tryValidators) {
+    private Try<Validator<String>> composedFunction(final List<Try<Validator<String>>> tryValidators) {
         return Try.success(tryValidators.stream()
                     .map(Try::getValue)
                     .reduce(ok(), this::compose));
     }
 
-    private Try<Validator<String>> collectedErrors(List<Try<Validator<String>>> tryValidators) {
+    private Try<Validator<String>> collectedErrors(final List<Try<Validator<String>>> tryValidators) {
         return Try.fail(GroupedException.of(tryValidators.stream()
                         .filter(Try::isFailure)
                         .map(Try::getException)
                         .collect(Collectors.toList())));
     }
 
-    public Try<Validator<String>> function(CsvPreValidation validatorAnn){
+    public Try<Validator<String>> function(final CsvPreValidation validatorAnn){
        return stringValidator(validatorAnn.validator(), validatorAnn.params());
     }
 
@@ -64,11 +64,11 @@ public class CsvPreValidatorsFactory {
         return s -> Optional.empty();
     }
 
-    private Validator<String> compose(Validator<String> v1, Validator<String> v2) {
+    private Validator<String> compose(final Validator<String> v1,final  Validator<String> v2) {
         return s -> v1.apply(s).isEmpty() ? v2.apply(s) : v1.apply(s);
     }
 
-    private Try<Validator<String>> stringValidator(Class<? extends Validator<String>> clazz, String[] params){
+    private Try<Validator<String>> stringValidator(final Class<? extends Validator<String>> clazz, final String[] params){
 
         final var map = fromMap(clazz, params);
         if(map != null){
@@ -87,12 +87,12 @@ public class CsvPreValidatorsFactory {
         return Try.fail(new ClassNotFoundException());
     }
 
-    private Validator<String> fromMap(Class<? extends Validator<String>> clazz, String[] params) {
+    private Validator<String> fromMap(final Class<? extends Validator<String>> clazz, final String[] params) {
         return Optional.ofNullable(validatorClassMap.get(clazz)).map(v -> v.apply(params)).orElse(null);
     }
 
 
-    private Validator<String> fromParamsConstructor(Class<? extends Validator<String>> clazz, String[] params) {
+    private Validator<String> fromParamsConstructor(final Class<? extends Validator<String>> clazz, final String[] params) {
         try {
             return clazz.getConstructor(String[].class)
                     .newInstance((Object) params);
@@ -101,7 +101,7 @@ public class CsvPreValidatorsFactory {
         }
     }
 
-    private Validator<String> fromNoArgsConstructor(Class<? extends Validator<String>> clazz) {
+    private Validator<String> fromNoArgsConstructor(final Class<? extends Validator<String>> clazz) {
         try {
             return clazz.getConstructor()
                     .newInstance();

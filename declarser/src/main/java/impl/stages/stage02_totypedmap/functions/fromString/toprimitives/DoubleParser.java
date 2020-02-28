@@ -4,7 +4,7 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class DoubleParser implements Function<String, Try<?>> {
+public final class DoubleParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final DoubleParser instance = new DoubleParser();
@@ -18,7 +18,7 @@ public class DoubleParser implements Function<String, Try<?>> {
 
 
     @Override
-    public Try<Double> apply(String s) {
+    public Try<Double> apply(final String s) {
         return Try.go(() -> Double.parseDouble(s));
     }
 }

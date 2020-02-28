@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class CsvValidationConst {
+public final class CsvValidationConst {
 
     private CsvValidationConst(){}
 

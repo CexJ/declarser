@@ -5,7 +5,7 @@ import utils.tryapi.Try;
 import java.math.BigInteger;
 import java.util.function.Function;
 
-public class BigIntegerParser implements Function<String, Try<?>> {
+public final class BigIntegerParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final BigIntegerParser instance = new BigIntegerParser();
@@ -18,7 +18,7 @@ public class BigIntegerParser implements Function<String, Try<?>> {
     private BigIntegerParser(){}
 
     @Override
-    public Try<BigInteger> apply(String s) {
+    public Try<BigInteger> apply(final String s) {
         return Try.go(() -> new BigInteger(s));
     }
 }

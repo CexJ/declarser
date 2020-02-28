@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class LocalDateParser implements Function<String, Try<?>> {
+public final  class LocalDateParser implements Function<String, Try<?>> {
 
     private final String format;
 
@@ -27,7 +27,7 @@ public class LocalDateParser implements Function<String, Try<?>> {
     }
 
     @Override
-    public Try<LocalDate> apply(String s) {
+    public Try<LocalDate> apply(final String s) {
         return Try.go(() -> LocalDate.parse(s, DateTimeFormatter.ofPattern(format)));
     }
 }

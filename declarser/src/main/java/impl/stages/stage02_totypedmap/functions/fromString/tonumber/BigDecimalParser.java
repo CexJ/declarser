@@ -5,7 +5,7 @@ import utils.tryapi.Try;
 import java.math.BigDecimal;
 import java.util.function.Function;
 
-public class BigDecimalParser implements Function<String, Try<?>> {
+public final class BigDecimalParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final BigDecimalParser instance = new BigDecimalParser();
@@ -18,7 +18,7 @@ public class BigDecimalParser implements Function<String, Try<?>> {
     private BigDecimalParser(){}
 
     @Override
-    public Try<BigDecimal> apply(String s) {
+    public Try<BigDecimal> apply(final String s) {
         return Try.go(() -> new BigDecimal(s));
     }
 }

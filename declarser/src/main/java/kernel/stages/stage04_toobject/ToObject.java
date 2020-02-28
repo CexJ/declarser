@@ -20,7 +20,7 @@ public final class ToObject<K,O> {
 		return new ToObject<>(outputValidator, restructor);
 	}
 
-	public Try<O> apply(final Map<K,?> map){
+	public Try<O> gluing(final Map<K,?> map){
 		return restructor.restruct(map)
 				.continueIf(outputValidator);
 	}

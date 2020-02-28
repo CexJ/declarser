@@ -20,7 +20,7 @@ public final class ToTypedMap<K,V> {
 		return new ToTypedMap<>(mapFunction, parallelizationStrategy);
 	}
 
-	public Map<K, Try<?>> apply(final  Map<K,V> mapInput){
+	public Map<K, Try<?>> typing(final  Map<K,V> mapInput){
 		return mapFunction.apply(mapInput);
 	}
 }

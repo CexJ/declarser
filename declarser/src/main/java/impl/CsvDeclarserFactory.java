@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class CsvDeclarserFactory {
+public final class CsvDeclarserFactory {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
     private final CsvPreValidatorsFactory csvPreValidatorsFactory;
@@ -66,14 +66,14 @@ public class CsvDeclarserFactory {
                        Declarser.of(toMap, toTypedMap, combinator, toObject))))) ;
     }
 
-    private <O> Try<ToMap<String, Integer, String>> stage1(Class<O> clazz, String cellSeparator) {
+    private <O> Try<ToMap<String, Integer, String>> stage1(final Class<O> clazz, final String cellSeparator) {
         final var preValidator = preValidator(clazz);
         final var destructor = CsvDestructor.of(cellSeparator);
         return preValidator.map( pv ->
                 ToMap.of(pv, destructor));
     }
 
-    private <O> Try<ToTypedMap<Integer, String>> stage2(Class<O> clazz) {
+    private <O> Try<ToTypedMap<Integer, String>> stage2(final Class<O> clazz) {
         final var mapFunction = mapFunctionFactory.mapColumnToTransformer(clazz);
         return mapFunction.map( mf ->
                 ToTypedMap.of( mf, parallelizationStrategy));
@@ -83,14 +83,14 @@ public class CsvDeclarserFactory {
         return Try.success(NoExceptionCombinator.of(parallelizationStrategy));
     }
 
-    private <O> Try<ToObject<Integer, O>> stage4(Class<O> clazz, Validator<O> postValidator) {
+    private <O> Try<ToObject<Integer, O>> stage4(final Class<O> clazz, final Validator<O> postValidator) {
         final var mapFileds = CsvFieldMapFactory.mapFieldNameColumn(clazz);
         final var restructor = ReflectionRestructor.of(clazz, mapFileds);
         return Try.success(
                 ToObject.of(postValidator,restructor));
     }
 
-    private <O> Try<Validator<String>> preValidator(Class<O> clazz) {
+    private <O> Try<Validator<String>> preValidator(final Class<O> clazz) {
         return Optional.ofNullable(clazz.getAnnotation(CsvPreValidations.class))
                 .map(ann -> Stream.of(ann.validations())
                         .collect(Collectors.toList()))
@@ -106,7 +106,7 @@ public class CsvDeclarserFactory {
         return new Builder().build();
     }
 
-    public static class Builder {
+    public static final class Builder {
 
         private Builder(){}
 
@@ -114,18 +114,18 @@ public class CsvDeclarserFactory {
         private Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customPreValidatorsMap = new HashMap<>();
         private Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> customConstructorMap =  new HashMap<>();
 
-        public Builder withParallelizationStrategy(ParallelizationStrategyEnum parallelizationStrategy) {
+        public Builder withParallelizationStrategy(final ParallelizationStrategyEnum parallelizationStrategy) {
             if(parallelizationStrategy != null) this.parallelizationStrategy = parallelizationStrategy;
             return this;
         }
 
-        public Builder withCustomPreValidatorsMap(Map<Class<? extends Validator<String>>,
+        public Builder withCustomPreValidatorsMap(final Map<Class<? extends Validator<String>>,
                                                       Function<String[], Validator<String>>> customPreValidatorsMap) {
             if(customPreValidatorsMap != null) this.customPreValidatorsMap = customPreValidatorsMap;
             return this;
         }
 
-        public Builder withCustomConstructorMap(Map<Class<? extends Function<String, Try<?>>>,
+        public Builder withCustomConstructorMap(final Map<Class<? extends Function<String, Try<?>>>,
                                                     Function<String[], Function<String, Try<?>>>> customConstructorMap) {
             if(customConstructorMap != null) this.customConstructorMap = customConstructorMap;
             return this;

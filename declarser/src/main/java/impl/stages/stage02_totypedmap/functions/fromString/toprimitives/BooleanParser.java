@@ -4,7 +4,7 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class BooleanParser implements Function<String, Try<?>> {
+public final class BooleanParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final BooleanParser instance = new BooleanParser();
@@ -17,7 +17,7 @@ public class BooleanParser implements Function<String, Try<?>> {
     private BooleanParser(){}
 
     @Override
-    public Try<Boolean> apply(String s) {
+    public Try<Boolean> apply(final String s) {
         return Try.go(() -> Boolean.parseBoolean(s));
     }
 }

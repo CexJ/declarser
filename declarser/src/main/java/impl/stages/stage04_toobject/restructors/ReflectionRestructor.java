@@ -9,7 +9,7 @@ import kernel.stages.stage04_toobject.restructor.Restructor;
 import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 
-public class ReflectionRestructor<K,O> implements Restructor<K,O> {
+public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 
 	private final Class<O> clazz;
 	private final Map<String,K> mapFileds;

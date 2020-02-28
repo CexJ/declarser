@@ -5,7 +5,7 @@ import utils.tryapi.Try;
 import javax.naming.directory.InvalidAttributesException;
 import java.util.function.Function;
 
-public class CharacterParser implements Function<String, Try<?>> {
+public final class CharacterParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final CharacterParser instance = new CharacterParser();
@@ -18,7 +18,7 @@ public class CharacterParser implements Function<String, Try<?>> {
     private CharacterParser(){}
 
     @Override
-    public Try<Character> apply(String s) {
+    public Try<Character> apply(final String s) {
         return s.length() == 1 ? Try.success(s.charAt(0))
                                : Try.fail(new InvalidAttributesException("Expecting a char but found: "+s));
     }

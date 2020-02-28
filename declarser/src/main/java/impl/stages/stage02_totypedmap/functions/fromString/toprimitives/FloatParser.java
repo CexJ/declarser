@@ -4,7 +4,7 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class FloatParser implements Function<String, Try<?>> {
+public final class FloatParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final FloatParser instance = new FloatParser();
@@ -17,7 +17,7 @@ public class FloatParser implements Function<String, Try<?>> {
     private FloatParser(){}
 
     @Override
-    public Try<Float> apply(String s) {
+    public Try<Float> apply(final String s) {
         return Try.go(() -> Float.parseFloat(s));
     }
 }

@@ -4,7 +4,7 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class LongParser implements Function<String, Try<?>> {
+public final class LongParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final LongParser instance = new LongParser();
@@ -18,7 +18,7 @@ public class LongParser implements Function<String, Try<?>> {
 
 
     @Override
-    public Try<Long> apply(String s) {
+    public Try<Long> apply(final String s) {
         return Try.go(() -> Long.parseLong(s));
     }
 }

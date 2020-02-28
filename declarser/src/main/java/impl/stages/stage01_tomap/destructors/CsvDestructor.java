@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CsvDestructor implements Destructor<String,Integer,String> {
+public final class CsvDestructor implements Destructor<String,Integer,String> {
 
     private final String cellSeparator;
 
@@ -21,7 +21,7 @@ public class CsvDestructor implements Destructor<String,Integer,String> {
 
     @Override
     public Map<Integer, String> destruct(final String input) {
-        final String[] splittedInput = input.split(cellSeparator);
+        final var splittedInput = input.split(cellSeparator);
         return Stream.iterate(0, i -> i+1)
                 .limit(splittedInput.length)
                 .collect(Collectors

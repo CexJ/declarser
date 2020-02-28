@@ -4,7 +4,7 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class IntegerParser implements Function<String, Try<?>> {
+public final class IntegerParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final IntegerParser instance = new IntegerParser();
@@ -17,7 +17,7 @@ public class IntegerParser implements Function<String, Try<?>> {
     private IntegerParser(){}
 
     @Override
-    public Try<Integer> apply(String s) {
+    public Try<Integer> apply(final String s) {
         return Try.go(() -> Integer.parseInt(s));
     }
 }

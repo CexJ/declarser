@@ -25,10 +25,10 @@ public final class Declarser<I,K,V,O> {
 		return new Declarser<>(toMap, toTypedMap, combinator, toObject);
 	}
 
-	public Try<O> parse(I input) {
-		return toMap.apply(input)
-				.map(toTypedMap::apply)
-				.flatMap(combinator::apply)
-				.flatMap(toObject::apply);
+	public Try<O> parse(final I input) {
+		return toMap.mapping(input)
+				.map(toTypedMap::typing)
+				.flatMap(combinator::combining)
+				.flatMap(toObject::gluing);
 	}
 }

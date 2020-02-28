@@ -24,7 +24,7 @@ public final class ToMap<I,K,V>{
 		return new ToMap<>(inputValidator, destructor);
 	}
 
-	public Try<Map<K,V>> apply(final I input){
+	public Try<Map<K,V>> mapping(final I input){
 		return Try.success(input)
 				.continueIf(inputValidator)
 				.map(destructor::destruct);
