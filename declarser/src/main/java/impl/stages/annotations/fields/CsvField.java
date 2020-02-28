@@ -13,6 +13,6 @@ import java.util.function.Function;
 @Target({ElementType.FIELD})
 public @interface CsvField {
     CsvPreValidations csvPreValidations() default @CsvPreValidations();
-    Class<? extends Function<String, Try<?>>> function();
+    Class<? extends Function<String, Try<?>>> value();
     String[] params() default {};
 }

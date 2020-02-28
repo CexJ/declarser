@@ -1,7 +1,9 @@
 package impl.validation;
 
+import impl.stages.annotations.validations.pre.CsvPreValidation;
 import kernel.validation.Validator;
 import utils.exceptions.GroupedException;
+import utils.tryapi.Failure;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
@@ -31,25 +33,32 @@ public class CsvPreValidatorsFactory {
     }
 
 
-    public Try<Validator<String>> function(List<? extends ValidatorAnnImpl<String>> validatorAnns){
+    public Try<Validator<String>> function(List<? extends CsvPreValidation> validatorAnns){
         final var tryValidators = validatorAnns.stream()
-                .map(ann -> getPreValidator(ann.getClazz(), ann.getParams()))
+                .map(ann -> stringValidator(ann.validator(), ann.params()))
                 .collect(Collectors.toList());
-        final var errors = tryValidators.stream()
-                .filter(Try::isFailure)
-                .map(Try::getException)
-                .collect(Collectors.toList());
-        if(errors.isEmpty()){
-            return Try.success(tryValidators.stream()
+
+        final var hasErrors = tryValidators.stream().anyMatch(Try::isFailure);
+
+        return hasErrors ? collectedErrors(tryValidators) :
+                           composedFunction(tryValidators);
+        }
+
+    private Try<Validator<String>> composedFunction(List<Try<Validator<String>>> tryValidators) {
+        return Try.success(tryValidators.stream()
                     .map(Try::getValue)
                     .reduce(ok(), this::compose));
-        } else {
-            return Try.fail(GroupedException.of(errors));
-        }
     }
 
-    public Try<Validator<String>> function(ValidatorAnnImpl<String> validatorAnn){
-       return getPreValidator(validatorAnn.getClazz(), validatorAnn.getParams());
+    private Failure<Validator<String>> collectedErrors(List<Try<Validator<String>>> tryValidators) {
+        return Try.fail(GroupedException.of(tryValidators.stream()
+                        .filter(Try::isFailure)
+                        .map(Try::getException)
+                        .collect(Collectors.toList())));
+    }
+
+    public Try<Validator<String>> function(CsvPreValidation validatorAnn){
+       return stringValidator(validatorAnn.validator(), validatorAnn.params());
     }
 
     private Validator<String> ok() {
@@ -60,7 +69,7 @@ public class CsvPreValidatorsFactory {
         return s -> v1.apply(s).isEmpty() ? v2.apply(s) : v1.apply(s);
     }
 
-    private Try<Validator<String>> getPreValidator(Class<? extends Validator<String>> clazz, String[] params){
+    private Try<Validator<String>> stringValidator(Class<? extends Validator<String>> clazz, String[] params){
 
         final var map = fromMap(clazz, params);
         if(map != null){

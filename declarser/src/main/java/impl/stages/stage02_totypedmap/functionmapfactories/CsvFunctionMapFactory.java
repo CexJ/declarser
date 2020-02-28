@@ -6,7 +6,6 @@ import impl.stages.annotations.fields.CsvArray;
 import impl.stages.annotations.fields.CsvField;
 import impl.stages.annotations.fields.CsvNode;
 import impl.validation.CsvPreValidatorsFactory;
-import impl.validation.ValidatorAnnImpl;
 import utils.exceptions.GroupedException;
 import utils.tryapi.Try;
 
@@ -46,10 +45,10 @@ public class CsvFunctionMapFactory {
 
 
 
-    public Try<Map<Integer, Function<String, Try<?>>>> getMap(final Class<?> clazz){
+    public Try<Map<Integer, Function<String, Try<?>>>> mapColumnToTransformer(final Class<?> clazz){
         final Map<Boolean, List<Try<CsvAnnotationImpl>>> partition = Stream.of(clazz.getDeclaredFields())
                 .filter(f -> f.getAnnotation(CsvColumn.class) != null)
-                .map( f -> computeFunction(f))
+                .map( f -> computeTransformer(f))
                 .collect(Collectors.partitioningBy(Try::isSuccess));
 
 
@@ -66,7 +65,7 @@ public class CsvFunctionMapFactory {
                     .collect(Collectors.toList())));
     }
 
-    private Try<CsvAnnotationImpl> computeFunction(Field field) {
+    private Try<CsvAnnotationImpl> computeTransformer(Field field) {
 
         final var csvArrayField = field.getAnnotation(CsvArray.class);
         final UnaryOperator<Function<String, Try<?>>> modifier =
@@ -82,24 +81,22 @@ public class CsvFunctionMapFactory {
 
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 
-        return function.map(fun -> CsvAnnotationImpl.of(csvColumn.key(), modifier.apply(fun)));
+        return function.map(fun -> CsvAnnotationImpl.of(csvColumn.value(), modifier.apply(fun)));
     }
 
     private Try<Function<String, Try<?>>> nodeTransformer(Field field, CsvNode csvNode) {
         final var cellSeparator = csvNode.cellSeparator();
-        return csvDeclarserFactory.apply(field.getClass(), o -> Optional.empty(), cellSeparator)
+        return csvDeclarserFactory.declarserOf(field.getClass(), cellSeparator)
                 .map( dec -> (String s) ->  dec.apply(s));
     }
 
     private Try<Function<String, Try<?>>> fieldTransformer(CsvField csvField) {
 
         final var annPrevalidators = csvField.csvPreValidations().validations();
-        final var annFunction = csvField.function();
+        final var annFunction = csvField.value();
         final var annParams = csvField.params();
 
-        final var preValidator = preValidatorFactory.function(Stream.of(annPrevalidators)
-                .map(pre -> ValidatorAnnImpl.pre(pre.validator(),pre.params()))
-                .collect(Collectors.toList()));
+        final var preValidator = preValidatorFactory.function(Arrays.asList(annPrevalidators));
 
         final var transformer = Optional.ofNullable(functionClassMap.get(annFunction))
                 .map(f -> Try.success(f.apply(annParams)))
