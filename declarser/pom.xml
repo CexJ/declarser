@@ -4,5 +4,5 @@
   <artifactId>declarser</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>declarser</name>
-  <description>A declarative object parser</description>
+  <description>A declarative parser framework</description>
 </project>
