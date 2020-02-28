@@ -32,6 +32,7 @@ final class ToTypedMapComposition<K,V>{
     Try<?> apply(){
         return typedFunction.apply(value);
     }
+
     K getKey() {
         return key;
     }

@@ -76,18 +76,19 @@ public class CsvFunctionMapFactory {
         final var csvNode = field.getAnnotation(CsvNode.class);
         final Try<Function<String, Try<?>>> function =
                 csvField != null ? fieldTransformer(csvField) :
-                 csvNode != null ? nodeTransformer(field, csvNode)   :
-                                   Try.fail(new NullPointerException());
+                 csvNode != null ? nodeTransformer(field, csvNode)
+                                 : Try.fail(new NullPointerException());
 
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 
-        return function.map(fun -> CsvAnnotationImpl.of(csvColumn.value(), modifier.apply(fun)));
+        return function
+                .map(fun -> CsvAnnotationImpl.of(csvColumn.value(), modifier.apply(fun)));
     }
 
     private Try<Function<String, Try<?>>> nodeTransformer(Field field, CsvNode csvNode) {
         final var cellSeparator = csvNode.cellSeparator();
         return csvDeclarserFactory.declarserOf(field.getClass(), cellSeparator)
-                .map( dec -> (String s) ->  dec.apply(s));
+                .map( dec -> (String s) ->  dec.parse(s));
     }
 
     private Try<Function<String, Try<?>>> fieldTransformer(CsvField csvField) {
@@ -99,12 +100,13 @@ public class CsvFunctionMapFactory {
         final var preValidator = preValidatorFactory.function(Arrays.asList(annPrevalidators));
 
         final var transformer = Optional.ofNullable(functionClassMap.get(annFunction))
-                .map(f -> Try.success(f.apply(annParams)))
-                .orElse(Try.go(() -> annFunction.getConstructor(EMPTY).newInstance()));
+                                    .map(f -> Try.success(f.apply(annParams)))
+                                    .orElse(Try.go(() -> annFunction.getConstructor(EMPTY).newInstance()));
 
         return preValidator.flatMap( pre  ->
-                transformer.map(     tras ->
-                                        s -> Try.success(s).continueIf(pre).map(tras)));
+                transformer.map(     tra ->
+                        (String s) -> pre.apply(s).isEmpty() ? tra.apply(s)
+                                                             : Try.fail(pre.apply(s).get())));
     }
 
     private Function<String, Try<?>> getArrayFunction(Function<String, Try<?>> function, String arraySeparator){

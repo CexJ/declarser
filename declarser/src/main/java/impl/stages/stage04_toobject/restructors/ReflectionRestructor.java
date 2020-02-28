@@ -32,7 +32,7 @@ public class ReflectionRestructor<K,O> implements Restructor<K,O> {
 				.peek(f -> f.setAccessible(true))
 				.forEach(f -> {
 					try {
-						f.set(object, input.get(mapFileds.get(f.getName())));
+						f.set(object, input.get(mapFileds.get(f.getName())) );
 					} catch (Exception e) {
 						exceptions.add(e);
 					}

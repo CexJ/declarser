@@ -7,11 +7,11 @@ import impl.stages.stage02_totypedmap.functions.fromString.tostring.FromStringTo
 
 public class DataSample {
 
-    @CsvColumn(1)
+    @CsvColumn(0)
     @CsvField(FromStringToString.class)
     private String name;
 
-    @CsvColumn(2)
+    @CsvColumn(1)
     @CsvField(FromStringToInteger.class)
     private Integer age;
 

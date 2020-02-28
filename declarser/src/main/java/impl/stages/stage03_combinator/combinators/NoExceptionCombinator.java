@@ -29,7 +29,8 @@ public class NoExceptionCombinator<K> implements Combinator<K> {
                 .map(kv -> LabeledException.of(kv.getKey(), kv.getValue().getException()))
                 .collect(Collectors.toList());
         return mapExceptions.isEmpty() ? Try.success(parallelizationStrategy.exec(map.entrySet().stream())
-                                                                            .collect(Collectors.toMap(Map.Entry::getKey,
+                                                                            .collect(Collectors.toMap(
+                                                                                    Map.Entry::getKey,
                                                                                     kv -> kv.getValue().getValue())))
                                        : Try.fail(GroupedException.of(mapExceptions));
     }
