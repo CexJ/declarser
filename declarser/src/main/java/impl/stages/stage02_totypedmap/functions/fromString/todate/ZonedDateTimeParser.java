@@ -8,21 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class FromStringToZonedDateTime implements Function<String, Try<?>> {
+public class ZonedDateTimeParser implements Function<String, Try<?>> {
 
     private final String format;
 
-    private static final Map<String, FromStringToZonedDateTime> instancesMap = new HashMap<>();
+    private static final Map<String, ZonedDateTimeParser> instancesMap = new HashMap<>();
 
-    public static synchronized FromStringToZonedDateTime getInstance(final String format) {
+    public static synchronized ZonedDateTimeParser getInstance(final String format) {
         if(instancesMap.get(format) == null){
-            FromStringToZonedDateTime newFromStringToLocalDate = new FromStringToZonedDateTime(format);
+            ZonedDateTimeParser newFromStringToLocalDate = new ZonedDateTimeParser(format);
             instancesMap.put(format, newFromStringToLocalDate);
         }
         return instancesMap.get(format);
     }
 
-    private FromStringToZonedDateTime(final String format){
+    private ZonedDateTimeParser(final String format){
         this.format = format;
     }
 

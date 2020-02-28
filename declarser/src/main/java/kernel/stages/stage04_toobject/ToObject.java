@@ -1,10 +1,6 @@
 package kernel.stages.stage04_toobject;
 
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-
-import impl.stages.stage04_toobject.restructors.ReflectionRestructor;
 import kernel.stages.stage04_toobject.restructor.Restructor;
 import kernel.validation.Validator;
 import utils.tryapi.Try;
@@ -26,6 +22,6 @@ public final class ToObject<K,O> {
 
 	public Try<O> apply(final Map<K,?> map){
 		return restructor.restruct(map)
-				.continueIf(o -> outputValidator.apply(o));
+				.continueIf(outputValidator);
 	}
 }

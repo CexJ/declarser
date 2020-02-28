@@ -4,17 +4,17 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class FromStringToFloat implements Function<String, Try<?>> {
+public class FloatParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
-        private static final FromStringToFloat instance = new FromStringToFloat();
+        private static final FloatParser instance = new FloatParser();
     }
 
-    public static FromStringToFloat getInstance() {
+    public static FloatParser getInstance() {
         return InstanceHolder.instance;
     }
 
-    private FromStringToFloat(){}
+    private FloatParser(){}
 
     @Override
     public Try<Float> apply(String s) {

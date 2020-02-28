@@ -3,7 +3,6 @@ package impl.validation;
 import impl.stages.annotations.validations.pre.CsvPreValidation;
 import kernel.validation.Validator;
 import utils.exceptions.GroupedException;
-import utils.tryapi.Failure;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
@@ -50,7 +49,7 @@ public class CsvPreValidatorsFactory {
                     .reduce(ok(), this::compose));
     }
 
-    private Failure<Validator<String>> collectedErrors(List<Try<Validator<String>>> tryValidators) {
+    private Try<Validator<String>> collectedErrors(List<Try<Validator<String>>> tryValidators) {
         return Try.fail(GroupedException.of(tryValidators.stream()
                         .filter(Try::isFailure)
                         .map(Try::getException)

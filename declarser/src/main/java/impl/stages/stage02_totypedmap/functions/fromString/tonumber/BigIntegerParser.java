@@ -5,17 +5,17 @@ import utils.tryapi.Try;
 import java.math.BigInteger;
 import java.util.function.Function;
 
-public class FromStringToBigInteger implements Function<String, Try<?>> {
+public class BigIntegerParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
-        private static final FromStringToBigInteger instance = new FromStringToBigInteger();
+        private static final BigIntegerParser instance = new BigIntegerParser();
     }
 
-    public static FromStringToBigInteger getInstance() {
+    public static BigIntegerParser getInstance() {
         return InstanceHolder.instance;
     }
 
-    private FromStringToBigInteger(){}
+    private BigIntegerParser(){}
 
     @Override
     public Try<BigInteger> apply(String s) {

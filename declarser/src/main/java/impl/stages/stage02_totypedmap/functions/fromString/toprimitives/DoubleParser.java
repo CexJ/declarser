@@ -4,17 +4,17 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class FromStringToDouble implements Function<String, Try<?>> {
+public class DoubleParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
-        private static final FromStringToDouble instance = new FromStringToDouble();
+        private static final DoubleParser instance = new DoubleParser();
     }
 
-    public static FromStringToDouble getInstance() {
+    public static DoubleParser getInstance() {
         return InstanceHolder.instance;
     }
 
-    private FromStringToDouble(){}
+    private DoubleParser(){}
 
 
     @Override

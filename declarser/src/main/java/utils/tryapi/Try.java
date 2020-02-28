@@ -13,7 +13,7 @@ public interface Try<T> {
 		return Success.of(value);
 	}
 	
-	static <T> Failure<T> fail(Exception exception){
+	static <T> Try<T> fail(Exception exception){
 		return Failure.of(exception);
 	}
 	

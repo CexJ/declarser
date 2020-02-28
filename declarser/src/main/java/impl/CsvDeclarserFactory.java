@@ -80,7 +80,7 @@ public class CsvDeclarserFactory {
     }
 
     private Try<Combinator<Integer>> stage3() {
-        return Try.success(NoExceptionCombinator.<Integer>of(parallelizationStrategy));
+        return Try.success(NoExceptionCombinator.of(parallelizationStrategy));
     }
 
     private <O> Try<ToObject<Integer, O>> stage4(Class<O> clazz, Validator<O> postValidator) {

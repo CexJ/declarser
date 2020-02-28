@@ -4,17 +4,17 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class FromStringToLong implements Function<String, Try<?>> {
+public class LongParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
-        private static final FromStringToLong instance = new FromStringToLong();
+        private static final LongParser instance = new LongParser();
     }
 
-    public static FromStringToLong getInstance() {
+    public static LongParser getInstance() {
         return InstanceHolder.instance;
     }
 
-    private FromStringToLong(){}
+    private LongParser(){}
 
 
     @Override

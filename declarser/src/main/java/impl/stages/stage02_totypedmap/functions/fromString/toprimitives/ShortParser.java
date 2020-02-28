@@ -4,13 +4,13 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class FromStringToShort implements Function<String, Try<?>> {
+public class ShortParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
-        private static final FromStringToShort instance = new FromStringToShort();
+        private static final ShortParser instance = new ShortParser();
     }
 
-    public static FromStringToShort getInstance() {
+    public static ShortParser getInstance() {
         return InstanceHolder.instance;
     }
 

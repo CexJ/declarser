@@ -4,17 +4,17 @@ import utils.tryapi.Try;
 
 import java.util.function.Function;
 
-public class FromStringToInteger implements Function<String, Try<?>> {
+public class IntegerParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
-        private static final FromStringToInteger instance = new FromStringToInteger();
+        private static final IntegerParser instance = new IntegerParser();
     }
 
-    public static FromStringToInteger getInstance() {
+    public static IntegerParser getInstance() {
         return InstanceHolder.instance;
     }
 
-    private FromStringToInteger(){}
+    private IntegerParser(){}
 
     @Override
     public Try<Integer> apply(String s) {

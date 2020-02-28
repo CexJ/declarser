@@ -31,7 +31,7 @@ public final class Success<T> implements Try<T> {
 	@Override
 	public Try<T> continueIf(Function<T, Optional<? extends Exception>> validator) {
 		return validator.apply(value)
-				.map(ex -> (Try<T>) Try.fail(ex))
+				.map(Try::<T>fail)
 				.orElse(this);
 	}
 

@@ -1,12 +1,12 @@
 package impl.stages.stage02_totypedmap.functionmapfactories;
 
-import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDate;
-import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToLocalDateTime;
-import impl.stages.stage02_totypedmap.functions.fromString.todate.FromStringToZonedDateTime;
-import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringToBigDecimal;
-import impl.stages.stage02_totypedmap.functions.fromString.tonumber.FromStringToBigInteger;
+import impl.stages.stage02_totypedmap.functions.fromString.todate.LocalDateParser;
+import impl.stages.stage02_totypedmap.functions.fromString.todate.LocalDateTimeParser;
+import impl.stages.stage02_totypedmap.functions.fromString.todate.ZonedDateTimeParser;
+import impl.stages.stage02_totypedmap.functions.fromString.tonumber.BigDecimalParser;
+import impl.stages.stage02_totypedmap.functions.fromString.tonumber.BigIntegerParser;
 import impl.stages.stage02_totypedmap.functions.fromString.toprimitives.*;
-import impl.stages.stage02_totypedmap.functions.fromString.tostring.FromStringToString;
+import impl.stages.stage02_totypedmap.functions.fromString.tostring.StringParser;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
@@ -20,18 +20,18 @@ public class CsvFunctionMapFactoryConst {
     public static final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> sharedFunctionClassMap;
     static {
         sharedFunctionClassMap = new HashMap<>();
-        sharedFunctionClassMap.put(FromStringToLocalDate.class, arr -> FromStringToLocalDate.getInstance(arr[0]));
-        sharedFunctionClassMap.put(FromStringToLocalDateTime.class, arr -> FromStringToLocalDateTime.getInstance(arr[0]));
-        sharedFunctionClassMap.put(FromStringToZonedDateTime.class, arr -> FromStringToZonedDateTime.getInstance(arr[0]));
-        sharedFunctionClassMap.put(FromStringToBigDecimal.class, arr -> FromStringToBigDecimal.getInstance());
-        sharedFunctionClassMap.put(FromStringToBigInteger.class, arr -> FromStringToBigInteger.getInstance());
-        sharedFunctionClassMap.put(FromStringToBoolean.class, arr -> FromStringToBoolean.getInstance());
-        sharedFunctionClassMap.put(FromStringToCharacter.class, arr -> FromStringToCharacter.getInstance());
-        sharedFunctionClassMap.put(FromStringToDouble.class, arr -> FromStringToDouble.getInstance());
-        sharedFunctionClassMap.put(FromStringToFloat.class, arr -> FromStringToFloat.getInstance());
-        sharedFunctionClassMap.put(FromStringToInteger.class, arr -> FromStringToInteger.getInstance());
-        sharedFunctionClassMap.put(FromStringToLong.class, arr -> FromStringToLong.getInstance());
-        sharedFunctionClassMap.put(FromStringToShort.class, arr -> FromStringToShort.getInstance());
-        sharedFunctionClassMap.put(FromStringToString.class, arr -> FromStringToString.getInstance());
+        sharedFunctionClassMap.put(LocalDateParser.class, arr -> LocalDateParser.getInstance(arr[0]));
+        sharedFunctionClassMap.put(LocalDateTimeParser.class, arr -> LocalDateTimeParser.getInstance(arr[0]));
+        sharedFunctionClassMap.put(ZonedDateTimeParser.class, arr -> ZonedDateTimeParser.getInstance(arr[0]));
+        sharedFunctionClassMap.put(BigDecimalParser.class, arr -> BigDecimalParser.getInstance());
+        sharedFunctionClassMap.put(BigIntegerParser.class, arr -> BigIntegerParser.getInstance());
+        sharedFunctionClassMap.put(BooleanParser.class, arr -> BooleanParser.getInstance());
+        sharedFunctionClassMap.put(CharacterParser.class, arr -> CharacterParser.getInstance());
+        sharedFunctionClassMap.put(DoubleParser.class, arr -> DoubleParser.getInstance());
+        sharedFunctionClassMap.put(FloatParser.class, arr -> FloatParser.getInstance());
+        sharedFunctionClassMap.put(IntegerParser.class, arr -> IntegerParser.getInstance());
+        sharedFunctionClassMap.put(LongParser.class, arr -> LongParser.getInstance());
+        sharedFunctionClassMap.put(ShortParser.class, arr -> ShortParser.getInstance());
+        sharedFunctionClassMap.put(StringParser.class, arr -> StringParser.getInstance());
     }
 }

@@ -8,21 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class FromStringToLocalDate implements Function<String, Try<?>> {
+public class LocalDateParser implements Function<String, Try<?>> {
 
     private final String format;
 
-    private static final Map<String, FromStringToLocalDate> instancesMap = new HashMap<>();
+    private static final Map<String, LocalDateParser> instancesMap = new HashMap<>();
 
     public static synchronized Function<String, Try<?>> getInstance(final String format) {
         if(instancesMap.get(format) == null){
-            FromStringToLocalDate newFromStringToLocalDate = new FromStringToLocalDate(format);
+            LocalDateParser newFromStringToLocalDate = new LocalDateParser(format);
             instancesMap.put(format, newFromStringToLocalDate);
         }
         return instancesMap.get(format);
     }
 
-    private FromStringToLocalDate(final String format){
+    private LocalDateParser(final String format){
         this.format = format;
     }
 

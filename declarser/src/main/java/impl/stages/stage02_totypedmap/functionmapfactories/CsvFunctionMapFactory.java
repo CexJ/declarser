@@ -48,7 +48,7 @@ public class CsvFunctionMapFactory {
     public Try<Map<Integer, Function<String, Try<?>>>> mapColumnToTransformer(final Class<?> clazz){
         final Map<Boolean, List<Try<CsvAnnotationImpl>>> partition = Stream.of(clazz.getDeclaredFields())
                 .filter(f -> f.getAnnotation(CsvColumn.class) != null)
-                .map( f -> computeTransformer(f))
+                .map(this::computeTransformer)
                 .collect(Collectors.partitioningBy(Try::isSuccess));
 
 
@@ -88,7 +88,7 @@ public class CsvFunctionMapFactory {
     private Try<Function<String, Try<?>>> nodeTransformer(Field field, CsvNode csvNode) {
         final var cellSeparator = csvNode.cellSeparator();
         return csvDeclarserFactory.declarserOf(field.getClass(), cellSeparator)
-                .map( dec -> (String s) ->  dec.parse(s));
+                .map( dec -> dec::parse);
     }
 
     private Try<Function<String, Try<?>>> fieldTransformer(CsvField csvField) {
@@ -124,16 +124,6 @@ public class CsvFunctionMapFactory {
             List<Exception> errors = partition.get(false).stream().map(Try::getException).collect(Collectors.toList());
             return Try.fail(GroupedException.of(errors));
         }
-    }
-
-
-    private Map<Boolean, List<Try<CsvAnnotationImpl>>> merge(final List<Map<Boolean, List<Try<CsvAnnotationImpl>>>> partitions) {
-
-        return partitions.stream()
-                .map(Map::entrySet)
-                .map(Set::stream)
-                .flatMap(Function.identity())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

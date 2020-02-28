@@ -1,6 +1,5 @@
 package utils.exceptions;
 
-import java.util.Collection;
 
 public final class LabeledException extends Exception {
 

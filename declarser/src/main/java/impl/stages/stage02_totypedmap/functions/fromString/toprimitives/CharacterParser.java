@@ -5,17 +5,17 @@ import utils.tryapi.Try;
 import javax.naming.directory.InvalidAttributesException;
 import java.util.function.Function;
 
-public class FromStringToCharacter implements Function<String, Try<?>> {
+public class CharacterParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
-        private static final FromStringToCharacter instance = new FromStringToCharacter();
+        private static final CharacterParser instance = new CharacterParser();
     }
 
-    public static FromStringToCharacter getInstance() {
+    public static CharacterParser getInstance() {
         return InstanceHolder.instance;
     }
 
-    private FromStringToCharacter(){}
+    private CharacterParser(){}
 
     @Override
     public Try<Character> apply(String s) {
