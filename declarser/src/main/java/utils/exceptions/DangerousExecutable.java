@@ -1,6 +1,6 @@
 package utils.exceptions;
 
-public interface ExceptionalSupplier<T> {
+public interface DangerousExecutable<T> {
 
     T get() throws Exception;
 }

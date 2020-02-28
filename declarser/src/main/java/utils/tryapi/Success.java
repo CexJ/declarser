@@ -59,6 +59,11 @@ public final class Success<T> implements Try<T> {
 	}
 
 	@Override
+	public Try<T> or(Try<T> alternative) {
+		return this;
+	}
+
+	@Override
 	public T getOrElse(T defaultValue) {
 		return value;
 	}

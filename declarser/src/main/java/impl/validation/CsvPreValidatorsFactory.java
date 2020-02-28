@@ -69,45 +69,25 @@ public final class CsvPreValidatorsFactory {
     }
 
     private Try<Validator<String>> stringValidator(final Class<? extends Validator<String>> clazz, final String[] params){
+        return fromMap(clazz, params)              .or(
+               fromParamsConstructor(clazz, params).or(
+               fromNoArgsConstructor(clazz)        .or(
+               Try.fail(new ClassNotFoundException()))));
 
-        final var map = fromMap(clazz, params);
-        if(map != null){
-            return Try.success(map);
-        }
-
-        final var paramConstructor = fromParamsConstructor(clazz, params);
-        if(paramConstructor != null){
-            return Try.success(paramConstructor);
-        }
-
-        final var noArgsConstructor = fromNoArgsConstructor(clazz);
-        if(noArgsConstructor != null){
-            return Try.success(noArgsConstructor);
-        }
-        return Try.fail(new ClassNotFoundException());
     }
 
-    private Validator<String> fromMap(final Class<? extends Validator<String>> clazz, final String[] params) {
-        return Optional.ofNullable(validatorClassMap.get(clazz)).map(v -> v.apply(params)).orElse(null);
+    private Try<Validator<String>> fromMap(final Class<? extends Validator<String>> clazz, final String[] params) {
+        return Optional.ofNullable(Try.success(validatorClassMap.get(clazz)).map(v -> v.apply(params)))
+                .orElse(Try.fail(new NullPointerException()));
     }
 
 
-    private Validator<String> fromParamsConstructor(final Class<? extends Validator<String>> clazz, final String[] params) {
-        try {
-            return clazz.getConstructor(String[].class)
-                    .newInstance((Object) params);
-        } catch (Exception e) {
-            return null;
-        }
+    private Try<Validator<String>> fromParamsConstructor(final Class<? extends Validator<String>> clazz, final String[] params) {
+        return Try.go( () -> clazz.getConstructor(String[].class).newInstance((Object) params));
     }
 
-    private Validator<String> fromNoArgsConstructor(final Class<? extends Validator<String>> clazz) {
-        try {
-            return clazz.getConstructor()
-                    .newInstance();
-        } catch (Exception e) {
-            return null;
-        }
+    private Try<Validator<String>> fromNoArgsConstructor(final Class<? extends Validator<String>> clazz) {
+        return Try.go( () ->clazz.getConstructor().newInstance());
     }
 
 }

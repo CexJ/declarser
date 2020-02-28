@@ -54,6 +54,11 @@ public class Failure<T> implements Try<T> {
 		return this;
 	}
 
+	@Override
+	public Try<T> or(Try<T> alternative) {
+		return alternative;
+	}
+
 
 	@Override
 	public T getOrElse(T defaultValue) {

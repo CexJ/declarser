@@ -1,6 +1,6 @@
 package utils.tryapi;
 
-import utils.exceptions.ExceptionalSupplier;
+import utils.exceptions.DangerousExecutable;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -17,7 +17,7 @@ public interface Try<T> {
 		return Failure.of(exception);
 	}
 	
-	static <T> Try<T> go(ExceptionalSupplier<T> supplier){
+	static <T> Try<T> go(DangerousExecutable<T> supplier){
 		try {
 			return Success.of(supplier.get());
 		}catch(Exception exception) {
@@ -31,6 +31,7 @@ public interface Try<T> {
 	<U> Try<U> map(Function<T,? extends U> map);
 	<U> Try<U> flatMap(Function<T,Try<U>> map);
 	Try<T> filter(Predicate<T> predicate);
+	Try<T> or(Try<T> alternative);
 	T getOrElse(T defaultValue);
 	T getValue();
 	Exception getException();
