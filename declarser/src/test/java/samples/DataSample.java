@@ -1,4 +1,4 @@
-package main.exemple;
+package samples;
 
 import impl.stages.annotations.fields.CsvColumn;
 import impl.stages.annotations.fields.CsvField;
