@@ -9,6 +9,13 @@ import impl.stages.stage02_totypedmap.functions.fromString.toprimitives.*;
 import impl.stages.stage02_totypedmap.functions.fromString.tostring.StringParser;
 import utils.tryapi.Try;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,5 +40,23 @@ public final class CsvFunctionMapFactoryConst {
         sharedFunctionClassMap.put(LongParser.class, arr -> LongParser.getInstance());
         sharedFunctionClassMap.put(ShortParser.class, arr -> ShortParser.getInstance());
         sharedFunctionClassMap.put(StringParser.class, arr -> StringParser.getInstance());
+    }
+
+    public static final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap;
+    static {
+        autoFunctionClassMap = new HashMap<>();
+        autoFunctionClassMap.put(LocalDate.class, LocalDateParser.getInstance("yyyy'-'MM'-'dd"));
+        autoFunctionClassMap.put(LocalDateTime.class, LocalDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff"));
+        autoFunctionClassMap.put(ZonedDateTime.class, ZonedDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')"));
+        autoFunctionClassMap.put(BigDecimal.class, BigDecimalParser.getInstance());
+        autoFunctionClassMap.put(BigInteger.class, BigIntegerParser.getInstance());
+        autoFunctionClassMap.put(Boolean.class, BooleanParser.getInstance());
+        autoFunctionClassMap.put(Character.class, CharacterParser.getInstance());
+        autoFunctionClassMap.put(Double.class, DoubleParser.getInstance());
+        autoFunctionClassMap.put(Float.class, FloatParser.getInstance());
+        autoFunctionClassMap.put(Integer.class, IntegerParser.getInstance());
+        autoFunctionClassMap.put(Long.class, LongParser.getInstance());
+        autoFunctionClassMap.put(Short.class, ShortParser.getInstance());
+        autoFunctionClassMap.put(String.class, StringParser.getInstance());
     }
 }

@@ -22,6 +22,7 @@ public final class CsvFunctionMapFactory {
 
     private final CsvPreValidatorsFactory preValidatorFactory;
     private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;
+    private final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap = CsvFunctionMapFactoryConst.autoFunctionClassMap;
     private final CsvDeclarserFactory csvDeclarserFactory;
 
     private CsvFunctionMapFactory(
@@ -72,18 +73,17 @@ public final class CsvFunctionMapFactory {
                 csvArrayField != null ? fun -> getArrayFunction(fun, csvArrayField.separator())
                                       : UnaryOperator.identity();
 
-        final var csvField = field.getAnnotation(CsvField.class);
-        final var csvNode = field.getAnnotation(CsvNode.class);
-        final Try<Function<String, Try<?>>> function =
-                csvField != null ? fieldTransformer(csvField) :
-                 csvNode != null ? nodeTransformer(field, csvNode)
-                                 : Try.fail(new NullPointerException());
-
+        final var transformer =
+                Optional.ofNullable(field.getAnnotation(CsvField.class)).map(this::fieldTransformer)              .orElse(
+                Optional.ofNullable(field.getAnnotation(CsvNode.class)) .map(node -> nodeTransformer(field, node)).orElse(
+                Optional.ofNullable(autoFunctionClassMap.get(field.getType())).map(Try::success)                  .orElse(
+                Try.fail(new NullPointerException()))));
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 
-        return function
-                .map(fun -> CsvAnnotationImpl.of(csvColumn.value(), modifier.apply(fun)));
+        return transformer.map(tra ->
+                CsvAnnotationImpl.of(csvColumn.value(), modifier.apply(tra)));
     }
+
 
     private Try<Function<String, Try<?>>> nodeTransformer(final Field field, final CsvNode csvNode) {
         final var cellSeparator = csvNode.cellSeparator();
