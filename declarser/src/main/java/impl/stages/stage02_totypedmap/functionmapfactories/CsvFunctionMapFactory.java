@@ -52,7 +52,6 @@ public final class CsvFunctionMapFactory {
                 .map(this::computeTransformer)
                 .collect(Collectors.partitioningBy(Try::isSuccess));
 
-
         final var fields = partition.get(true);
         final var errors = partition.get(false);
 
@@ -68,10 +67,9 @@ public final class CsvFunctionMapFactory {
 
     private Try<CsvAnnotationImpl> computeTransformer(final Field field) {
 
-        final var csvArrayField = field.getAnnotation(CsvArray.class);
-        final UnaryOperator<Function<String, Try<?>>> modifier =
-                csvArrayField != null ? fun -> getArrayFunction(fun, csvArrayField.separator())
-                                      : UnaryOperator.identity();
+        final var modifier = Optional.ofNullable(field.getAnnotation(CsvArray.class))
+                .map(arr -> (UnaryOperator<Function<String, Try<?>>>) (Function<String, Try<?>> fun) -> getArrayFunction(fun, arr.separator()))
+                .orElse(UnaryOperator.identity());
 
         final var transformer =
                 Optional.ofNullable(field.getAnnotation(CsvField.class)).map(this::fieldTransformer)              .orElse(
