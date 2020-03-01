@@ -1,7 +1,8 @@
 package kernel.stages.stage01_tomap;
 
 import kernel.validation.Validator;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import utils.exceptions.MappingInputValidationException;
 
 import java.util.HashMap;
