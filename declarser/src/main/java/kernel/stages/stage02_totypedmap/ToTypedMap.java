@@ -1,6 +1,7 @@
 package kernel.stages.stage02_totypedmap;
 
 import kernel.conf.ParallelizationStrategyEnum;
+import utils.exceptions.TypingFieldException;
 import utils.tryapi.Try;
 
 import java.util.Map;
@@ -11,18 +12,24 @@ public final class ToTypedMap<K,V> {
 
 	private final Function<Map<K, V> , Map<K,Try<?>>> mapFunction;
 
-	private ToTypedMap(final Map<K, Function<V, Try<?>>> functionMap, ParallelizationStrategyEnum parallelizationStrategy) {
+	private ToTypedMap(
+			final Map<K, Function<V, Try<?>>> functionMap,
+			final ParallelizationStrategyEnum parallelizationStrategy) {
 		super();
 		this.mapFunction = fromFunctionMapToMapFunction(functionMap, parallelizationStrategy);
 	}
 
-	public static <K,V> Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(final Map<K, Function<V, Try<?>>> functionMap, ParallelizationStrategyEnum parallelizationStrategy) {
+	public <K,V> Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(
+			final Map<K, Function<V, Try<?>>> functionMap,
+			final ParallelizationStrategyEnum parallelizationStrategy) {
 		return kvMap -> parallelizationStrategy.exec(kvMap.entrySet().stream())
 				.map(kv -> ToTypedMapComposition.of(kv.getKey(), kv.getValue(), functionMap.get(kv.getKey())))
 				.collect(Collectors.toMap(ToTypedMapComposition::getKey, ToTypedMapComposition::apply));
 	}
 
-	public static <K,V> ToTypedMap<K,V> of(final Map<K, Function<V, Try<?>>> mapFunction, ParallelizationStrategyEnum parallelizationStrategy) {
+	public static <K,V> ToTypedMap<K,V> of(
+			final Map<K, Function<V, Try<?>>> mapFunction,
+			final ParallelizationStrategyEnum parallelizationStrategy) {
 		return new ToTypedMap<>(mapFunction, parallelizationStrategy);
 	}
 
@@ -45,7 +52,8 @@ final class ToTypedMapComposition<K,V>{
 	}
 
 	Try<?> apply(){
-		return typedFunction.apply(value);
+		return typedFunction.apply(value)
+				.enrichException(ex -> TypingFieldException.of(key, value, ex));
 	}
 
 	K getKey() {
