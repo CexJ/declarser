@@ -1,10 +1,12 @@
 package kernel.stages.stage02_totypedmap;
 
 import kernel.conf.ParallelizationStrategyEnum;
+import utils.exceptions.MissingFieldFunctionException;
 import utils.exceptions.TypingFieldException;
 import utils.tryapi.Try;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,11 +21,15 @@ public final class ToTypedMap<K,V> {
 		this.mapFunction = fromFunctionMapToMapFunction(functionMap, parallelizationStrategy);
 	}
 
-	public <K,V> Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(
+	public Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(
 			final Map<K, Function<V, Try<?>>> functionMap,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
-		return kvMap -> parallelizationStrategy.exec(kvMap.entrySet().stream())
-				.map(kv -> ToTypedMapComposition.of(kv.getKey(), kv.getValue(), functionMap.get(kv.getKey())))
+		return kvMap ->
+				parallelizationStrategy.exec(kvMap.entrySet().stream()).map( kv ->
+				Optional.ofNullable(functionMap.get(kv.getKey())).map(       f  ->
+						ToTypedMapComposition.of(kv.getKey(), kv.getValue(),f))
+				.orElse(ToTypedMapComposition.of(kv.getKey(), kv.getValue(),any ->
+						Try.fail(MissingFieldFunctionException.of(kv.getKey())))))
 				.collect(Collectors.toMap(ToTypedMapComposition::getKey, ToTypedMapComposition::apply));
 	}
 

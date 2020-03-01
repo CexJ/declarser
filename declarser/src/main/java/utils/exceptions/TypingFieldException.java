@@ -10,7 +10,7 @@ public class TypingFieldException extends Exception {
     private final Object key;
     private final Object value;
 
-    public TypingFieldException(Object key, Object value, Exception ex) {
+    private TypingFieldException(Object key, Object value, Exception ex) {
         super(String.format(messageFormatter, ex.toString(), key.toString(), value.toString()), ex);
         this.key = key;
         this.value = value;
