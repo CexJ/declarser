@@ -1,9 +1,10 @@
 package kernel.stages.stage01_tomap;
 
+import kernel.stages.stage01_tomap.destructor.Destructor;
 import kernel.validation.Validator;
 
 import org.junit.jupiter.api.Test;
-import utils.exceptions.InputValidationException;
+import utils.exceptions.InputMappingException;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
@@ -42,6 +43,45 @@ public class ToMapTest {
                      map);
     }
 
+    /*
+     * GIVEN an input I
+     *  AND an Exception E
+     *  AND a Destructor V that fail when passed I with E
+     *  AND a ToMap constructed with V
+     * WHEN the mapping method is invoked with I
+     * THEN the result is a Failure
+     *  AND the Exception is of the type InputMappingException
+     *  AND the cause is E
+     *  AND the message is formatted with I and E
+     */
+    @Test
+    public void mapping_indestructible_input_returns_a_success(){
+        // GIVEN an input I
+        final Object input = new Object();
+        // AND an exception E
+        final var exceptionInput = new Exception("Invalid input");
+        // AND a validator V that fail when passed I with E
+        final Destructor<Object,Object,Object> destructor = o -> Try.fail(exceptionInput);
+        // AND a ToMap constructed with V
+        final var toMap = ToMap.of(
+                o -> Optional.empty(),
+                destructor);
+        // WHEN the mapping method is invoked with I
+        final var result = toMap.mapping(input);
+        // THEN the result is a failure
+        assertTrue(result.isFailure());
+        // AND the exception is of the type InputMappingException
+        final var exceptionOutput = result.getException();
+        assertEquals(exceptionOutput.getClass(),
+                InputMappingException.class);
+        // AND the cause is E
+        assertEquals(exceptionOutput.getCause(),
+                exceptionInput);
+        // AND the message is formatted with I and E
+        assertEquals(exceptionOutput.getMessage(),
+                String.format(InputMappingException.messageFormatter,
+                        exceptionInput.toString(), input.toString()));
+    }
 
 
     /*
@@ -51,7 +91,7 @@ public class ToMapTest {
      *  AND a ToMap constructed with V
      * WHEN the mapping method is invoked with I
      * THEN the result is a Failure
-     *  AND the Exception is of the type InputValidationException
+     *  AND the Exception is of the type InputMappingException
      *  AND the cause is E
      *  AND the message is formatted with I and E
      */
@@ -71,16 +111,16 @@ public class ToMapTest {
         final var result = toMap.mapping(input);
         // THEN the result is a failure
         assertTrue(result.isFailure());
-        // AND the exception is of the type InputValidationException
+        // AND the exception is of the type InputMappingException
         final var exceptionOutput = result.getException();
         assertEquals(exceptionOutput.getClass(),
-                     InputValidationException.class);
+                     InputMappingException.class);
         // AND the cause is E
         assertEquals(exceptionOutput.getCause(),
                      exceptionInput);
         // AND the message is formatted with I and E
         assertEquals(exceptionOutput.getMessage(),
-                     String.format(InputValidationException.messageFormatter,
+                     String.format(InputMappingException.messageFormatter,
                         exceptionInput.toString(), input.toString()));
     }
 }
