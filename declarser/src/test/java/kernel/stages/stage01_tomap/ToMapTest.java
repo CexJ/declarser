@@ -3,7 +3,7 @@ package kernel.stages.stage01_tomap;
 import kernel.validation.Validator;
 
 import org.junit.jupiter.api.Test;
-import utils.exceptions.MappingInputValidationException;
+import utils.exceptions.InputValidationException;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class ToMapTest {
      *  AND a ToMap constructed with V
      * WHEN the mapping method is invoked with I
      * THEN the result is a Failure
-     *  AND the Exception is of the type MappingInputValidationException
+     *  AND the Exception is of the type InputValidationException
      *  AND the cause is E
      *  AND the message is formatted with I and E
      */
@@ -70,16 +70,16 @@ public class ToMapTest {
         final var result = toMap.mapping(input);
         // THEN the result is a failure
         assertTrue(result.isFailure());
-        // AND the exception is of the type MappingInputValidationException
+        // AND the exception is of the type InputValidationException
         final var exceptionOutput = result.getException();
         assertEquals(exceptionOutput.getClass(),
-                     MappingInputValidationException.class);
+                     InputValidationException.class);
         // AND the cause is E
         assertEquals(exceptionOutput.getCause(),
                      exceptionInput);
         // AND the message is formatted with I and E
         assertEquals(exceptionOutput.getMessage(),
-                     String.format(MappingInputValidationException.messageFormatter,
+                     String.format(InputValidationException.messageFormatter,
                         exceptionInput.toString(), input.toString()));
     }
 }
