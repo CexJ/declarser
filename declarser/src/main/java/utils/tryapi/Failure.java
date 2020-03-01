@@ -36,6 +36,11 @@ public class Failure<T> implements Try<T> {
 		return this;
 	}
 
+	@Override
+	public Try<T> enrichException(Function<Exception, ? extends Exception> enricher) {
+		return Try.fail(enricher.apply(exception));
+	}
+
 
 	@Override
 	public <U> Try<U> map(Function<T, ? extends U> map) {

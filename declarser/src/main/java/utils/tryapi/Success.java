@@ -36,6 +36,11 @@ public final class Success<T> implements Try<T> {
 	}
 
 	@Override
+	public Try<T> enrichException(Function<Exception, ? extends Exception> enricher) {
+		return this;
+	}
+
+	@Override
 	public <U> Try<U> map(Function<T, ? extends U> map) {
 		try {
 			return Success.of(map.apply(value));

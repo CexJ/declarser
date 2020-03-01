@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import kernel.stages.stage01_tomap.destructor.Destructor;
+import utils.exceptions.MappingInputValidationException;
 import utils.tryapi.Try;
 
 public final class ToMap<I,K,V>{
@@ -27,7 +28,8 @@ public final class ToMap<I,K,V>{
 	public Try<Map<K,V>> mapping(final I input){
 		return Try.success(input)
 				.continueIf(inputValidator)
-				.map(destructor::destruct);
+				.map(destructor::destruct)
+				.enrichException( ex -> MappingInputValidationException.of(input, ex));
 	}
 
 }

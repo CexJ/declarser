@@ -28,6 +28,7 @@ public interface Try<T> {
 	boolean isSuccess();
 	boolean isFailure();
 	Try<T> continueIf(Function<T, Optional<? extends Exception>> validator);
+	Try<T> enrichException(Function<Exception, ? extends Exception> enricher);
 	<U> Try<U> map(Function<T,? extends U> map);
 	<U> Try<U> flatMap(Function<T,Try<U>> map);
 	Try<T> filter(Predicate<T> predicate);
