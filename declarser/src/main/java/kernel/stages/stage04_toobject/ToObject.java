@@ -3,6 +3,7 @@ package kernel.stages.stage04_toobject;
 import java.util.Map;
 import kernel.stages.stage04_toobject.restructor.Restructor;
 import kernel.validation.Validator;
+import utils.exceptions.OutputGluingException;
 import utils.tryapi.Try;
 
 public final class ToObject<K,O> {
@@ -22,6 +23,7 @@ public final class ToObject<K,O> {
 
 	public Try<O> gluing(final Map<K,?> map){
 		return restructor.restruct(map)
-				.continueIf(outputValidator);
+				.continueIf(outputValidator)
+				.enrichException(ex -> OutputGluingException.of(map, ex));
 	}
 }
