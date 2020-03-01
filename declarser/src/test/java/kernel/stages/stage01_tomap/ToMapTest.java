@@ -4,6 +4,7 @@ import kernel.validation.Validator;
 
 import org.junit.jupiter.api.Test;
 import utils.exceptions.InputValidationException;
+import utils.tryapi.Try;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class ToMapTest {
         // AND a ToMap that succeed when passed I with M
         final var toMap = ToMap.of(
                 o -> Optional.empty(),
-                i -> map);
+                i -> Try.success(map));
         // WHEN the mapping method is invoked with I
         final var result = toMap.mapping(input);
         // THEN the result is a Success
@@ -65,7 +66,7 @@ public class ToMapTest {
         // AND a ToMap constructed with V
         final var toMap = ToMap.of(
                 validator,
-                i -> new HashMap<>());
+                i -> Try.success(new HashMap<>()));
         // WHEN the mapping method is invoked with I
         final var result = toMap.mapping(input);
         // THEN the result is a failure

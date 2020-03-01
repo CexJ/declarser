@@ -1,6 +1,7 @@
 package impl.stages.stage01_tomap.destructors;
 
 import kernel.stages.stage01_tomap.destructor.Destructor;
+import utils.tryapi.Try;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -20,11 +21,10 @@ public final class CsvDestructor implements Destructor<String,Integer,String> {
     }
 
     @Override
-    public Map<Integer, String> destruct(final String input) {
+    public Try<Map<Integer, String>> destruct(final String input) {
         final var splittedInput = input.split(cellSeparator);
-        return Stream.iterate(0, i -> i+1)
+        return Try.success(Stream.iterate(0, i -> i+1)
                 .limit(splittedInput.length)
-                .collect(Collectors
-                .toMap(Function.identity(), i -> splittedInput[i]));
+                .collect(Collectors.toMap(Function.identity(), i -> splittedInput[i])));
     }
 }

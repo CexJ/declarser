@@ -31,7 +31,7 @@ public final class ToMap<I,K,V>{
 			final I input){
 		return Try.success(input)
 				.continueIf(inputValidator)
-				.map(destructor::destruct)
+				.flatMap(destructor::destruct)
 				.enrichException( ex -> InputValidationException.of(input, ex));
 	}
 
