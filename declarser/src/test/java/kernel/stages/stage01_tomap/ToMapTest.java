@@ -35,7 +35,7 @@ public class ToMapTest {
         // AND a map M
         final var map = new HashMap<TypeK,TypeV>();
         // AND a ToMap that succeed when passed I with M
-        final var toMap = ToMap.of(
+        final var toMap = ToMapImpl.of(
                 o -> Optional.empty(),
                 i -> Try.success(map));
         // WHEN the mapping method is invoked with I
@@ -68,7 +68,7 @@ public class ToMapTest {
         // AND a validator V that fail when passed I with E
         final Destructor<TypeI, TypeK, TypeV> destructor = o -> Try.fail(exceptionInput);
         // AND a ToMap constructed with V
-        final var toMap = ToMap.of(
+        final var toMap = ToMapImpl.of(
                 o -> Optional.empty(),
                 destructor);
         // WHEN the mapping method is invoked with I
@@ -109,7 +109,7 @@ public class ToMapTest {
         // AND a validator V that fail when passed I with E
         final Validator<TypeI> validator = o -> Optional.of(exceptionInput);
         // AND a ToMap constructed with V
-        final var toMap = ToMap.of(
+        final var toMap = ToMapImpl.of(
                 validator,
                 i -> Try.success(new HashMap<>()));
         // WHEN the mapping method is invoked with I

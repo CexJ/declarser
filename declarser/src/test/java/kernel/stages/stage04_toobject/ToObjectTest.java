@@ -42,7 +42,7 @@ public class ToObjectTest {
         // AND a Validator V that succeed when passed O
         final Validator<TypeO> validator = o -> Optional.empty();
         // AND a ToObject constructed with R and V
-        final var toObject = ToObject.of(validator,restructor);
+        final var toObject = ToObjectImpl.of(validator,restructor);
         // WHEN the gluing method is invoked with M
         final var result = toObject.gluing(map);
         // THEN the result is a Success
@@ -81,7 +81,7 @@ public class ToObjectTest {
         // AND a Restructor R that return O from M
         final Restructor<TypeK, TypeO> restructor = m -> Try.success(output);
         // AND a ToObject constructed with R and V
-        final var toObject = ToObject.of(validator,restructor);
+        final var toObject = ToObjectImpl.of(validator,restructor);
         // WHEN the gluing method is invoked with M
         final var result = toObject.gluing(map);
         // THEN the result is a Failure
@@ -118,7 +118,7 @@ public class ToObjectTest {
         // AND a Restructor R that return Failure(E) from M
         final Restructor<TypeK, TypeO> restructor = m -> Try.fail(exception);
         // AND a ToObject constructed with R
-        final var toObject = ToObject.of(o -> Optional.empty(),restructor);
+        final var toObject = ToObjectImpl.of(o -> Optional.empty(),restructor);
         // WHEN the gluing method is invoked with M
         final var result = toObject.gluing(map);
         // THEN the result is a Failure
