@@ -6,7 +6,7 @@ import kernel.validation.Validator;
 import utils.exceptions.OutputGluingException;
 import utils.tryapi.Try;
 
-public final class ToObject<K,O> {
+public class ToObject<K,O> {
 
 	private final Validator<O> outputValidator;
 	private final Restructor<K,O> restructor;

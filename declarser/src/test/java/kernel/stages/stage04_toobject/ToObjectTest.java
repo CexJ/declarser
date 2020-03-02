@@ -23,6 +23,40 @@ public class ToObjectTest {
     /*
      * GIVEN a map M from TypeK to ? that contains an Entry (K, T: TypeT)
      *  AND a value O of TypeO
+     *  AND a Restructor R that return O from M
+     *  AND a Validator V that succeed when passed O
+     *  AND a ToObject constructed with R and V
+     * WHEN the gluing method is invoked with M
+     * THEN the result is a Success
+     *  AND the value is O
+     */
+    @Test
+    public void gluing_valid_field_return_success(){
+        // GIVEN a map M from TypeK to ? that contains an Entry (K, T: TypeT)
+        final var map = new HashMap<TypeK, Object>();
+        map.put(k,t);
+        // AND a value O of TypeO
+        final var output = new TypeO();
+        // AND a Restructor R that return O from M
+        final Restructor<TypeK, TypeO> restructor = m -> Try.success(output);
+        // AND a Validator V that succeed when passed O
+        final Validator<TypeO> validator = o -> Optional.empty();
+        // AND a ToObject constructed with R and V
+        final var toObject = ToObject.of(validator,restructor);
+        // WHEN the gluing method is invoked with M
+        final var result = toObject.gluing(map);
+        // THEN the result is a Success
+        assertTrue(result.isSuccess());
+        // AND the value is O
+        final var value = result.getValue();
+        assertEquals(value, output);
+    }
+
+
+
+    /*
+     * GIVEN a map M from TypeK to ? that contains an Entry (K, T: TypeT)
+     *  AND a value O of TypeO
      *  AND an Exception E
      *  AND a Validator V that fail when passed O with E
      *  AND a Restructor R that return O from M

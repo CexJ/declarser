@@ -8,7 +8,7 @@ import kernel.stages.stage01_tomap.destructor.Destructor;
 import utils.exceptions.InputMappingException;
 import utils.tryapi.Try;
 
-public final class ToMap<I,K,V>{
+public class ToMap<I,K,V>{
 
 	private final Function<I, Optional<? extends Exception>> inputValidator;
 	private final Destructor<I,K,V> destructor;

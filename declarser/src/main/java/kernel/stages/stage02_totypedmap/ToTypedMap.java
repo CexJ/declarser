@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class ToTypedMap<K,V> {
+public class ToTypedMap<K,V> {
 
 	private final Function<Map<K, V> , Map<K,Try<?>>> mapFunction;
 
