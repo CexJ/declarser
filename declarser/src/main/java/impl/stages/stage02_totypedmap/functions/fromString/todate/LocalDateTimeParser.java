@@ -14,7 +14,8 @@ public final class LocalDateTimeParser implements Function<String, Try<?>> {
 
     private static final Map<String, LocalDateTimeParser> instancesMap = new HashMap<>();
 
-    public static synchronized LocalDateTimeParser getInstance(final String format) {
+    public static synchronized LocalDateTimeParser getInstance(
+            final String format) {
         if(instancesMap.get(format) == null){
             LocalDateTimeParser newFromStringToLocalDateTime = new LocalDateTimeParser(format);
             instancesMap.put(format, newFromStringToLocalDateTime);
@@ -22,12 +23,14 @@ public final class LocalDateTimeParser implements Function<String, Try<?>> {
         return instancesMap.get(format);
     }
 
-    private LocalDateTimeParser(final String format){
+    private LocalDateTimeParser(
+            final String format){
         this.format = format;
     }
 
     @Override
-    public Try<LocalDateTime> apply(final String s) {
+    public Try<LocalDateTime> apply(
+            final String s) {
         return Try.go(() -> LocalDateTime.parse(s,DateTimeFormatter.ofPattern(format)));
     }
 }

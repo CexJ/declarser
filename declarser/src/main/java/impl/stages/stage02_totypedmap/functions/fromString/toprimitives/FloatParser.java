@@ -17,7 +17,8 @@ public final class FloatParser implements Function<String, Try<?>> {
     private FloatParser(){}
 
     @Override
-    public Try<Float> apply(final String s) {
+    public Try<Float> apply(
+            final String s) {
         return Try.go(() -> Float.parseFloat(s));
     }
 }

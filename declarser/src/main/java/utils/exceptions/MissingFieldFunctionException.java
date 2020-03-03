@@ -7,12 +7,14 @@ public class MissingFieldFunctionException extends Exception {
 
     private final Object key;
 
-    private MissingFieldFunctionException(Object key) {
+    private MissingFieldFunctionException(
+            final Object key) {
         super(String.format(messageFormatter, key.toString()));
         this.key = key;
     }
 
-    public static MissingFieldFunctionException of(Object key) {
+    public static MissingFieldFunctionException of(
+            final Object key) {
         return new MissingFieldFunctionException(key);
     }
 }

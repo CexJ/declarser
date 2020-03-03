@@ -14,17 +14,20 @@ public final class NoExceptionCombinator<K> implements Combinator<K> {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
 
-    private NoExceptionCombinator(final ParallelizationStrategyEnum parallelizationStrategy) {
+    private NoExceptionCombinator(
+            final ParallelizationStrategyEnum parallelizationStrategy) {
         this.parallelizationStrategy = parallelizationStrategy;
     }
 
-    public static <K> NoExceptionCombinator<K> of(final ParallelizationStrategyEnum parallelizationStrategy){
+    public static <K> NoExceptionCombinator<K> of(
+            final ParallelizationStrategyEnum parallelizationStrategy){
         return new NoExceptionCombinator<>(parallelizationStrategy);
     }
 
     @Override
-    public Try<Map<K, ?>> combining(final Map<K, Try<?>> map) {
-        List<LabeledException> mapExceptions = parallelizationStrategy.exec(map.entrySet().stream())
+    public Try<Map<K, ?>> combining(
+            final Map<K, Try<?>> map) {
+        final var mapExceptions = parallelizationStrategy.exec(map.entrySet().stream())
                 .filter(kv -> kv.getValue().isFailure())
                 .map(kv -> LabeledException.of(kv.getKey(), kv.getValue().getException()))
                 .collect(Collectors.toList());

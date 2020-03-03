@@ -18,7 +18,8 @@ public final class CharacterParser implements Function<String, Try<?>> {
     private CharacterParser(){}
 
     @Override
-    public Try<Character> apply(final String s) {
+    public Try<Character> apply(
+            final String s) {
         return s.length() == 1 ? Try.success(s.charAt(0))
                                : Try.fail(new InvalidAttributesException("Expecting a char but found: "+s));
     }

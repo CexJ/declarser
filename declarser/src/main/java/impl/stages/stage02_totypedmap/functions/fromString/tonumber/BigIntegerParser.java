@@ -18,7 +18,8 @@ public final class BigIntegerParser implements Function<String, Try<?>> {
     private BigIntegerParser(){}
 
     @Override
-    public Try<BigInteger> apply(final String s) {
+    public Try<BigInteger> apply(
+            final String s) {
         return Try.go(() -> new BigInteger(s));
     }
 }

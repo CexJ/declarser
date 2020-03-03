@@ -10,13 +10,19 @@ public class TypingFieldException extends Exception {
     private final Object key;
     private final Object value;
 
-    private TypingFieldException(Object key, Object value, Exception ex) {
+    private TypingFieldException(
+            final Object key,
+            final Object value,
+            final Exception ex) {
         super(String.format(messageFormatter, ex.toString(), key.toString(), value.toString()), ex);
         this.key = key;
         this.value = value;
     }
 
-    public static TypingFieldException of(Object key, Object value, Exception ex) {
+    public static TypingFieldException of(
+            final Object key,
+            final Object value,
+            final Exception ex) {
         return new TypingFieldException(key, value, ex);
     }
 }

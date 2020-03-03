@@ -18,7 +18,8 @@ public final class LongParser implements Function<String, Try<?>> {
 
 
     @Override
-    public Try<Long> apply(final String s) {
+    public Try<Long> apply(
+            final String s) {
         return Try.go(() -> Long.parseLong(s));
     }
 }

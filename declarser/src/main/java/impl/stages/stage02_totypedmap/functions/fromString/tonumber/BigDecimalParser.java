@@ -18,7 +18,8 @@ public final class BigDecimalParser implements Function<String, Try<?>> {
     private BigDecimalParser(){}
 
     @Override
-    public Try<BigDecimal> apply(final String s) {
+    public Try<BigDecimal> apply(
+            final String s) {
         return Try.go(() -> new BigDecimal(s));
     }
 }

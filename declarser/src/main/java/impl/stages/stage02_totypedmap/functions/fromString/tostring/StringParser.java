@@ -17,7 +17,8 @@ public final class StringParser implements Function<String, Try<?>> {
     private StringParser(){}
 
     @Override
-    public Try<String> apply(final String s) {
+    public Try<String> apply(
+            final String s) {
         return Try.success(s);
     }
 }

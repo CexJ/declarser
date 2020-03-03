@@ -8,12 +8,16 @@ public class DeclarserException extends Exception {
 
     private Object input;
 
-    public DeclarserException( Object input, Exception cause) {
+    public DeclarserException(
+            final Object input,
+            final Exception cause) {
         super(String.format(messageFormatter, cause.toString(), input.toString()), cause);
         this.input = input;
     }
 
-    public static DeclarserException of(Object input, Exception ex) {
+    public static DeclarserException of(
+            final Object input,
+            final Exception ex) {
         return new DeclarserException(input,ex);
     }
 }

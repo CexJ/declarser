@@ -5,5 +5,5 @@ import utils.tryapi.Try;
 import java.util.Map;
 
 public interface ToTypedMap<K, V> {
-    Map<K, Try<?>> typing(Map<K, V> mapInput);
+    Map<K, Try<?>> typing(final Map<K, V> mapInput);
 }

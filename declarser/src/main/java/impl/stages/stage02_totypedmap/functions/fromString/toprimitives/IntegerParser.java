@@ -17,7 +17,8 @@ public final class IntegerParser implements Function<String, Try<?>> {
     private IntegerParser(){}
 
     @Override
-    public Try<Integer> apply(final String s) {
+    public Try<Integer> apply(
+            final String s) {
         return Try.go(() -> Integer.parseInt(s));
     }
 }

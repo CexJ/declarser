@@ -46,27 +46,36 @@ public final class CsvFunctionMapFactory {
 
 
 
-    public Try<Map<Integer, Function<String, Try<?>>>> mapColumnToTransformer(final Class<?> clazz){
+    public Try<Map<Integer, Function<String, Try<?>>>> mapColumnToTransformer(
+            final Class<?> clazz){
         final var partition = Stream.of(clazz.getDeclaredFields())
                 .filter(f -> f.getAnnotation(CsvColumn.class) != null)
                 .map(this::computeTransformer)
                 .collect(Collectors.partitioningBy(Try::isSuccess));
 
-        final var fields = partition.get(true);
-        final var errors = partition.get(false);
+        final var success = partition.get(true);
+        final var failures = partition.get(false);
 
-        if(errors.isEmpty())
-            return Try.success(fields.stream()
-                    .map(Try::getValue)
-                    .collect(Collectors.toMap(CsvAnnotationImpl::getKey, CsvAnnotationImpl::getFunction)));
-        else
-            return Try.fail(GroupedException.of(errors.stream()
-                    .map(Try::getException)
-                    .collect(Collectors.toList())));
+        return failures.isEmpty() ? collectSuccessMap(success)
+                                  : collectFailureMap(failures);
     }
 
-    private Try<CsvAnnotationImpl> computeTransformer(final Field field) {
+    private Try<Map<Integer, Function<String, Try<?>>>> collectFailureMap(
+            final List<Try<CsvAnnotationImpl>> errors) {
+        return Try.fail(GroupedException.of(errors.stream()
+             .map(Try::getException)
+             .collect(Collectors.toList())));
+    }
 
+    private Try<Map<Integer, Function<String, Try<?>>>> collectSuccessMap(
+            final List<Try<CsvAnnotationImpl>> fields) {
+        return Try.success(fields.stream()
+                .map(Try::getValue)
+                .collect(Collectors.toMap(CsvAnnotationImpl::getKey, CsvAnnotationImpl::getFunction)));
+    }
+
+    private Try<CsvAnnotationImpl> computeTransformer(
+            final Field field) {
         final var modifier = Optional.ofNullable(field.getAnnotation(CsvArray.class))
                 .map(arr -> (UnaryOperator<Function<String, Try<?>>>) (Function<String, Try<?>> fun) -> getArrayFunction(fun, arr.separator()))
                 .orElse(UnaryOperator.identity());
@@ -83,13 +92,16 @@ public final class CsvFunctionMapFactory {
     }
 
 
-    private Try<Function<String, Try<?>>> nodeTransformer(final Field field, final CsvNode csvNode) {
+    private Try<Function<String, Try<?>>> nodeTransformer(
+            final Field field,
+            final CsvNode csvNode) {
         final var cellSeparator = csvNode.cellSeparator();
         return csvDeclarserFactory.declarserOf(field.getClass(), cellSeparator)
                 .map( dec -> dec::parse);
     }
 
-    private Try<Function<String, Try<?>>> fieldTransformer(final CsvField csvField) {
+    private Try<Function<String, Try<?>>> fieldTransformer(
+            final CsvField csvField) {
         final var annPrevalidators = csvField.csvPreValidations().validations();
         final var annFunction = csvField.value();
         final var annParams = csvField.params();
@@ -100,29 +112,47 @@ public final class CsvFunctionMapFactory {
                                     .map(f -> Try.success(f.apply(annParams)))
                                     .orElse(Try.go(() -> annFunction.getConstructor(EMPTY).newInstance()));
 
-        return preValidator.flatMap( pre  ->
-                transformer.map(     tra ->
-                        (String s) -> pre.apply(s).isEmpty() ? tra.apply(s)
-                                                             : Try.fail(pre.apply(s).get())));
+        return preValidator.flatMap( pre ->
+                transformer.map(     tra -> (String s) ->
+                        pre.apply(s).isEmpty() ? tra.apply(s)
+                                               : Try.fail(pre.apply(s).get())));
     }
 
-    private Function<String, Try<?>> getArrayFunction(final Function<String, Try<?>> function, final String arraySeparator){
+    private Function<String, Try<?>> getArrayFunction(
+            final Function<String, Try<?>> function,
+            final String arraySeparator){
         return s -> Try.go(() -> combine(Arrays.stream(s.split(arraySeparator))
                 .map(function)
                 .collect(Collectors.toList()))
                 .map(List::toArray));
     }
 
-    private Try<List<?>> combine(final List<Try<?>> list){
-        final var partition = list.stream().collect(Collectors.partitioningBy(Try::isSuccess));
-        if(partition.get(false).isEmpty()){
-            return Try.success(list.stream().map(Try::getValue).collect(Collectors.toList()));
-        } else {
-            final var errors = partition.get(false).stream().map(Try::getException).collect(Collectors.toList());
-            return Try.fail(GroupedException.of(errors));
+    private Try<List<?>> combine(
+            final List<Try<?>> list){
+        final var partition = list.stream()
+                .collect(Collectors.partitioningBy(Try::isSuccess));
+
+        final var success =  partition.get(true);
+        final var failures =  partition.get(false);
+
+
+        return failures.isEmpty() ? collectSuccessList(success)
+                                  : collectFailureList(failures);
         }
+
+    private Try<List<?>> collectFailureList(
+            final List<Try<?>> failures) {
+        return Try.fail(GroupedException.of(failures.stream()
+             .map(Try::getException)
+             .collect(Collectors.toList())));
     }
 
+    private Try<List<?>> collectSuccessList(
+            final List<Try<?>> success) {
+        return Try.success(success.stream()
+                .map(Try::getValue)
+                .collect(Collectors.toList()));
+    }
 }
 
 
@@ -130,12 +160,16 @@ final class CsvAnnotationImpl {
     private final Integer key;
     private final Function<String, Try<?>> function;
 
-    private CsvAnnotationImpl(final int key, final Function<String, Try<?>> function) {
+    private CsvAnnotationImpl(
+            final int key,
+            final Function<String, Try<?>> function) {
         this.key = key;
         this.function = function;
     }
 
-    static CsvAnnotationImpl of(final Integer key, final Function<String, Try<?>> function) {
+    static CsvAnnotationImpl of(
+            final Integer key,
+            final Function<String, Try<?>> function) {
         return new CsvAnnotationImpl(key,function);
     }
 

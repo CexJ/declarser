@@ -10,12 +10,14 @@ public class OutputGluingException extends Exception {
 
     private final Map<?,?> map;
 
-    private OutputGluingException(Map<?,?> map, Exception ex) {
+    private OutputGluingException(
+            final Map<?,?> map, Exception ex) {
         super(String.format(messageFormatter, ex.toString(), map.toString()),ex);
         this.map = map;
     }
 
-    public static OutputGluingException of(Map<?,?> map, Exception ex) {
+    public static OutputGluingException of(
+            final Map<?,?> map, Exception ex) {
         return new OutputGluingException(map, ex);
     }
 }

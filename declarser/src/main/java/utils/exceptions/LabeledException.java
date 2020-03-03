@@ -7,12 +7,16 @@ public final class LabeledException extends Exception {
     private final Exception exception;
 
 
-    private LabeledException(final Object label, final Exception exception) {
+    private LabeledException(
+            final Object label,
+            final Exception exception) {
         this.label = label;
         this.exception = exception;
     }
 
-    public static  LabeledException of(final Object label, final Exception exception){
+    public static  LabeledException of(
+            final Object label,
+            final Exception exception){
         return new LabeledException(label, exception);
     }
 

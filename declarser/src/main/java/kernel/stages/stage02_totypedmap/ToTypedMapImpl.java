@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
+public final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 
 	private final Function<Map<K, V> , Map<K,Try<?>>> mapFunction;
 
@@ -40,7 +40,8 @@ public class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 	}
 
 	@Override
-	public Map<K, Try<?>> typing(final Map<K, V> mapInput){
+	public Map<K, Try<?>> typing(
+			final Map<K, V> mapInput){
 		return mapFunction.apply(mapInput);
 	}
 
@@ -51,7 +52,10 @@ final class ToTypedMapComposition<K,V>{
 	private final V value;
 	private final Function<V, Try<?>> typedFunction;
 
-	private ToTypedMapComposition(final K key, final  V value, final Function<V, Try<?>> typedFunction) {
+	private ToTypedMapComposition(
+			final K key,
+			final  V value,
+			final Function<V, Try<?>> typedFunction) {
 		super();
 		this.key = key;
 		this.value = value;
@@ -67,7 +71,10 @@ final class ToTypedMapComposition<K,V>{
 		return key;
 	}
 
-	static <K,V> ToTypedMapComposition<K,V> of(final K key, final  V value, final  Function<V, Try<?>> typedFunction){
+	static <K,V> ToTypedMapComposition<K,V> of(
+			final K key,
+			final  V value,
+			final  Function<V, Try<?>> typedFunction){
 		return new ToTypedMapComposition<>(key, value, typedFunction);
 	}
 }

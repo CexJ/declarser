@@ -18,7 +18,8 @@ public final class DoubleParser implements Function<String, Try<?>> {
 
 
     @Override
-    public Try<Double> apply(final String s) {
+    public Try<Double> apply(
+            final String s) {
         return Try.go(() -> Double.parseDouble(s));
     }
 }

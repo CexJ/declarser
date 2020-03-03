@@ -11,7 +11,8 @@ public final class CsvFieldMapFactory {
 
     private CsvFieldMapFactory(){}
 
-    public static <O> Map<String, Integer> mapFieldNameColumn(final Class<O> clazz) {
+    public static <O> Map<String, Integer> mapFieldNameColumn(
+            final Class<O> clazz) {
         return Arrays.stream(clazz.getDeclaredFields())
                 .filter(field -> field.getAnnotation(CsvColumn.class) != null)
                 .collect(Collectors.toMap(Field::getName, field -> field.getAnnotation(CsvColumn.class).value()));

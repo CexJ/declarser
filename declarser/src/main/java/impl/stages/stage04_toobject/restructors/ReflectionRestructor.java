@@ -14,18 +14,23 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 	private final Class<O> clazz;
 	private final Map<String,K> mapFileds;
 
-	private ReflectionRestructor(final Class<O> clazz, final Map<String,K> mapFileds) {
+	private ReflectionRestructor(
+			final Class<O> clazz,
+			final Map<String,K> mapFileds) {
 		this.clazz = clazz;
 		this.mapFileds = mapFileds;
 	}
 
-	public static <K,O> ReflectionRestructor<K,O> of(final Class<O> clazz, final Map<String,K> mapFileds){
+	public static <K,O> ReflectionRestructor<K,O> of(
+			final Class<O> clazz,
+			final Map<String,K> mapFileds){
 		return new ReflectionRestructor<>(clazz, mapFileds);
 	}
 
 	@Override
-	public Try<O> restruct(final Map<K,?> input){
-		final Try<O> value = Try.go(() -> clazz.getConstructor().newInstance());
+	public Try<O> restruct(
+			final Map<K,?> input){
+		final var value = Try.go(() -> clazz.getConstructor().newInstance());
 
 		final List<Exception> exceptions = new LinkedList<>();
 		value.ifPresent(object -> Stream.of(clazz.getDeclaredFields())

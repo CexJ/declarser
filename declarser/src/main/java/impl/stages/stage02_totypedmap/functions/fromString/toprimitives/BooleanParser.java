@@ -17,7 +17,8 @@ public final class BooleanParser implements Function<String, Try<?>> {
     private BooleanParser(){}
 
     @Override
-    public Try<Boolean> apply(final String s) {
+    public Try<Boolean> apply(
+            final String s) {
         return Try.go(() -> Boolean.parseBoolean(s));
     }
 }

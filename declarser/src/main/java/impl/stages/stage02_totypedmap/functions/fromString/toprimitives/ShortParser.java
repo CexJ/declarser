@@ -15,7 +15,8 @@ public final class ShortParser implements Function<String, Try<?>> {
     }
 
     @Override
-    public Try<Short> apply(final String s) {
+    public Try<Short> apply(
+            final String s) {
         return Try.go(() -> Short.parseShort(s));
     }
 }

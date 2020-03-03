@@ -5,5 +5,5 @@ import utils.tryapi.Try;
 import java.util.Map;
 
 public interface ToObject<K, O> {
-    Try<O> gluing(Map<K, ?> map);
+    Try<O> gluing(final Map<K, ?> map);
 }

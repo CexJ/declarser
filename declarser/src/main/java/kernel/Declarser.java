@@ -10,7 +10,7 @@ import kernel.stages.stage02_totypedmap.ToTypedMapImpl;
 import utils.exceptions.DeclarserException;
 import utils.tryapi.Try;
 
-public class Declarser<I,K,V,O> {
+public final class Declarser<I,K,V,O> {
 
 	private final ToMap<I, K, V> toMap;
 	private final ToTypedMap<K, V> toTypedMap;

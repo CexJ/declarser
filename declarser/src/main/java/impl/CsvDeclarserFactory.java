@@ -32,15 +32,15 @@ public final class CsvDeclarserFactory {
     private final CsvPreValidatorsFactory csvPreValidatorsFactory;
     private final CsvFunctionMapFactory mapFunctionFactory;
 
-    private CsvDeclarserFactory(final ParallelizationStrategyEnum parallelizationStrategy,
-                                final Map<Class<? extends Validator<String>>,
-                                        Function<String[], Validator<String>>> customPreValidatorsMap,
-                                final Map<Class<? extends Function<String, Try<?>>>,
-                                        Function<String[], Function<String, Try<?>>>> customConstructorMap) {
+    private CsvDeclarserFactory(
+            final ParallelizationStrategyEnum parallelizationStrategy,
+            final Map<Class<? extends Validator<String>>,
+                    Function<String[], Validator<String>>> customPreValidatorsMap,
+            final Map<Class<? extends Function<String, Try<?>>>,
+                    Function<String[], Function<String, Try<?>>>> customConstructorMap) {
         this.parallelizationStrategy = parallelizationStrategy;
         this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
-        Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> classFunctionMap =
-                new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
+        final var classFunctionMap = new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
         classFunctionMap.putAll(customConstructorMap);
         this.mapFunctionFactory =  CsvFunctionMapFactory.of(
                 this,
@@ -49,15 +49,16 @@ public final class CsvDeclarserFactory {
 
     }
 
-    public <O> Try<Declarser<String, Integer, String, O>> declarserOf(final Class<O> clazz,
-                                                                      final String cellSeparator) {
+    public <O> Try<Declarser<String, Integer, String, O>> declarserOf(
+            final Class<O> clazz,
+            final String cellSeparator) {
         return declarserOf(clazz, o -> Optional.empty(), cellSeparator);
     }
 
-    public <O> Try<Declarser<String, Integer, String, O>> declarserOf(final Class<O> clazz,
-                                                                      final Validator<O> postValidator,
-                                                                      final String cellSeparator) {
-
+    public <O> Try<Declarser<String, Integer, String, O>> declarserOf(
+            final Class<O> clazz,
+            final Validator<O> postValidator,
+            final String cellSeparator) {
         return stage1(clazz, cellSeparator).flatMap( toMap      ->
                stage2(clazz).flatMap(                toTypedMap ->
                stage3().flatMap(                     combinator ->
@@ -66,14 +67,17 @@ public final class CsvDeclarserFactory {
                        Declarser.of(toMap, toTypedMap, combinator, toObject))))) ;
     }
 
-    private <O> Try<ToMapImpl<String, Integer, String>> stage1(final Class<O> clazz, final String cellSeparator) {
+    private <O> Try<ToMapImpl<String, Integer, String>> stage1(
+            final Class<O> clazz,
+            final String cellSeparator) {
         final var preValidator = preValidator(clazz);
         final var destructor = CsvDestructor.of(cellSeparator);
         return preValidator.map( pv ->
                 ToMapImpl.of(pv, destructor));
     }
 
-    private <O> Try<ToTypedMapImpl<Integer, String>> stage2(final Class<O> clazz) {
+    private <O> Try<ToTypedMapImpl<Integer, String>> stage2(
+            final Class<O> clazz) {
         final var mapFunction = mapFunctionFactory.mapColumnToTransformer(clazz);
         return mapFunction.map( mf ->
                 ToTypedMapImpl.of( mf, parallelizationStrategy));
@@ -83,14 +87,17 @@ public final class CsvDeclarserFactory {
         return Try.success(NoExceptionCombinator.of(parallelizationStrategy));
     }
 
-    private <O> Try<ToObjectImpl<Integer, O>> stage4(final Class<O> clazz, final Validator<O> postValidator) {
+    private <O> Try<ToObjectImpl<Integer, O>> stage4(
+            final Class<O> clazz,
+            final Validator<O> postValidator) {
         final var mapFileds = CsvFieldMapFactory.mapFieldNameColumn(clazz);
         final var restructor = ReflectionRestructor.of(clazz, mapFileds);
         return Try.success(
                 ToObjectImpl.of(postValidator,restructor));
     }
 
-    private <O> Try<Validator<String>> preValidator(final Class<O> clazz) {
+    private <O> Try<Validator<String>> preValidator(
+            final Class<O> clazz) {
         return Optional.ofNullable(clazz.getAnnotation(CsvPreValidations.class))
                 .map(ann -> Stream.of(ann.validations())
                         .collect(Collectors.toList()))
@@ -111,22 +118,27 @@ public final class CsvDeclarserFactory {
         private Builder(){}
 
         private ParallelizationStrategyEnum parallelizationStrategy = ParallelizationStrategyEnum.SEQUENTIAL;
-        private Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customPreValidatorsMap = new HashMap<>();
-        private Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> customConstructorMap =  new HashMap<>();
+        private Map<Class<? extends Validator<String>>,
+                Function<String[], Validator<String>>> customPreValidatorsMap = new HashMap<>();
+        private Map<Class<? extends Function<String, Try<?>>>,
+                Function<String[], Function<String, Try<?>>>> customConstructorMap =  new HashMap<>();
 
-        public Builder withParallelizationStrategy(final ParallelizationStrategyEnum parallelizationStrategy) {
+        public Builder withParallelizationStrategy(
+                final ParallelizationStrategyEnum parallelizationStrategy) {
             if(parallelizationStrategy != null) this.parallelizationStrategy = parallelizationStrategy;
             return this;
         }
 
-        public Builder withCustomPreValidatorsMap(final Map<Class<? extends Validator<String>>,
-                                                      Function<String[], Validator<String>>> customPreValidatorsMap) {
+        public Builder withCustomPreValidatorsMap(
+                final Map<Class<? extends Validator<String>>,
+                        Function<String[], Validator<String>>> customPreValidatorsMap) {
             if(customPreValidatorsMap != null) this.customPreValidatorsMap = customPreValidatorsMap;
             return this;
         }
 
-        public Builder withCustomConstructorMap(final Map<Class<? extends Function<String, Try<?>>>,
-                                                    Function<String[], Function<String, Try<?>>>> customConstructorMap) {
+        public Builder withCustomConstructorMap(
+                final Map<Class<? extends Function<String, Try<?>>>,
+                        Function<String[], Function<String, Try<?>>>> customConstructorMap) {
             if(customConstructorMap != null) this.customConstructorMap = customConstructorMap;
             return this;
         }

@@ -12,16 +12,19 @@ public final class CsvDestructor implements Destructor<String,Integer,String> {
 
     private final String cellSeparator;
 
-    private CsvDestructor(final String cellSeparator) {
+    private CsvDestructor(
+            final String cellSeparator) {
         this.cellSeparator = cellSeparator;
     }
 
-    public static CsvDestructor of(final String cellSeparator){
+    public static CsvDestructor of(
+            final String cellSeparator){
         return new CsvDestructor(cellSeparator);
     }
 
     @Override
-    public Try<Map<Integer, String>> destruct(final String input) {
+    public Try<Map<Integer, String>> destruct(
+            final String input) {
         final var splittedInput = input.split(cellSeparator);
         return Try.success(Stream.iterate(0, i -> i+1)
                 .limit(splittedInput.length)
