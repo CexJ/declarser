@@ -16,4 +16,5 @@ public enum ParallelizationStrategyEnum {
             final Stream<T> stream){
         return stream.sequential();
     }
+
 }

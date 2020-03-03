@@ -45,8 +45,7 @@ public class ToMapTest {
         assertTrue(result.isSuccess());
         // AND the Map is M
         final var mapOutput = result.getValue();
-        assertEquals(mapOutput,
-                     map);
+        assertEquals(mapOutput, map);
     }
 
     /*
@@ -59,6 +58,7 @@ public class ToMapTest {
      *  AND the Exception is of the type InputMappingException
      *  AND the cause is E
      *  AND the message is formatted with I and E
+     *  AND the value is I
      */
     @Test
     public void mapping_indestructible_input_returns_a_success(){
@@ -87,6 +87,9 @@ public class ToMapTest {
         assertEquals(exceptionOutput.getMessage(),
                 String.format(InputMappingException.messageFormatter,
                         exceptionInput.toString(), input.toString()));
+        // AND the value is I
+        final var inputMappingException = (InputMappingException) exceptionOutput;
+        assertEquals(inputMappingException.getValue(), input);
     }
 
 
@@ -100,6 +103,7 @@ public class ToMapTest {
      *  AND the Exception is of the type InputMappingException
      *  AND the cause is E
      *  AND the message is formatted with I and E
+     *  AND the value is I
      */
     @Test
     public void mapping_invalid_input_returns_a_failure(){
@@ -128,5 +132,8 @@ public class ToMapTest {
         assertEquals(exceptionOutput.getMessage(),
                      String.format(InputMappingException.messageFormatter,
                         exceptionInput.toString(), input.toString()));
+        // AND the value is I
+        final var inputMappingException = (InputMappingException) exceptionOutput;
+        assertEquals(inputMappingException.getValue(), input);
     }
 }

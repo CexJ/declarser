@@ -2,7 +2,8 @@ package kernel.stages.stage3_combinator.impl;
 
 import kernel.conf.ParallelizationStrategyEnum;
 import kernel.stages.stage03_combinator.impl.AllExceptionCombinator;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
@@ -14,8 +15,6 @@ public class AllExceptionCombinatorTest {
 
     private static final class TypeK{}
     private static final class TypeT{}
-    private AllExceptionCombinator<TypeK> allExceptionCombinator =
-            AllExceptionCombinator.of(ParallelizationStrategyEnum.SEQUENTIAL);
 
 
     /*
@@ -27,8 +26,11 @@ public class AllExceptionCombinatorTest {
      *  AND the value contains all and only the S keys
      *  AND foreach key the value is the value corresponding to S map
      */
-    @Test
-    public void when_combine_success_and_failure_return_success(){
+    @ParameterizedTest
+    @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
+    public void when_combine_success_and_failure_return_success(String name){
+        final AllExceptionCombinator<TypeK> allExceptionCombinator = AllExceptionCombinator.of(ParallelizationStrategyEnum.valueOf(name));
+
         // GIVEN a map S containing entry of type (TypeK, Success)
         final var sucessMap = new HashMap<TypeK, Try<Object>>();
         sucessMap.put(new TypeK(), Try.success(new TypeT()));

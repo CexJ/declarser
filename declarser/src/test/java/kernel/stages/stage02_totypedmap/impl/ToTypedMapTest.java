@@ -2,9 +2,10 @@ package kernel.stages.stage02_totypedmap.impl;
 
 import kernel.conf.ParallelizationStrategyEnum;
 import kernel.stages.stage02_totypedmap.impl.impl.ToTypedMapImpl;
-import org.junit.jupiter.api.Test;
 import kernel.exceptions.MissingFieldFunctionException;
 import kernel.exceptions.TypingFieldException;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
@@ -30,8 +31,9 @@ public class ToTypedMapTest {
      * THEN the result is a map M that contains an entry (K, Success)
      *  AND the value is T
      */
-    @Test
-    public void typing_a_valid_field_return_a_map_with_a_success_entry(){
+    @ParameterizedTest
+    @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
+    public void typing_a_valid_field_return_a_map_with_a_success_entry(String name){
         // GIVEN a map M from TypeK to TypeV with an entry (K, V)
         final var inputMap = new HashMap<TypeK,TypeV>();
         inputMap.put(k, v);
@@ -41,7 +43,7 @@ public class ToTypedMapTest {
         final var functionMap = new HashMap<TypeK, Function<TypeV, Try<?>>>();
         functionMap.put(k, v -> Try.success(t));
         // AND a ToTypedMap created with FM
-        final var toTypedMap = ToTypedMapImpl.of(functionMap, ParallelizationStrategyEnum.SEQUENTIAL);
+        final var toTypedMap = ToTypedMapImpl.of(functionMap, ParallelizationStrategyEnum.valueOf(name));
         // WHEN the typing method is invoked with M
         final var result = toTypedMap.typing(inputMap);
         // THEN the result is a map M that contains an entry (K, Success)
@@ -63,8 +65,9 @@ public class ToTypedMapTest {
      *  AND the cause is E
      *  AND the message is formatted with K, V, and E
      */
-    @Test
-    public void typing_invalid_field_return_a_map_with_a_failure_entry(){
+    @ParameterizedTest
+    @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
+    public void typing_invalid_field_return_a_map_with_a_failure_entry(String name){
         // GIVEN a map M from TypeK to TypeV with an entry (K, V)
         final var inputMap = new HashMap<TypeK,TypeV>();
         inputMap.put(k, v);
@@ -74,7 +77,7 @@ public class ToTypedMapTest {
         final var functionMap = new HashMap<TypeK, Function<TypeV, Try<?>>>();
         functionMap.put(k, v -> Try.fail(exception));
         // AND a ToTypedMap created with FM
-        final var toTypedMap = ToTypedMapImpl.of(functionMap, ParallelizationStrategyEnum.SEQUENTIAL);
+        final var toTypedMap = ToTypedMapImpl.of(functionMap, ParallelizationStrategyEnum.valueOf(name));
         // WHEN the typing method is invoked with M
         final var result = toTypedMap.typing(inputMap);
         // THEN the result is a map M that contains an entry (K, Failure)
@@ -99,15 +102,16 @@ public class ToTypedMapTest {
      *  AND the cause is of type MissingFieldFunctionException
      *  AND the message of the cause is formatted with K
      */
-    @Test
-    public void missing_field_function_return_a_map_with_a_failure_entry(){
+    @ParameterizedTest
+    @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
+    public void missing_field_function_return_a_map_with_a_failure_entry(String name){
         // GIVEN a map M from TypeK to TypeV with an entry (k, v)
         final var inputMap = new HashMap<TypeK,TypeV>();
         inputMap.put(k, v);
         // AND a map FM from TypeK to Function: TypeV -> Try<?> without an Entry for K
         final var functionMap = new HashMap<TypeK, Function<TypeV, Try<?>>>();
         // AND a ToTypedMap created with FM
-        final var toTypedMap = ToTypedMapImpl.of(functionMap, ParallelizationStrategyEnum.SEQUENTIAL);
+        final var toTypedMap = ToTypedMapImpl.of(functionMap, ParallelizationStrategyEnum.valueOf(name));
         // WHEN the typing method is invoked with M
         final var result = toTypedMap.typing(inputMap);
         // THEN the result is a map M that contains an entry (K, Failure)

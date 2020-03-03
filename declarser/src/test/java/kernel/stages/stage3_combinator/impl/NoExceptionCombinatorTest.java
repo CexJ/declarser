@@ -4,7 +4,8 @@ import kernel.conf.ParallelizationStrategyEnum;
 import kernel.exceptions.CombiningException;
 import kernel.exceptions.GroupedException;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
@@ -18,8 +19,6 @@ public class NoExceptionCombinatorTest {
 
     private static final class TypeK{}
     private static final class TypeT{}
-    private NoExceptionCombinator<TypeK> allExceptionCombinator =
-            NoExceptionCombinator.of(ParallelizationStrategyEnum.SEQUENTIAL);
 
     /*
      * GIVEN a map S containing entry of type (TypeK, Success)
@@ -28,8 +27,11 @@ public class NoExceptionCombinatorTest {
      *  AND value is a map with all and only the S keys
      *  AND the values are the same of S
      */
-    @Test
-    public void when_combine_success_return_success(){
+    @ParameterizedTest
+    @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
+    public void when_combine_success_return_success(String name){
+        final NoExceptionCombinator<TypeK> allExceptionCombinator = NoExceptionCombinator.of(ParallelizationStrategyEnum.valueOf(name));
+
         // GIVEN a map S containing entry of type (TypeK, Success)
         final var sucessMap = new HashMap<TypeK, Try<?>>();
         sucessMap.put(new TypeK(), Try.success(new TypeT()));
@@ -59,8 +61,11 @@ public class NoExceptionCombinatorTest {
      *  AND all exceptions have a key of F and for all key of F there is an exception
      *  AND the exceptions are the same of F
      */
-    @Test
-    public void when_combine_success_and_failure_return_failure(){
+    @ParameterizedTest
+    @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
+    public void when_combine_success_and_failure_return_failure(String name){
+        final NoExceptionCombinator<TypeK> allExceptionCombinator = NoExceptionCombinator.of(ParallelizationStrategyEnum.valueOf(name));
+
         // GIVEN a map S containing entry of type (TypeK, Success)
         final var sucessMap = new HashMap<TypeK, Try<?>>();
         sucessMap.put(new TypeK(), Try.success(new TypeT()));
