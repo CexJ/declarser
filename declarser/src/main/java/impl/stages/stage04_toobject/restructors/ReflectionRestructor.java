@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import kernel.stages.stage04_toobject.restructor.Restructor;
-import utils.exceptions.GroupedException;
+import kernel.stages.stage04_toobject.impl.restructor.Restructor;
+import kernel.exceptions.GroupedException;
 import utils.tryapi.Try;
 
 public final class ReflectionRestructor<K,O> implements Restructor<K,O> {

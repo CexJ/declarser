@@ -1,4 +1,4 @@
-package kernel.stages.stage02_totypedmap;
+package kernel.stages.stage02_totypedmap.impl;
 
 import utils.tryapi.Try;
 

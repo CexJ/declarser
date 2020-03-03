@@ -1,11 +1,12 @@
-package kernel.stages.stage01_tomap;
+package kernel.stages.stage01_tomap.impl.impl;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import kernel.stages.stage01_tomap.destructor.Destructor;
-import utils.exceptions.InputMappingException;
+import kernel.stages.stage01_tomap.impl.ToMap;
+import kernel.stages.stage01_tomap.impl.destructor.Destructor;
+import kernel.exceptions.InputMappingException;
 import utils.tryapi.Try;
 
 public final class ToMapImpl<I,K,V> implements ToMap<I, K, V> {

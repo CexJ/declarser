@@ -1,7 +1,5 @@
 package utils.tryapi;
 
-import utils.exceptions.DangerousExecutable;
-
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -17,7 +15,7 @@ public interface Try<T> {
 		return Failure.of(exception);
 	}
 	
-	static <T> Try<T> go(DangerousExecutable<T> supplier){
+	static <T> Try<T> go(DangerousSupplier<T> supplier){
 		try {
 			return Success.of(supplier.get());
 		}catch(Exception exception) {

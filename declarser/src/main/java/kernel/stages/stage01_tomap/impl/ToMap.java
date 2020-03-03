@@ -1,4 +1,4 @@
-package kernel.stages.stage01_tomap;
+package kernel.stages.stage01_tomap.impl;
 
 import utils.tryapi.Try;
 

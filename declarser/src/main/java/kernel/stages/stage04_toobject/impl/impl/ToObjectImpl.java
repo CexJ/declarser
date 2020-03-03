@@ -1,9 +1,11 @@
-package kernel.stages.stage04_toobject;
+package kernel.stages.stage04_toobject.impl.impl;
 
 import java.util.Map;
-import kernel.stages.stage04_toobject.restructor.Restructor;
+
+import kernel.stages.stage04_toobject.impl.ToObject;
+import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.validation.Validator;
-import utils.exceptions.OutputGluingException;
+import kernel.exceptions.OutputGluingException;
 import utils.tryapi.Try;
 
 public final class ToObjectImpl<K,O> implements ToObject<K, O> {

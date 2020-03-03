@@ -6,7 +6,7 @@ import impl.stages.annotations.fields.CsvArray;
 import impl.stages.annotations.fields.CsvField;
 import impl.stages.annotations.fields.CsvNode;
 import impl.validation.CsvPreValidatorsFactory;
-import utils.exceptions.GroupedException;
+import kernel.exceptions.GroupedException;
 import utils.tryapi.Try;
 
 import java.lang.reflect.Field;

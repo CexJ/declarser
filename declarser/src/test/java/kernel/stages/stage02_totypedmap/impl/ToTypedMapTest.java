@@ -1,9 +1,10 @@
-package kernel.stages.stage02_totypedmap;
+package kernel.stages.stage02_totypedmap.impl;
 
 import kernel.conf.ParallelizationStrategyEnum;
+import kernel.stages.stage02_totypedmap.impl.impl.ToTypedMapImpl;
 import org.junit.jupiter.api.Test;
-import utils.exceptions.MissingFieldFunctionException;
-import utils.exceptions.TypingFieldException;
+import kernel.exceptions.MissingFieldFunctionException;
+import kernel.exceptions.TypingFieldException;
 import utils.tryapi.Try;
 
 import java.util.HashMap;

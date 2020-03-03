@@ -1,13 +1,10 @@
 package kernel;
 
-import kernel.stages.stage01_tomap.ToMap;
-import kernel.stages.stage02_totypedmap.ToTypedMap;
+import kernel.stages.stage01_tomap.impl.ToMap;
+import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.stages.stage03_combinator.Combinator;
-import kernel.stages.stage01_tomap.ToMapImpl;
-import kernel.stages.stage04_toobject.ToObject;
-import kernel.stages.stage04_toobject.ToObjectImpl;
-import kernel.stages.stage02_totypedmap.ToTypedMapImpl;
-import utils.exceptions.DeclarserException;
+import kernel.stages.stage04_toobject.impl.ToObject;
+import kernel.exceptions.DeclarserException;
 import utils.tryapi.Try;
 
 public final class Declarser<I,K,V,O> {

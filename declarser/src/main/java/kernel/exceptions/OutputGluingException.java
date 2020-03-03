@@ -1,4 +1,4 @@
-package utils.exceptions;
+package kernel.exceptions;
 
 import java.util.Map;
 

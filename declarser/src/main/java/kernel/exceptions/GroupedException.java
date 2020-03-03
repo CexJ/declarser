@@ -1,7 +1,6 @@
-package utils.exceptions;
+package kernel.exceptions;
 
 import java.util.Collection;
-import java.util.List;
 
 public final class GroupedException extends Exception {
 

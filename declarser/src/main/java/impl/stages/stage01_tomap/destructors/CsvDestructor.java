@@ -1,6 +1,6 @@
 package impl.stages.stage01_tomap.destructors;
 
-import kernel.stages.stage01_tomap.destructor.Destructor;
+import kernel.stages.stage01_tomap.impl.destructor.Destructor;
 import utils.tryapi.Try;
 
 import java.util.Map;

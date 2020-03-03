@@ -1,4 +1,4 @@
-package kernel.stages.stage01_tomap.destructor;
+package kernel.stages.stage01_tomap.impl.destructor;
 
 import utils.tryapi.Try;
 

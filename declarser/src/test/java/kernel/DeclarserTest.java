@@ -1,11 +1,11 @@
 package kernel;
 
-import kernel.stages.stage01_tomap.ToMap;
-import kernel.stages.stage02_totypedmap.ToTypedMap;
+import kernel.stages.stage01_tomap.impl.ToMap;
+import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.stages.stage03_combinator.Combinator;
-import kernel.stages.stage04_toobject.ToObject;
+import kernel.stages.stage04_toobject.impl.ToObject;
 import org.junit.jupiter.api.Test;
-import utils.exceptions.DeclarserException;
+import kernel.exceptions.DeclarserException;
 import utils.tryapi.Try;
 
 import java.util.HashMap;

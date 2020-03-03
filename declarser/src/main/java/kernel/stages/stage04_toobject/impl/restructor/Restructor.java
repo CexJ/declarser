@@ -1,4 +1,4 @@
-package kernel.stages.stage04_toobject.restructor;
+package kernel.stages.stage04_toobject.impl.restructor;
 
 import utils.tryapi.Try;
 

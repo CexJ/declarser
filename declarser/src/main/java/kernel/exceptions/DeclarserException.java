@@ -1,4 +1,4 @@
-package utils.exceptions;
+package kernel.exceptions;
 
 public class DeclarserException extends Exception {
 

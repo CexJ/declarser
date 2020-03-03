@@ -2,7 +2,7 @@ package impl.validation;
 
 import impl.stages.annotations.validations.pre.CsvPreValidation;
 import kernel.validation.Validator;
-import utils.exceptions.GroupedException;
+import kernel.exceptions.GroupedException;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
