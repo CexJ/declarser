@@ -7,6 +7,7 @@ import kernel.stages.stage01_tomap.ToMapImpl;
 import kernel.stages.stage04_toobject.ToObject;
 import kernel.stages.stage04_toobject.ToObjectImpl;
 import kernel.stages.stage02_totypedmap.ToTypedMapImpl;
+import utils.exceptions.DeclarserException;
 import utils.tryapi.Try;
 
 public class Declarser<I,K,V,O> {
@@ -40,6 +41,7 @@ public class Declarser<I,K,V,O> {
 		return toMap.mapping(input)
 				.map(toTypedMap::typing)
 				.flatMap(combinator::combining)
-				.flatMap(toObject::gluing);
+				.flatMap(toObject::gluing)
+				.enrichException(ex -> DeclarserException.of(input, ex));
 	}
 }
