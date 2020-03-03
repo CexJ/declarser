@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import utils.tryapi.Try;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +14,7 @@ public class AllExceptionCombinatorTest {
 
     private static final class TypeK{}
     private static final class TypeT{}
-    private AllExceptionCombinator allExceptionCombinator =
+    private AllExceptionCombinator<TypeK> allExceptionCombinator =
             AllExceptionCombinator.of(ParallelizationStrategyEnum.SEQUENTIAL);
 
 
@@ -37,11 +36,11 @@ public class AllExceptionCombinatorTest {
         final var failureMap = new HashMap<TypeK, Try<Object>>();
         failureMap.put(new TypeK(), Try.fail(new Exception()));
         // LET M be the union of the S and F
-        final var map = new HashMap<TypeK, Try<Object>>();
+        final HashMap<TypeK, Try<?>> map = new HashMap<>();
         map.putAll(sucessMap);
         map.putAll(failureMap);
         // WHEN the combine method is invoked with M
-        final Try<Map<TypeK, ?>> result = allExceptionCombinator.combining(map);
+        final var result = allExceptionCombinator.combining(map);
         // THEN the result is a Success
         assertTrue(result.isSuccess());
         // AND the value contains all and only the S keys

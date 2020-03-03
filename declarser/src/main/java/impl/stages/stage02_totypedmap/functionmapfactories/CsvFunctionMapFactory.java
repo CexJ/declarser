@@ -16,9 +16,9 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static utils.constants.Constants.EMPTY;
-
 public final class CsvFunctionMapFactory {
+
+    public final static Class<?>[] EMPTY = new Class[]{};
 
     private final CsvPreValidatorsFactory preValidatorFactory;
     private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;

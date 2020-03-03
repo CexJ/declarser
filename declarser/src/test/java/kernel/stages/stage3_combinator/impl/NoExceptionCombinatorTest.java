@@ -15,7 +15,7 @@ public class NoExceptionCombinatorTest {
 
     private static final class TypeK{}
     private static final class TypeT{}
-    private NoExceptionCombinator allExceptionCombinator =
+    private NoExceptionCombinator<TypeK> allExceptionCombinator =
             NoExceptionCombinator.of(ParallelizationStrategyEnum.SEQUENTIAL);
 
 
