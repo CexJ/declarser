@@ -17,10 +17,10 @@ public class Declarser<I,K,V,O> {
 	private final ToObject<K, O> toObject;
 	
 	private Declarser(
-			final ToMapImpl<I, K, V> toMap,
-			final ToTypedMapImpl<K, V> toTypedMap,
+			final ToMap<I, K, V> toMap,
+			final ToTypedMap<K, V> toTypedMap,
 			final Combinator<K> combinator,
-			final ToObjectImpl<K, O> toObject) {
+			final ToObject<K, O> toObject) {
 		super();
 		this.toMap = toMap;
 		this.toTypedMap = toTypedMap;
@@ -29,10 +29,10 @@ public class Declarser<I,K,V,O> {
 	}
 	
 	public static <I,K,V,O> Declarser<I,K,V,O> of(
-			final ToMapImpl<I, K, V> toMap,
-			final ToTypedMapImpl<K, V> toTypedMap,
+			final ToMap<I, K, V> toMap,
+			final ToTypedMap<K, V> toTypedMap,
 			final Combinator<K> combinator,
-			final ToObjectImpl<K, O> toObject) {
+			final ToObject<K, O> toObject) {
 		return new Declarser<>(toMap, toTypedMap, combinator, toObject);
 	}
 
