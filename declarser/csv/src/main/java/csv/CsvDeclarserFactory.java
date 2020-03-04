@@ -10,12 +10,12 @@ import csv.stages.stage04_toobject.restructors.ReflectionRestructor;
 import csv.validation.CsvValidationConst;
 import csv.validation.CsvPreValidatorsFactory;
 import kernel.Declarser;
-import kernel.conf.ParallelizationStrategyEnum;
+import kernel.enums.ParallelizationStrategyEnum;
 import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
 import kernel.stages.stage02_totypedmap.impl.impl.ToTypedMapImpl;
 import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage04_toobject.impl.impl.ToObjectImpl;
-import kernel.validation.Validator;
+import kernel.validations.Validator;
 import kernel.tryapi.Try;
 
 import java.util.HashMap;

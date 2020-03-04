@@ -1,8 +1,8 @@
 package kernel.stages.stage02_totypedmap.impl.impl;
 
-import kernel.conf.ParallelizationStrategyEnum;
-import kernel.exceptions.MissingFieldFunctionException;
-import kernel.exceptions.TypingFieldException;
+import kernel.enums.ParallelizationStrategyEnum;
+import kernel.stages.stage02_totypedmap.impl.exceptions.MissingFieldFunctionException;
+import kernel.stages.stage02_totypedmap.impl.exceptions.TypingFieldException;
 import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.tryapi.Try;
 

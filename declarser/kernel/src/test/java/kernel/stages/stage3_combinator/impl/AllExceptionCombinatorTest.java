@@ -1,6 +1,6 @@
 package kernel.stages.stage3_combinator.impl;
 
-import kernel.conf.ParallelizationStrategyEnum;
+import kernel.enums.ParallelizationStrategyEnum;
 import kernel.stages.stage03_combinator.impl.AllExceptionCombinator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

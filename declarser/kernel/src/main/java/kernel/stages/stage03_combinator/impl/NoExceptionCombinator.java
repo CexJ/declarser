@@ -1,9 +1,9 @@
 package kernel.stages.stage03_combinator.impl;
 
-import kernel.conf.ParallelizationStrategyEnum;
+import kernel.enums.ParallelizationStrategyEnum;
 import kernel.stages.stage03_combinator.Combinator;
 import kernel.exceptions.GroupedException;
-import kernel.exceptions.CombiningException;
+import kernel.stages.stage03_combinator.exceptions.CombiningException;
 import kernel.tryapi.Try;
 
 import java.util.Map;

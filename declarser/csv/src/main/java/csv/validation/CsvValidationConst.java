@@ -1,6 +1,6 @@
 package csv.validation;
 
-import kernel.validation.Validator;
+import kernel.validations.Validator;
 
 import java.util.HashMap;
 import java.util.Map;

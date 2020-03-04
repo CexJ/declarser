@@ -4,8 +4,8 @@ import java.util.Map;
 
 import kernel.stages.stage04_toobject.impl.ToObject;
 import kernel.stages.stage04_toobject.impl.restructor.Restructor;
-import kernel.validation.Validator;
-import kernel.exceptions.OutputGluingException;
+import kernel.validations.Validator;
+import kernel.stages.stage04_toobject.impl.exceptions.OutputGluingException;
 import kernel.tryapi.Try;
 
 public final class ToObjectImpl<K,O> implements ToObject<K, O> {

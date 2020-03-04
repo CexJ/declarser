@@ -1,7 +1,7 @@
 package csv.validation;
 
 import csv.stages.annotations.validations.pre.CsvPreValidation;
-import kernel.validation.Validator;
+import kernel.validations.Validator;
 import kernel.exceptions.GroupedException;
 import kernel.tryapi.Try;
 

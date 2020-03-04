@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import kernel.stages.stage01_tomap.impl.ToMap;
 import kernel.stages.stage01_tomap.impl.destructor.Destructor;
-import kernel.exceptions.InputMappingException;
+import kernel.stages.stage01_tomap.impl.exceptions.InputMappingException;
 import kernel.tryapi.Try;
 
 public final class ToMapImpl<I,K,V> implements ToMap<I, K, V> {

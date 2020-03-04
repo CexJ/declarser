@@ -2,9 +2,9 @@ package kernel.stages.stage04_toobject.impl;
 
 import kernel.stages.stage04_toobject.impl.impl.ToObjectImpl;
 import kernel.stages.stage04_toobject.impl.restructor.Restructor;
-import kernel.validation.Validator;
+import kernel.validations.Validator;
 import org.junit.jupiter.api.Test;
-import kernel.exceptions.OutputGluingException;
+import kernel.stages.stage04_toobject.impl.exceptions.OutputGluingException;
 import kernel.tryapi.Try;
 
 import java.util.HashMap;

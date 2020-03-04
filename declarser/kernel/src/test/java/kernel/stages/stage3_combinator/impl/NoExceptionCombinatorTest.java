@@ -1,7 +1,7 @@
 package kernel.stages.stage3_combinator.impl;
 
-import kernel.conf.ParallelizationStrategyEnum;
-import kernel.exceptions.CombiningException;
+import kernel.enums.ParallelizationStrategyEnum;
+import kernel.stages.stage03_combinator.exceptions.CombiningException;
 import kernel.exceptions.GroupedException;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import org.junit.jupiter.params.ParameterizedTest;

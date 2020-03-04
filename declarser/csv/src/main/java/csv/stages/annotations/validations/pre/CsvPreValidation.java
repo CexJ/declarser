@@ -1,6 +1,6 @@
 package csv.stages.annotations.validations.pre;
 
-import kernel.validation.Validator;
+import kernel.validations.Validator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -2,10 +2,10 @@ package kernel.stages.stage01_tomap.impl;
 
 import kernel.stages.stage01_tomap.impl.destructor.Destructor;
 import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
-import kernel.validation.Validator;
+import kernel.validations.Validator;
 
 import org.junit.jupiter.api.Test;
-import kernel.exceptions.InputMappingException;
+import kernel.stages.stage01_tomap.impl.exceptions.InputMappingException;
 import kernel.tryapi.Try;
 
 import java.util.HashMap;
