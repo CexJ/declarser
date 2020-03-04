@@ -1,4 +1,4 @@
-package kernel.exceptions;
+package kernel.stages.stage02_totypedmap.impl.exceptions;
 
 public class TypingFieldException extends Exception {
 

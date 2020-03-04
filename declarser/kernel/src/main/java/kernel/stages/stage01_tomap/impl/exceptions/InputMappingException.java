@@ -1,4 +1,4 @@
-package kernel.exceptions;
+package kernel.stages.stage01_tomap.impl.exceptions;
 
 public class InputMappingException extends Exception {
 

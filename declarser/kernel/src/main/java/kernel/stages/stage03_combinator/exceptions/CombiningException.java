@@ -1,4 +1,4 @@
-package kernel.exceptions;
+package kernel.stages.stage03_combinator.exceptions;
 
 
 public final class CombiningException extends Exception {

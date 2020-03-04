@@ -1,4 +1,4 @@
-package kernel.conf;
+package kernel.enums;
 
 import java.util.stream.Stream;
 

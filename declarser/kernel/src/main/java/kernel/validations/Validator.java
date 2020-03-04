@@ -1,4 +1,4 @@
-package kernel.validation;
+package kernel.validations;
 
 import java.util.Optional;
 import java.util.function.Function;
