@@ -1,7 +1,8 @@
 package kernel.tryapi;
 
+import kernel.validations.Validator;
+
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -32,7 +33,7 @@ public class Failure<T> implements Try<T> {
 	}
 
 	@Override
-	public Try<T> continueIf(Function<T, Optional<? extends Exception>> validator) {
+	public Try<T> continueIf(Validator<T> validator) {
 		return this;
 	}
 

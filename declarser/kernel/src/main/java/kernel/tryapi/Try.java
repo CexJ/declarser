@@ -1,5 +1,7 @@
 package kernel.tryapi;
 
+import kernel.validations.Validator;
+
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -25,7 +27,7 @@ public interface Try<T> {
 
 	boolean isSuccess();
 	boolean isFailure();
-	Try<T> continueIf(Function<T, Optional<? extends Exception>> validator);
+	Try<T> continueIf(Validator<T> validator);
 	Try<T> enrichException(Function<Exception, ? extends Exception> enricher);
 	<U> Try<U> map(Function<T,? extends U> map);
 	<U> Try<U> flatMap(Function<T,Try<U>> map);

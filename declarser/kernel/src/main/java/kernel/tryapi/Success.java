@@ -1,7 +1,9 @@
 package kernel.tryapi;
 
+import kernel.exceptions.FilterFailException;
+import kernel.validations.Validator;
+
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -10,11 +12,13 @@ public final class Success<T> implements Try<T> {
 
 	private final T value;
 	
-	private Success(T value) {
+	private Success(
+			final T value) {
 		this.value = value;
 	}
 	
-	static <T> Success<T> of(T value) {
+	static <T> Success<T> of(
+			final T value) {
 		return new Success<>(value);
 	}
 
@@ -29,19 +33,22 @@ public final class Success<T> implements Try<T> {
 	}
 
 	@Override
-	public Try<T> continueIf(Function<T, Optional<? extends Exception>> validator) {
+	public Try<T> continueIf(
+			final Validator<T> validator) {
 		return validator.apply(value)
 				.map(Try::<T>fail)
 				.orElse(this);
 	}
 
 	@Override
-	public Try<T> enrichException(Function<Exception, ? extends Exception> enricher) {
+	public Try<T> enrichException(
+			final Function<Exception, ? extends Exception> enricher) {
 		return this;
 	}
 
 	@Override
-	public <U> Try<U> map(Function<T, ? extends U> map) {
+	public <U> Try<U> map(
+			final Function<T, ? extends U> map) {
 		try {
 			return Success.of(map.apply(value));
 		} catch(Exception ex) {
@@ -50,26 +57,30 @@ public final class Success<T> implements Try<T> {
 	}
 
 	@Override
-	public <U> Try<U> flatMap(Function<T, Try<U>> map) {
+	public <U> Try<U> flatMap(
+			final Function<T, Try<U>> map) {
 		return map.apply(value);
 	}
 
 	@Override
-	public Try<T> filter(Predicate<T> predicate) {
+	public Try<T> filter(
+			final Predicate<T> predicate) {
 		if(predicate.test(value)) {
 			return this;
 		} else {
-			return Failure.of(new Exception());
+			return Failure.of(new FilterFailException());
 		}
 	}
 
 	@Override
-	public Try<T> or(Try<T> alternative) {
+	public Try<T> or(
+			final Try<T> alternative) {
 		return this;
 	}
 
 	@Override
-	public T getOrElse(T defaultValue) {
+	public T getOrElse(
+			final T defaultValue) {
 		return value;
 	}
 
@@ -84,7 +95,8 @@ public final class Success<T> implements Try<T> {
 	}
 
 	@Override
-	public void ifPresent(Consumer<T> consumer) {
+	public void ifPresent(
+			final Consumer<T> consumer) {
 		consumer.accept(value);
 	}
 
