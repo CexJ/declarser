@@ -5,8 +5,8 @@
   <packaging>pom</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <modules>
-    <module>csv</module>
     <module>kernel</module>
+    <module>csv</module>
   </modules>
   <name>declarser</name>
   <description>A declarative parser framework</description>
