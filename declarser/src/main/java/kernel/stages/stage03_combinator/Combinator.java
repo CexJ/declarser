@@ -2,7 +2,7 @@ package kernel.stages.stage03_combinator;
 
 import java.util.Map;
 
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 public interface Combinator<K> {
 

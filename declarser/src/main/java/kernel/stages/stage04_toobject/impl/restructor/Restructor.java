@@ -1,6 +1,6 @@
 package kernel.stages.stage04_toobject.impl.restructor;
 
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.Map;
 

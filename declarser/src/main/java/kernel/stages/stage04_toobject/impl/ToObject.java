@@ -1,6 +1,6 @@
 package kernel.stages.stage04_toobject.impl;
 
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.Map;
 

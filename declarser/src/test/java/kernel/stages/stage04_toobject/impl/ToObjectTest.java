@@ -5,7 +5,7 @@ import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.validation.Validator;
 import org.junit.jupiter.api.Test;
 import kernel.exceptions.OutputGluingException;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.HashMap;
 import java.util.Optional;

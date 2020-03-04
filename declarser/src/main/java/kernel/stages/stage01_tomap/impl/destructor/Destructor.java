@@ -1,6 +1,6 @@
 package kernel.stages.stage01_tomap.impl.destructor;
 
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.Map;
 
