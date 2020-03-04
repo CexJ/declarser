@@ -6,7 +6,7 @@ import kernel.exceptions.GroupedException;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.HashMap;
 import java.util.HashSet;

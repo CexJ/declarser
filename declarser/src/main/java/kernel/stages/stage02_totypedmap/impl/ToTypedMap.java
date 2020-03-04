@@ -1,6 +1,6 @@
 package kernel.stages.stage02_totypedmap.impl;
 
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.Map;
 

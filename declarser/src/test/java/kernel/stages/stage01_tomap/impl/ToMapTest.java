@@ -6,7 +6,7 @@ import kernel.validation.Validator;
 
 import org.junit.jupiter.api.Test;
 import kernel.exceptions.InputMappingException;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.HashMap;
 import java.util.Optional;

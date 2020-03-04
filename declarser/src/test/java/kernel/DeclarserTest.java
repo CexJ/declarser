@@ -6,7 +6,7 @@ import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage04_toobject.impl.ToObject;
 import org.junit.jupiter.api.Test;
 import kernel.exceptions.DeclarserException;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;

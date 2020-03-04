@@ -6,7 +6,7 @@ import kernel.exceptions.MissingFieldFunctionException;
 import kernel.exceptions.TypingFieldException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.HashMap;
 import java.util.function.Function;

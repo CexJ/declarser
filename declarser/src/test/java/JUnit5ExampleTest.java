@@ -1,4 +1,4 @@
-import impl.CsvDeclarserFactory;
+import csv.CsvDeclarserFactory;
 import org.junit.jupiter.api.Test;
 import samples.DataSample;
 

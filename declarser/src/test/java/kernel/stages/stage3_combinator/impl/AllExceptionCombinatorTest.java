@@ -4,7 +4,7 @@ import kernel.conf.ParallelizationStrategyEnum;
 import kernel.stages.stage03_combinator.impl.AllExceptionCombinator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.HashMap;
 

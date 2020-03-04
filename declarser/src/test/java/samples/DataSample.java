@@ -1,6 +1,6 @@
 package samples;
 
-import impl.stages.annotations.fields.CsvColumn;
+import csv.stages.annotations.fields.CsvColumn;
 public class DataSample {
 
     @CsvColumn(0)

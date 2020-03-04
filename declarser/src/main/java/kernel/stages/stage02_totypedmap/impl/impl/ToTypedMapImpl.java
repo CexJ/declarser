@@ -4,7 +4,7 @@ import kernel.conf.ParallelizationStrategyEnum;
 import kernel.exceptions.MissingFieldFunctionException;
 import kernel.exceptions.TypingFieldException;
 import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.Map;
 import java.util.Optional;

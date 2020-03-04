@@ -4,7 +4,7 @@ import kernel.conf.ParallelizationStrategyEnum;
 import kernel.stages.stage03_combinator.Combinator;
 import kernel.exceptions.GroupedException;
 import kernel.exceptions.CombiningException;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 import java.util.Map;
 import java.util.stream.Collectors;

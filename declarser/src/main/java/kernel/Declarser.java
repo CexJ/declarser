@@ -5,7 +5,7 @@ import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage04_toobject.impl.ToObject;
 import kernel.exceptions.DeclarserException;
-import utils.tryapi.Try;
+import kernel.tryapi.Try;
 
 public final class Declarser<I,K,V,O> {
 
