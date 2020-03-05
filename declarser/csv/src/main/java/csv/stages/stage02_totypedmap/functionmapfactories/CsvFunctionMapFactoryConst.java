@@ -1,12 +1,13 @@
 package csv.stages.stage02_totypedmap.functionmapfactories;
 
-import csv.stages.stage02_totypedmap.functions.fromString.todate.LocalDateParser;
-import csv.stages.stage02_totypedmap.functions.fromString.todate.LocalDateTimeParser;
-import csv.stages.stage02_totypedmap.functions.fromString.todate.ZonedDateTimeParser;
-import csv.stages.stage02_totypedmap.functions.fromString.tonumber.BigDecimalParser;
-import csv.stages.stage02_totypedmap.functions.fromString.tonumber.BigIntegerParser;
-import csv.stages.stage02_totypedmap.functions.fromString.toprimitives.*;
-import csv.stages.stage02_totypedmap.functions.fromString.tostring.StringParser;
+import kernel.parsers.Parser;
+import kernel.parsers.fromstring.todate.LocalDateParser;
+import kernel.parsers.fromstring.todate.LocalDateTimeParser;
+import kernel.parsers.fromstring.todate.ZonedDateTimeParser;
+import kernel.parsers.fromstring.tonumber.BigDecimalParser;
+import kernel.parsers.fromstring.tonumber.BigIntegerParser;
+import kernel.parsers.fromstring.toprimitives.*;
+import kernel.parsers.fromstring.tostring.StringParser;
 import kernel.tryapi.Try;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ public final class CsvFunctionMapFactoryConst {
 
     private CsvFunctionMapFactoryConst(){}
 
-    public static final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> sharedFunctionClassMap;
+    public static final Map<Class<? extends Parser<String, ?>>, Function<String[], Parser<String, ?>>> sharedFunctionClassMap;
     static {
         sharedFunctionClassMap = new HashMap<>();
         sharedFunctionClassMap.put(LocalDateParser.class, arr -> LocalDateParser.getInstance(arr[0]));

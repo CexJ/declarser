@@ -1,10 +1,12 @@
-package csv.stages.stage02_totypedmap.functions.fromString.toprimitives;
+package kernel.parsers.fromstring.toprimitives;
 
+import kernel.parsers.Parser;
+import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
 import java.util.function.Function;
 
-public final class FloatParser implements Function<String, Try<?>> {
+public final class FloatParser implements Parser<String, Float> {
 
     private static class InstanceHolder {
         private static final FloatParser instance = new FloatParser();
@@ -19,6 +21,8 @@ public final class FloatParser implements Function<String, Try<?>> {
     @Override
     public Try<Float> apply(
             final String s) {
-        return Try.go(() -> Float.parseFloat(s));
+        if(s == null || s.isEmpty()) return null;
+        else return Try.go(() -> Float.parseFloat(s))
+                .enrichException(ex -> ParseException.of(s, Float.class, ex));
     }
 }
