@@ -1,6 +1,6 @@
 package kernel.parsers.fromstring.todate;
 
-import kernel.parsers.exceptions.ParseException;
+import kernel.parsers.exceptions.ParserException;
 import kernel.tryapi.Try;
 
 import java.time.LocalDate;
@@ -32,8 +32,8 @@ public final  class LocalDateParser implements Function<String, Try<?>> {
     @Override
     public Try<LocalDate> apply(
             final String s) {
-        if(s == null || s.isEmpty()) return null;
+        if(s == null || s.isEmpty()) return Try.success(null);
         else return Try.go(() -> LocalDate.parse(s, DateTimeFormatter.ofPattern(format)))
-                .enrichException(ex -> ParseException.of(s,LocalDate.class, ex));
+                .enrichException(ex -> ParserException.of(s,LocalDate.class, ex));
     }
 }

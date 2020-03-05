@@ -1,6 +1,6 @@
 package kernel.parsers.fromstring.tonumber;
 
-import kernel.parsers.exceptions.ParseException;
+import kernel.parsers.exceptions.ParserException;
 import kernel.tryapi.Try;
 
 import java.math.BigDecimal;
@@ -21,8 +21,8 @@ public final class BigDecimalParser implements Function<String, Try<?>> {
     @Override
     public Try<BigDecimal> apply(
             final String s) {
-        if(s == null || s.isEmpty()) return null;
+        if(s == null || s.isEmpty()) return Try.success(null);
         else return Try.go(() -> new BigDecimal(s))
-                .enrichException(ex -> ParseException.of(s, BigDecimal.class, ex));
+                .enrichException(ex -> ParserException.of(s, BigDecimal.class, ex));
     }
 }

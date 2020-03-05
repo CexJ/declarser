@@ -1,6 +1,6 @@
 package kernel.parsers.fromstring.todate;
 
-import kernel.parsers.exceptions.ParseException;
+import kernel.parsers.exceptions.ParserException;
 import kernel.tryapi.Try;
 
 import java.time.ZonedDateTime;
@@ -32,8 +32,8 @@ public final class ZonedDateTimeParser implements Function<String, Try<?>> {
     @Override
     public Try<ZonedDateTime> apply(
             final String s) {
-        if(s == null || s.isEmpty()) return null;
+        if(s == null || s.isEmpty()) return Try.success(null);
         else return Try.go(() -> ZonedDateTime.parse(s,DateTimeFormatter.ofPattern(format)))
-                .enrichException(ex -> ParseException.of(s, ZonedDateTime.class, ex));
+                .enrichException(ex -> ParserException.of(s, ZonedDateTime.class, ex));
     }
 }
