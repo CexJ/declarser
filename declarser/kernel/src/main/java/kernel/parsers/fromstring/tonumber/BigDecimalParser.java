@@ -1,11 +1,14 @@
-package csv.stages.stage02_totypedmap.functions.fromString.tonumber;
+package kernel.parsers.fromstring.tonumber;
 
+import kernel.parsers.Parser;
+import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.function.Function;
 
-public final class BigDecimalParser implements Function<String, Try<?>> {
+public final class BigDecimalParser implements Parser<String, BigDecimal> {
 
     private static class InstanceHolder {
         private static final BigDecimalParser instance = new BigDecimalParser();
@@ -20,6 +23,8 @@ public final class BigDecimalParser implements Function<String, Try<?>> {
     @Override
     public Try<BigDecimal> apply(
             final String s) {
-        return Try.go(() -> new BigDecimal(s));
+        if(s == null || s.isEmpty()) return null;
+        else return Try.go(() -> new BigDecimal(s))
+                .enrichException(ex -> ParseException.of(s, BigDecimal.class, ex));
     }
 }

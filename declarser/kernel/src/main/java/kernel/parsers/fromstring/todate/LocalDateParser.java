@@ -1,5 +1,7 @@
-package csv.stages.stage02_totypedmap.functions.fromString.todate;
+package kernel.parsers.fromstring.todate;
 
+import kernel.parsers.Parser;
+import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
 import java.time.LocalDate;
@@ -8,13 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public final  class LocalDateParser implements Function<String, Try<?>> {
+public final  class LocalDateParser implements Parser<String, LocalDate> {
 
     private final String format;
 
     private static final Map<String, LocalDateParser> instancesMap = new HashMap<>();
 
-    public static synchronized Function<String, Try<?>> getInstance(
+    public static synchronized LocalDateParser getInstance(
             final String format) {
         if(instancesMap.get(format) == null){
             LocalDateParser newFromStringToLocalDate = new LocalDateParser(format);
@@ -31,6 +33,8 @@ public final  class LocalDateParser implements Function<String, Try<?>> {
     @Override
     public Try<LocalDate> apply(
             final String s) {
-        return Try.go(() -> LocalDate.parse(s, DateTimeFormatter.ofPattern(format)));
+        if(s == null || s.isEmpty()) return null;
+        else return Try.go(() -> LocalDate.parse(s, DateTimeFormatter.ofPattern(format)))
+                .enrichException(ex -> ParseException.of(s,LocalDate.class, ex));
     }
 }

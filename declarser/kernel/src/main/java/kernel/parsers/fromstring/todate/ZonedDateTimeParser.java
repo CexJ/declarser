@@ -1,14 +1,17 @@
-package csv.stages.stage02_totypedmap.functions.fromString.todate;
+package kernel.parsers.fromstring.todate;
 
+import kernel.parsers.Parser;
+import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public final class ZonedDateTimeParser implements Function<String, Try<?>> {
+public final class ZonedDateTimeParser implements Parser<String, ZonedDateTime> {
 
     private final String format;
 
@@ -31,6 +34,8 @@ public final class ZonedDateTimeParser implements Function<String, Try<?>> {
     @Override
     public Try<ZonedDateTime> apply(
             final String s) {
-        return Try.go(() -> ZonedDateTime.parse(s,DateTimeFormatter.ofPattern(format)));
+        if(s == null || s.isEmpty()) return null;
+        else return Try.go(() -> ZonedDateTime.parse(s,DateTimeFormatter.ofPattern(format)))
+                .enrichException(ex -> ParseException.of(s, ZonedDateTime.class, ex));
     }
 }
