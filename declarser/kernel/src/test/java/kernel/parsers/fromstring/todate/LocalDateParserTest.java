@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LocalDateParserTest {
 
     /*
-     * GIVEN a date format F
+     * GIVEN a LocalDate format F
      *  AND a LocalDateParser constructed with F
      *  AND a valid local date string
      * WHEN the method apply is invoked with S
@@ -20,7 +20,7 @@ public class LocalDateParserTest {
      */
     @Test
     public void parsing_valid_local_date_return_success(){
-        // GIVEN a date format F
+        // GIVEN a LocalDate format F
         final var format = "yyyy-MM-dd";
         // AND a LocalDateParser constructed with F
         final var parser = LocalDateParser.getInstance(format);
@@ -36,7 +36,7 @@ public class LocalDateParserTest {
     }
 
     /*
-     * GIVEN a date format F
+     * GIVEN a LocalDate format F
      *  AND a LocalDateParser constructed with F
      *  AND an empty string S
      * WHEN the method apply is invoked with S
@@ -45,7 +45,7 @@ public class LocalDateParserTest {
      */
     @Test
     public void parsing_empty_string_return_success(){
-        // GIVEN a date format F
+        // GIVEN a LocalDate format F
         final var format = "yyyy-MM-dd";
         // AND a LocalDateParser constructed with F
         final var parser = LocalDateParser.getInstance(format);
@@ -61,7 +61,7 @@ public class LocalDateParserTest {
     }
 
     /*
-     * GIVEN a date format F
+     * GIVEN a LocalDate format F
      *  AND a LocalDateParser constructed with F
      *  AND a invalid local date string S
      * WHEN the method apply is invoked with S
@@ -72,7 +72,7 @@ public class LocalDateParserTest {
      */
     @Test
     public void parsing_invalid_local_date_return_success(){
-        // GIVEN a date format F
+        // GIVEN a LocalDate format F
         final var format = "yyyy-MM-dd";
         // AND a LocalDateParser constructed with F
         final var parser = LocalDateParser.getInstance(format);
