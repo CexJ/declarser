@@ -1,14 +1,12 @@
 package kernel.parsers.fromstring.tonumber;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.Function;
 
-public final class BigIntegerParser implements Parser<String, BigInteger> {
+public final class BigIntegerParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final BigIntegerParser instance = new BigIntegerParser();

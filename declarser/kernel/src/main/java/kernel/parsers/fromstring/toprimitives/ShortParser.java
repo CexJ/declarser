@@ -1,12 +1,11 @@
 package kernel.parsers.fromstring.toprimitives;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
 import java.util.function.Function;
 
-public final class ShortParser implements Parser<String, Short> {
+public final class ShortParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final ShortParser instance = new ShortParser();

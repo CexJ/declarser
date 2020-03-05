@@ -1,13 +1,11 @@
 package kernel.parsers.fromstring.toprimitives;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
-import java.math.BigInteger;
 import java.util.function.Function;
 
-public final class BooleanParser implements Parser<String, Boolean> {
+public final class BooleanParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final BooleanParser instance = new BooleanParser();

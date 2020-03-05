@@ -1,12 +1,11 @@
 package kernel.parsers.fromstring.toprimitives;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
 import java.util.function.Function;
 
-public final class CharacterParser implements Parser<String, Character> {
+public final class CharacterParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final CharacterParser instance = new CharacterParser();

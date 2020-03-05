@@ -1,6 +1,5 @@
 package csv.stages.stage02_totypedmap.functionmapfactories;
 
-import kernel.parsers.Parser;
 import kernel.parsers.fromstring.todate.LocalDateParser;
 import kernel.parsers.fromstring.todate.LocalDateTimeParser;
 import kernel.parsers.fromstring.todate.ZonedDateTimeParser;
@@ -23,7 +22,7 @@ public final class CsvFunctionMapFactoryConst {
 
     private CsvFunctionMapFactoryConst(){}
 
-    public static final Map<Class<? extends Parser<String, ?>>, Function<String[], Parser<String, ?>>> sharedFunctionClassMap;
+    public static final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> sharedFunctionClassMap;
     static {
         sharedFunctionClassMap = new HashMap<>();
         sharedFunctionClassMap.put(LocalDateParser.class, arr -> LocalDateParser.getInstance(arr[0]));

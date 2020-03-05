@@ -1,12 +1,11 @@
 package kernel.parsers.fromstring.toprimitives;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
 import java.util.function.Function;
 
-public final class DoubleParser implements Parser<String, Double> {
+public final class DoubleParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final DoubleParser instance = new DoubleParser();

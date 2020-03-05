@@ -1,12 +1,11 @@
 package kernel.parsers.fromstring.toprimitives;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
 import java.util.function.Function;
 
-public final class LongParser implements Parser<String, Long> {
+public final class LongParser implements Function<String, Try<?>> {
 
     private static class InstanceHolder {
         private static final LongParser instance = new LongParser();

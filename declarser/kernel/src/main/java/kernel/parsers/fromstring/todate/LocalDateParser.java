@@ -1,6 +1,5 @@
 package kernel.parsers.fromstring.todate;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
@@ -10,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public final  class LocalDateParser implements Parser<String, LocalDate> {
+public final  class LocalDateParser implements Function<String, Try<?>> {
 
     private final String format;
 

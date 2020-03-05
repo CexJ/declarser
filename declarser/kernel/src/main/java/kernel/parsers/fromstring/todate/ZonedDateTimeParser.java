@@ -1,17 +1,15 @@
 package kernel.parsers.fromstring.todate;
 
-import kernel.parsers.Parser;
 import kernel.parsers.exceptions.ParseException;
 import kernel.tryapi.Try;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public final class ZonedDateTimeParser implements Parser<String, ZonedDateTime> {
+public final class ZonedDateTimeParser implements Function<String, Try<?>> {
 
     private final String format;
 
