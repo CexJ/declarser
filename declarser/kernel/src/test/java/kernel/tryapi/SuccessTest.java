@@ -162,6 +162,34 @@ public class SuccessTest {
     /*
      * GIVEN a value T of type TypeT
      *  AND a Success(T) S
+     *  AND an RuntimeException E
+     *  AND a function F that throws E
+     * WHEN the method map is invoked with F
+     * THEN the result is a failure
+     *  AND the Exception is E
+     */
+    @Test
+    public void success_map_runtime_exception_to_failure(){
+        // GIVEN a value T of type TypeT
+        final var value = new TypeT();
+        // AND a Success(T) S
+        final var success = Try.success(value);
+        // AND an RuntimeException E
+        final var exception = new RuntimeException("Map exception");
+        // a function F that throws E
+        final Function<TypeT, TypeU> function = t -> {throw exception;};
+        // WHEN the method map is invoked with F
+        final var result = success.map(function);
+        // THEN the result is a success
+        assertTrue(result.isFailure());
+        // AND the value is U
+        final var exceptionResult = result.getException();
+        assertEquals(exceptionResult, exception);
+    }
+
+    /*
+     * GIVEN a value T of type TypeT
+     *  AND a Success(T) S
      *  AND a value U of Type TypeU
      *  AND a function F that map T -> Success(U)
      * WHEN the method flatMap is invoked with F

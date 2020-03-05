@@ -2,7 +2,7 @@ package kernel.tryapi;
 
 import kernel.validations.Validator;
 
-import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -17,9 +17,9 @@ public interface Try<T> {
 		return Failure.of(exception);
 	}
 	
-	static <T> Try<T> go(DangerousSupplier<T> supplier){
+	static <T> Try<T> go(Callable<T> callable){
 		try {
-			return Success.of(supplier.get());
+			return Success.of(callable.call());
 		}catch(Exception exception) {
 			return Failure.of(exception);
 		}
