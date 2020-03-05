@@ -63,6 +63,28 @@ public class LocalDateParserTest {
     /*
      * GIVEN a LocalDate format F
      *  AND a LocalDateParser constructed with F
+     * WHEN the method apply is invoked with null
+     * THEN the result is a Success
+     *  AND the value is null
+     */
+    @Test
+    public void parsing_null_return_success(){
+        // GIVEN a LocalDate format F
+        final var format = "yyyy-MM-dd";
+        // AND a LocalDateParser constructed with F
+        final var parser = LocalDateParser.getInstance(format);
+        // WHEN the method apply is invoked with null
+        final var result = parser.apply(null);
+        // THEN the result is a Success
+        assertTrue(result.isSuccess());
+        // AND the value is the date
+        final var value = result.getValue();
+        assertNull(value);
+    }
+
+    /*
+     * GIVEN a LocalDate format F
+     *  AND a LocalDateParser constructed with F
      *  AND a invalid local date string S
      * WHEN the method apply is invoked with S
      * THEN the result is a Failure
@@ -71,7 +93,7 @@ public class LocalDateParserTest {
      *  AND the message is formatted with S, LocalDate.class, and the cause
      */
     @Test
-    public void parsing_invalid_local_date_return_success(){
+    public void parsing_invalid_local_date_return_failure(){
         // GIVEN a LocalDate format F
         final var format = "yyyy-MM-dd";
         // AND a LocalDateParser constructed with F

@@ -1,43 +1,41 @@
-package kernel.parsers.fromstring.todate;
+package kernel.parsers.fromstring.tonumber;
 
 import kernel.parsers.exceptions.ParserException;
+import kernel.parsers.fromstring.todate.LocalDateParser;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LocalDateTimeParserTest {
+public class BigDecimalParserTest {
 
     /*
-     * GIVEN a LocalDateTime format F
-     *  AND a LocalDateTimeParser constructed with F
-     *  AND a valid local date string
+     * GIVEN a BigDecimalParser
+     *  AND a valid BigDecimal string S
      * WHEN the method apply is invoked with S
      * THEN the result is a Success
      *  AND the value is the date
      */
     @Test
-    public void parsing_valid_local_date_time_return_success(){
-        // GIVEN a LocalDateTime format F
-        final var format = "yyyy-MM-dd HH:mm";
-        // AND a LocalDateParser constructed with F
-        final var parser = LocalDateTimeParser.getInstance(format);
-        // AND a valid local dateTime string
-        final var string = "2020-03-05 23:59";
+    public void parsing_valid_big_decimal_return_success(){
+        // GIVEN a BigDecimalParser constructed
+        final var parser = BigDecimalParser.getInstance();
+        // AND a valid local date string
+        final var string = "0.0";
         // WHEN the method apply is invoked with S
         final var result = parser.apply(string);
         // THEN the result is a Success
         assertTrue(result.isSuccess());
         // AND the value is the date
         final var value = result.getValue();
-        assertEquals(value, LocalDateTime.of(2020,3,5,23,59));
+        assertEquals(value, new BigDecimal("0.0"));
     }
 
     /*
-     * GIVEN a LocalDateTime format F
-     *  AND a LocalDateTimeParser constructed with F
+     * GIVEN a BigDecimalParser
      *  AND an empty string S
      * WHEN the method apply is invoked with S
      * THEN the result is a Success
@@ -45,11 +43,9 @@ public class LocalDateTimeParserTest {
      */
     @Test
     public void parsing_empty_string_return_success(){
-        // GIVEN a LocalDateTime format F
-        final var format = "yyyy-MM-dd HH:mm";
-        // AND a LocalDateParser constructed with F
-        final var parser = LocalDateTimeParser.getInstance(format);
-        // AND a valid local date string
+        // GIVEN a BigDecimalParser constructed
+        final var parser = BigDecimalParser.getInstance();
+        // AND an empty string
         final var string = "";
         // WHEN the method apply is invoked with S
         final var result = parser.apply(string);
@@ -61,18 +57,15 @@ public class LocalDateTimeParserTest {
     }
 
     /*
-     * GIVEN a LocalDateTime format F
-     *  AND a LocalDateTimeParser constructed with F
+     * GIVEN a BigDecimalParser
      * WHEN the method apply is invoked with null
      * THEN the result is a Success
      *  AND the value is null
      */
     @Test
     public void parsing_null_return_success(){
-        // GIVEN a LocalDateTime format F
-        final var format = "yyyy-MM-dd HH:mm";
-        // AND a LocalDateParser constructed with F
-        final var parser = LocalDateTimeParser.getInstance(format);
+        // GIVEN a BigDecimalParser constructed
+        final var parser = BigDecimalParser.getInstance();
         // WHEN the method apply is invoked with null
         final var result = parser.apply(null);
         // THEN the result is a Success
@@ -83,22 +76,19 @@ public class LocalDateTimeParserTest {
     }
 
     /*
-     * GIVEN a LocalDateTime format F
-     *  AND a LocalDateTimeParser constructed with F
-     *  AND a invalid local date time string S
+     * GIVEN a BigDecimalParser
+     *  AND a invalid BigDecimal string S
      * WHEN the method apply is invoked with S
      * THEN the result is a Failure
      *  AND the exception is of the type ParserException
      *  AND the cause is of the type DateTimeParseException
-     *  AND the message is formatted with S, LocalDateTime.class, and the cause
+     *  AND the message is formatted with S, BigDecimal.class, and the cause
      */
     @Test
-    public void parsing_invalid_local_date_time_return_failure(){
-        // GIVEN a LocalDateTime format F
-        final var format = "yyyy-MM-dd HH:mm";
-        // AND a LocalDateParser constructed with F
-        final var parser = LocalDateTimeParser.getInstance(format);
-        // AND a invalid local date time string
+    public void parsing_invalid_big_decimal_return_failure(){
+        // GIVEN a BigDecimalParser constructed
+        final var parser = BigDecimalParser.getInstance();
+        // AND a invalid BigDecimal string
         final var string = "THIS IS NOT VALID";
         // WHEN the method apply is invoked with S
         final var result = parser.apply(string);
@@ -109,10 +99,10 @@ public class LocalDateTimeParserTest {
         assertEquals(exception.getClass(), ParserException.class);
         // AND the cause is of the type DateTimeParseException
         final var cause = exception.getCause();
-        assertEquals(cause.getClass(), DateTimeParseException.class);
-        // AND the message is formatted with S, LocalDateTime.class, and the cause
+        assertEquals(cause.getClass(), NumberFormatException.class);
+        // AND the message is formatted with S, BigDecimal.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, LocalDateTime.class.toString(), cause.toString()));
+                string, BigDecimal.class.toString(), cause.toString()));
 
 
     }

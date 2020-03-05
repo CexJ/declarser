@@ -64,6 +64,29 @@ public class ZonedDateTimeParserTest {
 
     /*
      * GIVEN a ZonedDateTime format F
+     *  AND a ZonedDateTimeParserParser constructed with F
+     *  AND an empty string S
+     * WHEN the method apply is invoked with S
+     * THEN the result is a Success
+     *  AND the value is null
+     */
+    @Test
+    public void parsing_null_return_success(){
+        // GIVEN a ZonedDateTime format F
+        final var format = "yyyy-MM-dd - HH:mm:ss z";
+        // AND a ZonedDateTimeParser constructed with F
+        final var parser = ZonedDateTimeParser.getInstance(format);
+        // WHEN the method apply is invoked with null
+        final var result = parser.apply(null);
+        // THEN the result is a Success
+        assertTrue(result.isSuccess());
+        // AND the value is the date
+        final var value = result.getValue();
+        assertNull(value);
+    }
+
+    /*
+     * GIVEN a ZonedDateTime format F
      *  AND a ZonedDateTimeParser constructed with F
      *  AND a invalid zoned date time string S
      * WHEN the method apply is invoked with S
@@ -73,7 +96,7 @@ public class ZonedDateTimeParserTest {
      *  AND the message is formatted with S, ZonedDateTime.class, and the cause
      */
     @Test
-    public void parsing_invalid_local_date_return_success(){
+    public void parsing_invalid_zoned_date_time_return_failure(){
         // GIVEN a ZonedDateTime format F
         final var format = "yyyy-MM-dd - HH:mm:ss z";
         // AND a ZonedDateTimeParser constructed with F
