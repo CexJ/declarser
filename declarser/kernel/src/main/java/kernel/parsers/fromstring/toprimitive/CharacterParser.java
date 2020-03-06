@@ -1,4 +1,4 @@
-package kernel.parsers.fromstring.toprimitives;
+package kernel.parsers.fromstring.toprimitive;
 
 import kernel.parsers.exceptions.ParserException;
 import kernel.tryapi.Try;
