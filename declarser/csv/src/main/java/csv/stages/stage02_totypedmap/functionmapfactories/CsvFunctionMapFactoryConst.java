@@ -5,7 +5,7 @@ import kernel.parsers.fromstring.todate.LocalDateTimeParser;
 import kernel.parsers.fromstring.todate.ZonedDateTimeParser;
 import kernel.parsers.fromstring.tonumber.BigDecimalParser;
 import kernel.parsers.fromstring.tonumber.BigIntegerParser;
-import kernel.parsers.fromstring.toprimitives.*;
+import kernel.parsers.fromstring.toprimitive.*;
 import kernel.parsers.fromstring.tostring.StringParser;
 import kernel.tryapi.Try;
 

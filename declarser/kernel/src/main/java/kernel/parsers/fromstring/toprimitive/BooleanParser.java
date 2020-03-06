@@ -1,4 +1,4 @@
-package kernel.parsers.fromstring.toprimitives;
+package kernel.parsers.fromstring.toprimitive;
 
 import kernel.parsers.exceptions.ParserException;
 import kernel.tryapi.Try;
@@ -21,7 +21,6 @@ public final class BooleanParser implements Function<String, Try<?>> {
     public Try<Boolean> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> Boolean.parseBoolean(s))
-                .enrichException(ex -> ParserException.of(s, Boolean.class, ex));
+        else return Try.success(Boolean.parseBoolean(s));
     }
 }
