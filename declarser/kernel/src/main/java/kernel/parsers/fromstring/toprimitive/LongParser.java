@@ -17,7 +17,6 @@ public final class LongParser implements Function<String, Try<?>> {
 
     private LongParser(){}
 
-
     @Override
     public Try<Long> apply(
             final String s) {

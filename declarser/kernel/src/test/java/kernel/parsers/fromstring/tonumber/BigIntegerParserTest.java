@@ -3,11 +3,22 @@ package kernel.parsers.fromstring.tonumber;
 import kernel.parsers.exceptions.ParserException;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BigIntegerParserTest {
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<BigIntegerParser> constructor = BigIntegerParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
 
     /*
      * GIVEN a BigIntegerParser

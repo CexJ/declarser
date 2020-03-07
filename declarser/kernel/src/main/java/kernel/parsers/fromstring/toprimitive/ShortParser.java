@@ -15,6 +15,8 @@ public final class ShortParser implements Function<String, Try<?>> {
         return InstanceHolder.instance;
     }
 
+    private ShortParser(){}
+
     @Override
     public Try<Short> apply(
             final String s) {

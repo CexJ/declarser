@@ -1,13 +1,27 @@
 package kernel.parsers.fromstring.toprimitive;
 
+import kernel.parsers.fromstring.tonumber.BigIntegerParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BooleanParserTest {
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<BooleanParser> constructor = BooleanParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
+
 
     /*
      * GIVEN a BooleanParser

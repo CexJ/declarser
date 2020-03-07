@@ -3,9 +3,21 @@ package kernel.parsers.fromstring.toprimitive;
 import kernel.parsers.exceptions.ParserException;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IntegerParserTest {
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<IntegerParser> constructor = IntegerParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
 
     /*
      * GIVEN a IntegerParser

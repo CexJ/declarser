@@ -3,12 +3,29 @@ package kernel.parsers.fromstring.todate;
 import kernel.parsers.exceptions.ParserException;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LocalDateParserTest {
+
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(LocalDateParser.getInstance("format"), LocalDateParser.getInstance("format"));
+        assertNotEquals(LocalDateParser.getInstance("format"), LocalDateParser.getInstance("not the same format"));
+    }
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<LocalDateParser> constructor = LocalDateParser.class.getDeclaredConstructor(String.class);
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance("format");
+    }
 
     /*
      * GIVEN a LocalDate format F

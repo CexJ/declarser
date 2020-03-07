@@ -3,12 +3,23 @@ package kernel.parsers.fromstring.todate;
 import kernel.parsers.exceptions.ParserException;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LocalDateTimeParserTest {
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<LocalDateTimeParser> constructor = LocalDateTimeParser.class.getDeclaredConstructor(String.class);
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance("format");
+    }
 
     /*
      * GIVEN a LocalDateTime format F

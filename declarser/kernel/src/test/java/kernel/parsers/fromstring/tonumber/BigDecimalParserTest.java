@@ -1,16 +1,25 @@
 package kernel.parsers.fromstring.tonumber;
 
 import kernel.parsers.exceptions.ParserException;
-import kernel.parsers.fromstring.todate.LocalDateParser;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BigDecimalParserTest {
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<BigDecimalParser> constructor = BigDecimalParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
+
 
     /*
      * GIVEN a BigDecimalParser
