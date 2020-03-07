@@ -1,41 +1,36 @@
-package kernel.parsers.fromstring.tonumber;
+package kernel.parsers.fromstring.toprimitive;
 
 import kernel.parsers.exceptions.ParserException;
-import kernel.parsers.fromstring.todate.LocalDateParser;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BigDecimalParserTest {
+public class DoubleParserTest {
 
     /*
-     * GIVEN a BigDecimalParser
-     *  AND a valid BigDecimal string S
+     * GIVEN a DoubleParser
+     *  AND a valid double string S
      * WHEN the method apply is invoked with S
      * THEN the result is a Success
-     *  AND the value is the date
+     *  AND the value is the double
      */
     @Test
-    public void parsing_valid_big_decimal_return_success(){
-        // GIVEN a BigDecimalParser constructed
-        final var parser = BigDecimalParser.getInstance();
-        // AND a valid local date string
+    public void parsing_valid_double_return_success(){
+        // GIVEN a CharacterParser
+        final var parser = DoubleParser.getInstance();
+        // AND a valid character string S
         final var string = "0.0";
         // WHEN the method apply is invoked with S
         final var result = parser.apply(string);
         // THEN the result is a Success
         assertTrue(result.isSuccess());
-        // AND the value is the date
+        // AND the value is true
         final var value = result.getValue();
-        assertEquals(value, new BigDecimal("0.0"));
+        assertEquals(value, 0.0);
     }
 
     /*
-     * GIVEN a BigDecimalParser
+     * GIVEN a DoubleParser
      *  AND an empty string S
      * WHEN the method apply is invoked with S
      * THEN the result is a Success
@@ -43,52 +38,52 @@ public class BigDecimalParserTest {
      */
     @Test
     public void parsing_empty_string_return_success(){
-        // GIVEN a BigDecimalParser constructed
-        final var parser = BigDecimalParser.getInstance();
-        // AND an empty string
+        // GIVEN a CharacterParser
+        final var parser = DoubleParser.getInstance();
+        // AND a valid local date string
         final var string = "";
         // WHEN the method apply is invoked with S
         final var result = parser.apply(string);
         // THEN the result is a Success
         assertTrue(result.isSuccess());
-        // AND the value is the date
+        // AND the value null
         final var value = result.getValue();
         assertNull(value);
     }
 
     /*
-     * GIVEN a BigDecimalParser
+     * GIVEN a DoubleParser
      * WHEN the method apply is invoked with null
      * THEN the result is a Success
      *  AND the value is null
      */
     @Test
     public void parsing_null_return_success(){
-        // GIVEN a BigDecimalParser constructed
-        final var parser = BigDecimalParser.getInstance();
-        // WHEN the method apply is invoked with null
+        // GIVEN a DoubleParser
+        final var parser = DoubleParser.getInstance();
+        // WHEN the method apply is invoked with S
         final var result = parser.apply(null);
         // THEN the result is a Success
         assertTrue(result.isSuccess());
-        // AND the value is the date
+        // AND the value is null
         final var value = result.getValue();
         assertNull(value);
     }
 
     /*
-     * GIVEN a BigDecimalParser
-     *  AND a invalid BigDecimal string S
+     * GIVEN a DoubleParser
+     *  AND a invalid double string S
      * WHEN the method apply is invoked with S
      * THEN the result is a Failure
      *  AND the exception is of the type ParserException
-     *  AND the cause is of the type DateTimeParseException
-     *  AND the message is formatted with S, BigDecimal.class, and the cause
+     *  AND the cause is of the type NumberFormatException
+     *  AND the message is formatted with S, Double.class, and the cause
      */
     @Test
-    public void parsing_invalid_big_decimal_return_failure(){
-        // GIVEN a BigDecimalParser constructed
-        final var parser = BigDecimalParser.getInstance();
-        // AND a invalid BigDecimal string
+    public void parsing_invalid_double_return_success(){
+        // GIVEN a DoubleParser
+        final var parser = DoubleParser.getInstance();
+        // AND a valid local date string
         final var string = "THIS IS NOT VALID";
         // WHEN the method apply is invoked with S
         final var result = parser.apply(string);
@@ -100,10 +95,8 @@ public class BigDecimalParserTest {
         // AND the cause is of the type NumberFormatException
         final var cause = exception.getCause();
         assertEquals(cause.getClass(), NumberFormatException.class);
-        // AND the message is formatted with S, BigDecimal.class, and the cause
+        // AND the message is formatted with S, Double.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, BigDecimal.class.toString(), cause.toString()));
-
-
+                string, Double.class.toString(), cause.toString()));
     }
 }

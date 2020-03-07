@@ -78,7 +78,7 @@ public class BigIntegerParserTest {
      * WHEN the method apply is invoked with S
      * THEN the result is a Failure
      *  AND the exception is of the type ParserException
-     *  AND the cause is of the type DateTimeParseException
+     *  AND the cause is of the type NumberFormatException
      *  AND the message is formatted with S, BigInteger.class, and the cause
      */
     @Test
@@ -94,13 +94,11 @@ public class BigIntegerParserTest {
         // AND the exception is of the type ParserException
         final var exception = result.getException();
         assertEquals(exception.getClass(), ParserException.class);
-        // AND the cause is of the type DateTimeParseException
+        // AND the cause is of the type NumberFormatException
         final var cause = exception.getCause();
         assertEquals(cause.getClass(), NumberFormatException.class);
         // AND the message is formatted with S, BigInteger.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
                 string, BigInteger.class.toString(), cause.toString()));
-
-
     }
 }
