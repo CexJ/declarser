@@ -99,7 +99,7 @@ public final class CsvDeclarserFactory {
     private <O> Try<Validator<String>> preValidator(
             final Class<O> clazz) {
         return Optional.ofNullable(clazz.getAnnotation(CsvPreValidations.class))
-                .map(ann -> Stream.of(ann.validations())
+                .map(ann -> Stream.of(ann.value())
                         .collect(Collectors.toList()))
                 .map(csvPreValidatorsFactory::function)
                 .orElse(Try.success(s -> Optional.empty()));

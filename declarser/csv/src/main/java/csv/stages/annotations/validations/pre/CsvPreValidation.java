@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface CsvPreValidation {
-    Class<? extends Validator<String>> validator();
+    Class<? extends Validator<String>> value();
     String[] params() default {};
 }

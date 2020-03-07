@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,19 +61,6 @@ public final class CsvFunctionMapFactory {
                                   : collectFailureMap(failures);
     }
 
-    private Try<Map<Integer, Function<String, Try<?>>>> collectFailureMap(
-            final List<Try<CsvAnnotationImpl>> errors) {
-        return Try.fail(GroupedException.of(errors.stream()
-             .map(Try::getException)
-             .collect(Collectors.toList())));
-    }
-
-    private Try<Map<Integer, Function<String, Try<?>>>> collectSuccessMap(
-            final List<Try<CsvAnnotationImpl>> fields) {
-        return Try.success(fields.stream()
-                .map(Try::getValue)
-                .collect(Collectors.toMap(CsvAnnotationImpl::getKey, CsvAnnotationImpl::getFunction)));
-    }
 
     private Try<CsvAnnotationImpl> computeTransformer(
             final Field field) {
@@ -102,7 +90,7 @@ public final class CsvFunctionMapFactory {
 
     private Try<Function<String, Try<?>>> fieldTransformer(
             final CsvField csvField) {
-        final var annPrevalidators = csvField.csvPreValidations().validations();
+        final var annPrevalidators = csvField.csvPreValidations().value();
         final var annFunction = csvField.value();
         final var annParams = csvField.params();
 
@@ -147,11 +135,26 @@ public final class CsvFunctionMapFactory {
              .collect(Collectors.toList())));
     }
 
+    private Try<Map<Integer, Function<String, Try<?>>>> collectFailureMap(
+            final List<Try<CsvAnnotationImpl>> errors) {
+        return Try.fail(GroupedException.of(errors.stream()
+                .map(Try::getException)
+                .collect(Collectors.toList())));
+    }
+
+
     private Try<List<?>> collectSuccessList(
             final List<Try<?>> success) {
         return Try.success(success.stream()
                 .map(Try::getValue)
                 .collect(Collectors.toList()));
+    }
+
+    private Try<Map<Integer, Function<String, Try<?>>>> collectSuccessMap(
+            final List<Try<CsvAnnotationImpl>> fields) {
+        return Try.success(fields.stream()
+                .map(Try::getValue)
+                .collect(Collectors.toMap(CsvAnnotationImpl::getKey, CsvAnnotationImpl::getFunction)));
     }
 }
 

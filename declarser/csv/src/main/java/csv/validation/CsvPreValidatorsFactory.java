@@ -38,7 +38,7 @@ public final class CsvPreValidatorsFactory {
     public Try<Validator<String>> function(
             final List<? extends CsvPreValidation> validatorAnns){
         final var tryValidators = validatorAnns.stream()
-                .map(ann -> stringValidator(ann.validator(), ann.params()))
+                .map(ann -> stringValidator(ann.value(), ann.params()))
                 .collect(Collectors.toList());
 
         final var hasErrors = tryValidators.stream().anyMatch(Try::isFailure);
@@ -64,7 +64,7 @@ public final class CsvPreValidatorsFactory {
 
     public Try<Validator<String>> function(
             final CsvPreValidation validatorAnn){
-       return stringValidator(validatorAnn.validator(), validatorAnn.params());
+       return stringValidator(validatorAnn.value(), validatorAnn.params());
     }
 
     private Validator<String> ok() {
