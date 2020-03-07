@@ -6,7 +6,7 @@ import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
-import csv.stages.stage04_toobject.restructors.ReflectionRestructor;
+import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
 import csv.validation.CsvValidationConst;
 import csv.validation.CsvPreValidatorsFactory;
 import kernel.Declarser;

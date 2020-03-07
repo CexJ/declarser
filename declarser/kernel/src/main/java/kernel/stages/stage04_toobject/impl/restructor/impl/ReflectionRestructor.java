@@ -1,4 +1,4 @@
-package csv.stages.stage04_toobject.restructors;
+package kernel.stages.stage04_toobject.impl.restructor.impl;
 
 import java.util.LinkedList;
 import java.util.List;
