@@ -14,14 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BooleanParserTest {
 
-    @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<BooleanParser> constructor = BooleanParser.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        constructor.setAccessible(true);
-        constructor.newInstance();
-    }
-
 
     /*
      * GIVEN a BooleanParser
@@ -128,7 +120,18 @@ public class BooleanParserTest {
         // AND the value is false
         final var value = result.getValue();
         assertEquals(value, Boolean.FALSE);
+    }
 
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(BooleanParser.getInstance(), BooleanParser.getInstance());
+    }
 
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<BooleanParser> constructor = BooleanParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

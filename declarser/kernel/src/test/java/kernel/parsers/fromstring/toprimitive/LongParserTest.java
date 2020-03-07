@@ -11,14 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LongParserTest {
 
-    @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<LongParser> constructor = LongParser.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        constructor.setAccessible(true);
-        constructor.newInstance();
-    }
-
     /*
      * GIVEN a LongParser
      *  AND a valid double string S
@@ -110,5 +102,18 @@ public class LongParserTest {
         // AND the message is formatted with S, Long.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
                 string, Long.class.toString(), cause.toString()));
+    }
+
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(LongParser.getInstance(), LongParser.getInstance());
+    }
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<LongParser> constructor = LongParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

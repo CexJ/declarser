@@ -14,15 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CharacterParserTest {
 
-    @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<CharacterParser> constructor = CharacterParser.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        constructor.setAccessible(true);
-        constructor.newInstance();
-    }
-
-
     /*
      * GIVEN a CharacterParser
      *  AND a valid character string S
@@ -114,5 +105,18 @@ public class CharacterParserTest {
         // AND the message is formatted with S, Character.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
                 string, Character.class.toString(), cause.toString()));
+    }
+
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(CharacterParser.getInstance(), CharacterParser.getInstance());
+    }
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<CharacterParser> constructor = CharacterParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

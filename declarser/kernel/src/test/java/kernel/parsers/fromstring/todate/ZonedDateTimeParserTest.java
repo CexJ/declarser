@@ -15,14 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ZonedDateTimeParserTest {
 
-    @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<ZonedDateTimeParser> constructor = ZonedDateTimeParser.class.getDeclaredConstructor(String.class);
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        constructor.setAccessible(true);
-        constructor.newInstance("format");
-    }
-
     /*
      * GIVEN a ZonedDateTime format F
      *  AND a ZonedDateTimeParser constructed with F
@@ -127,7 +119,20 @@ public class ZonedDateTimeParserTest {
         // AND the message is formatted with S, ZonedDateTime.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
                 string, ZonedDateTime.class.toString(), cause.toString()));
+    }
 
 
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(ZonedDateTimeParser.getInstance("format"), ZonedDateTimeParser.getInstance("format"));
+        assertNotEquals(ZonedDateTimeParser.getInstance("format"), ZonedDateTimeParser.getInstance("not the same format"));
+    }
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<ZonedDateTimeParser> constructor = ZonedDateTimeParser.class.getDeclaredConstructor(String.class);
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance("format");
     }
 }

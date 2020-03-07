@@ -12,14 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BigIntegerParserTest {
 
-    @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<BigIntegerParser> constructor = BigIntegerParser.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        constructor.setAccessible(true);
-        constructor.newInstance();
-    }
-
     /*
      * GIVEN a BigIntegerParser
      *  AND a valid BigInteger string S
@@ -111,5 +103,18 @@ public class BigIntegerParserTest {
         // AND the message is formatted with S, BigInteger.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
                 string, BigInteger.class.toString(), cause.toString()));
+    }
+
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(BigIntegerParser.getInstance(), BigIntegerParser.getInstance());
+    }
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<BigIntegerParser> constructor = BigIntegerParser.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

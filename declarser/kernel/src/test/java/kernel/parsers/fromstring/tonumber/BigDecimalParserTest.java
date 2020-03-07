@@ -1,6 +1,8 @@
 package kernel.parsers.fromstring.tonumber;
 
 import kernel.parsers.exceptions.ParserException;
+import kernel.parsers.fromstring.todate.ZonedDateTimeParser;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
@@ -12,6 +14,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BigDecimalParserTest {
 
+    @BeforeEach
+    public void clean(){
+
+    }
+
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(BigDecimalParser.getInstance(), BigDecimalParser.getInstance());
+    }
+
     @Test
     public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Constructor<BigDecimalParser> constructor = BigDecimalParser.class.getDeclaredConstructor();
@@ -19,7 +31,6 @@ public class BigDecimalParserTest {
         constructor.setAccessible(true);
         constructor.newInstance();
     }
-
 
     /*
      * GIVEN a BigDecimalParser
@@ -112,7 +123,6 @@ public class BigDecimalParserTest {
         // AND the message is formatted with S, BigDecimal.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
                 string, BigDecimal.class.toString(), cause.toString()));
-
-
     }
+
 }

@@ -13,14 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LocalDateTimeParserTest {
 
-    @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<LocalDateTimeParser> constructor = LocalDateTimeParser.class.getDeclaredConstructor(String.class);
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        constructor.setAccessible(true);
-        constructor.newInstance("format");
-    }
-
     /*
      * GIVEN a LocalDateTime format F
      *  AND a LocalDateTimeParser constructed with F
@@ -124,7 +116,20 @@ public class LocalDateTimeParserTest {
         // AND the message is formatted with S, LocalDateTime.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
                 string, LocalDateTime.class.toString(), cause.toString()));
+    }
 
 
+    @Test
+    public void testFlyWeightPattern(){
+        assertEquals(LocalDateTimeParser.getInstance("format"), LocalDateTimeParser.getInstance("format"));
+        assertNotEquals(LocalDateTimeParser.getInstance("format"), LocalDateTimeParser.getInstance("not the same format"));
+    }
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<LocalDateTimeParser> constructor = LocalDateTimeParser.class.getDeclaredConstructor(String.class);
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance("format");
     }
 }
