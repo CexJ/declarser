@@ -1,6 +1,7 @@
 package kernel.stages.stage04_toobject.restructor.impl;
 
 import kernel.enums.SubsetType;
+import kernel.exceptions.SubsetTypeException;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
 import kernel.stages.stage04_toobject.restructor.impl.sample.TypeO;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -131,6 +132,7 @@ public class ReflectionRestructorTest {
      *  AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
@@ -154,6 +156,9 @@ public class ReflectionRestructorTest {
         final var result = restructor.restruct(input);
         // THEN the result is a failure
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -211,6 +216,7 @@ public class ReflectionRestructorTest {
      *  AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
@@ -234,6 +240,10 @@ public class ReflectionRestructorTest {
         final var result = restructor.restruct(input);
         // THEN the result is a success
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
+
     }
 
     /*
@@ -245,6 +255,7 @@ public class ReflectionRestructorTest {
      *  LET M be the map Fi -> Ki except for i in a set J
      * WHEN a restructor R is constructed with C and M
      * THEN is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class)
@@ -262,6 +273,10 @@ public class ReflectionRestructorTest {
                 inputSubsetType, SubsetType.CONTAINS);
         // THEN is a failure
         assertTrue(restructor.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = restructor.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
+
     }
 
     /*
@@ -273,6 +288,7 @@ public class ReflectionRestructorTest {
      *  LET M be the map Fi -> Ki except for i in a set J
      * WHEN a restructor R is constructed with C and M
      * THEN is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class)
@@ -290,6 +306,9 @@ public class ReflectionRestructorTest {
                 inputSubsetType, SubsetType.BIJECTIVE);
         // THEN is a failure
         assertTrue(restructor.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = restructor.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
 
@@ -437,6 +456,7 @@ public class ReflectionRestructorTest {
      *  AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
@@ -463,6 +483,9 @@ public class ReflectionRestructorTest {
         final var result = restructor.restruct(input);
         // THEN the result is a failure
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -497,6 +520,9 @@ public class ReflectionRestructorTest {
                 inputSubsetType, SubsetType.CONTAINED);
         // THEN is a failure
         assertTrue(restructor.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = restructor.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -531,6 +557,9 @@ public class ReflectionRestructorTest {
                 inputSubsetType, SubsetType.BIJECTIVE);
         // THEN is a failure
         assertTrue(restructor.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = restructor.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
 
@@ -638,6 +667,7 @@ public class ReflectionRestructorTest {
      *      except for i in J<(1,...,N) for which there is no entry
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
@@ -662,6 +692,9 @@ public class ReflectionRestructorTest {
         final var result = restructor.restruct(input);
         // THEN the result is a success
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -722,6 +755,7 @@ public class ReflectionRestructorTest {
      *      except for i in J<(1,...,N) for which there is no entry
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
@@ -746,6 +780,9 @@ public class ReflectionRestructorTest {
         final var result = restructor.restruct(input);
         // THEN the result is a success
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -806,6 +843,7 @@ public class ReflectionRestructorTest {
      *      except for i in J<(1,...,N) for which there is no entry
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
@@ -830,6 +868,9 @@ public class ReflectionRestructorTest {
         final var result = restructor.restruct(input);
         // THEN the result is a success
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -892,6 +933,7 @@ public class ReflectionRestructorTest {
      *      plus some other entries Kj -> Vj
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
@@ -917,8 +959,11 @@ public class ReflectionRestructorTest {
         input.put(thirdKey, true);
         // WHEN the restruct method is invoked with I
         final var result = restructor.restruct(input);
-        // THEN the result is a success
+        // THEN the result is a failure
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -981,6 +1026,7 @@ public class ReflectionRestructorTest {
      *      plus some other entries Kj -> Vj
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
@@ -1006,8 +1052,11 @@ public class ReflectionRestructorTest {
         input.put(thirdKey, true);
         // WHEN the restruct method is invoked with I
         final var result = restructor.restruct(input);
-        // THEN the result is a success
+        // THEN the result is a failure
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -1070,6 +1119,7 @@ public class ReflectionRestructorTest {
      *      plus some other entries Kj -> Vj
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
@@ -1095,8 +1145,11 @@ public class ReflectionRestructorTest {
         input.put(thirdKey, true);
         // WHEN the restruct method is invoked with I
         final var result = restructor.restruct(input);
-        // THEN the result is a success
+        // THEN the result is a failure
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 
     /*
@@ -1159,6 +1212,7 @@ public class ReflectionRestructorTest {
      *      plus some other entries Kj -> Vj
      * WHEN the restruct method is invoked with I
      * THEN the result is a failure
+     *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
     @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
@@ -1184,7 +1238,10 @@ public class ReflectionRestructorTest {
         input.put(thirdKey, true);
         // WHEN the restruct method is invoked with I
         final var result = restructor.restruct(input);
-        // THEN the result is a success
+        // THEN the result is a failure
         assertTrue(result.isFailure());
+        // AND the Exception is of type SubsetException
+        final var exception = result.getException();
+        assertEquals(exception.getClass(), SubsetTypeException.class);
     }
 }

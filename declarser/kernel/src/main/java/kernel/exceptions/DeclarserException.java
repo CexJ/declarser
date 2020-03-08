@@ -20,4 +20,8 @@ public class DeclarserException extends Exception {
             final Exception ex) {
         return new DeclarserException(input,ex);
     }
+
+    public Object getInput() {
+        return input;
+    }
 }
