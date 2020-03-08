@@ -94,8 +94,9 @@ public final class CsvDeclarserFactory {
     private <O> Try<ToObjectImpl<Integer, O>> stage4(
             final Class<O> clazz,
             final Validator<O> postValidator) {
-        final var mapFileds = CsvFieldMapFactory.mapFieldNameColumn(clazz);
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds, annotationsSubsetType, SubsetType.CONTAINED);
+        final var mapFields = CsvFieldMapFactory.mapFieldNameColumn(clazz);
+        final var restructor = mapFields.flatMap( mf ->
+                ReflectionRestructor.of(clazz, mf, annotationsSubsetType, SubsetType.CONTAINED));
         return restructor.map(res -> ToObjectImpl.of(postValidator,res));
     }
 
