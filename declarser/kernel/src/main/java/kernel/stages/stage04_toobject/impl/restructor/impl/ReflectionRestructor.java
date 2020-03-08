@@ -29,15 +29,15 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 
 	public static <K,O> Try<ReflectionRestructor<K,O>> of(
 			final Class<O> clazz,
-			final Map<String,K> mapFileds,
+			final Map<String,K> mapFields,
 			final SubsetType inputMapType,
 			final SubsetType fieldMapType){
 		final var fieldsname = Stream.of(clazz.getDeclaredFields())
 				.map(Field::getName)
 				.collect(Collectors.toSet());
-		return fieldMapType.validation(mapFileds.keySet(), fieldsname)
+		return fieldMapType.validation(mapFields.keySet(), fieldsname)
 				.map(Try::<ReflectionRestructor<K,O>>fail)
-				.orElse(Try.success(new ReflectionRestructor<>(clazz, mapFileds,inputMapType)));
+				.orElse(Try.success(new ReflectionRestructor<>(clazz, mapFields,inputMapType)));
 	}
 
 	@Override
