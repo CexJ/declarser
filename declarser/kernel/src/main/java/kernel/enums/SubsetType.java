@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public enum SubsetType {
     CONTAINED{
         public <T> Optional<FunctionTypeException> validation(Collection<T> first, Collection<T> second){
-            final var notContained = first.stream().filter(second::contains).collect(Collectors.toList());
+            final var notContained = first.stream().filter(f -> ! second.contains(f)).collect(Collectors.toList());
             if(notContained.isEmpty()) return Optional.empty();
             else return Optional.of(InjectionTypeException.of(first, second));
         }
