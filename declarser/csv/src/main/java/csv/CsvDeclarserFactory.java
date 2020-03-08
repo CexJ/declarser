@@ -4,6 +4,7 @@ import csv.stages.annotations.validations.pre.CsvPreValidations;
 import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
+import kernel.enums.SubSetType;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
@@ -91,7 +92,8 @@ public final class CsvDeclarserFactory {
             final Class<O> clazz,
             final Validator<O> postValidator) {
         final var mapFileds = CsvFieldMapFactory.mapFieldNameColumn(clazz);
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds);
+        // TODO
+        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubSetType.NONE, SubSetType.NONE).getValue();
         return Try.success(
                 ToObjectImpl.of(postValidator,restructor));
     }
