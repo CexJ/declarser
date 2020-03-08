@@ -4,7 +4,7 @@ import csv.stages.annotations.validations.pre.CsvPreValidations;
 import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
-import kernel.enums.SubSetType;
+import kernel.enums.SubsetType;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
@@ -32,13 +32,15 @@ public final class CsvDeclarserFactory {
     private final ParallelizationStrategyEnum parallelizationStrategy;
     private final CsvPreValidatorsFactory csvPreValidatorsFactory;
     private final CsvFunctionMapFactory mapFunctionFactory;
+    private final SubsetType annotationsSubsetType;
 
     private CsvDeclarserFactory(
             final ParallelizationStrategyEnum parallelizationStrategy,
             final Map<Class<? extends Validator<String>>,
                     Function<String[], Validator<String>>> customPreValidatorsMap,
             final Map<Class<? extends Function<String, Try<?>>>,
-                    Function<String[], Function<String, Try<?>>>> customConstructorMap) {
+                    Function<String[], Function<String, Try<?>>>> customConstructorMap,
+            final SubsetType annotationsSubsetType) {
         this.parallelizationStrategy = parallelizationStrategy;
         this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
         final var classFunctionMap = new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
@@ -47,6 +49,7 @@ public final class CsvDeclarserFactory {
                 this,
                 csvPreValidatorsFactory,
                 classFunctionMap);
+        this.annotationsSubsetType = annotationsSubsetType;
 
     }
 
@@ -92,10 +95,8 @@ public final class CsvDeclarserFactory {
             final Class<O> clazz,
             final Validator<O> postValidator) {
         final var mapFileds = CsvFieldMapFactory.mapFieldNameColumn(clazz);
-        // TODO
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubSetType.NONE, SubSetType.NONE).getValue();
-        return Try.success(
-                ToObjectImpl.of(postValidator,restructor));
+        final var restructor = ReflectionRestructor.of(clazz, mapFileds, annotationsSubsetType, SubsetType.CONTAINED);
+        return restructor.map(res -> ToObjectImpl.of(postValidator,res));
     }
 
     private <O> Try<Validator<String>> preValidator(
@@ -124,6 +125,7 @@ public final class CsvDeclarserFactory {
                 Function<String[], Validator<String>>> customPreValidatorsMap = new HashMap<>();
         private Map<Class<? extends Function<String, Try<?>>>,
                 Function<String[], Function<String, Try<?>>>> customConstructorMap =  new HashMap<>();
+        private SubsetType annotationsSubsetType = SubsetType.NONE;
 
         public Builder withParallelizationStrategy(
                 final ParallelizationStrategyEnum parallelizationStrategy) {
@@ -145,8 +147,18 @@ public final class CsvDeclarserFactory {
             return this;
         }
 
+        public Builder withAnnotationsSubsetType(
+                final SubsetType annotationsSubsetType) {
+            if(annotationsSubsetType != null) this.annotationsSubsetType = annotationsSubsetType;
+            return this;
+        }
+
         public CsvDeclarserFactory build(){
-            return new CsvDeclarserFactory(parallelizationStrategy, customPreValidatorsMap, customConstructorMap);
+            return new CsvDeclarserFactory(
+                    parallelizationStrategy,
+                    customPreValidatorsMap,
+                    customConstructorMap,
+                    annotationsSubsetType);
         }
     }
 }

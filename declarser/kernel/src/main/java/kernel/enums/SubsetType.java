@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public enum SubSetType {
+public enum SubsetType {
     CONTAINED{
         public <T> Optional<FunctionTypeException> validation(Collection<T> first, Collection<T> second){
             final var notContained = first.stream().filter(second::contains).collect(Collectors.toList());

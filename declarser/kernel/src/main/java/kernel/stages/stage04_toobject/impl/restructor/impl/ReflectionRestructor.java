@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import kernel.enums.SubSetType;
+import kernel.enums.SubsetType;
 import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.exceptions.GroupedException;
 import kernel.tryapi.Try;
@@ -16,12 +16,12 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 
 	private final Class<O> clazz;
 	private final Map<String,K> mapFileds;
-	private final SubSetType inputMapType;
+	private final SubsetType inputMapType;
 
 	private ReflectionRestructor(
 			final Class<O> clazz,
 			final Map<String,K> mapFileds,
-			final SubSetType inputMapType) {
+			final SubsetType inputMapType) {
 		this.clazz = clazz;
 		this.mapFileds = mapFileds;
 		this.inputMapType = inputMapType;
@@ -30,8 +30,8 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 	public static <K,O> Try<ReflectionRestructor<K,O>> of(
 			final Class<O> clazz,
 			final Map<String,K> mapFileds,
-			final SubSetType inputMapType,
-			final SubSetType fieldMapType){
+			final SubsetType inputMapType,
+			final SubsetType fieldMapType){
 		final var fieldsname = Stream.of(clazz.getDeclaredFields())
 				.map(Field::getName)
 				.collect(Collectors.toSet());

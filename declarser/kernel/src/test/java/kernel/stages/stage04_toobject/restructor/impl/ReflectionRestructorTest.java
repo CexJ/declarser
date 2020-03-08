@@ -1,6 +1,6 @@
 package kernel.stages.stage04_toobject.restructor.impl;
 
-import kernel.enums.SubSetType;
+import kernel.enums.SubsetType;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
 import kernel.stages.stage04_toobject.restructor.impl.sample.TypeO;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubSetType.NONE, SubSetType.NONE).getValue();
+        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubsetType.NONE, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
         input.put(firstKey, "firstValue");
@@ -74,7 +74,7 @@ public class ReflectionRestructorTest {
         final var mapFileds = new HashMap<String, TypeK>();
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubSetType.NONE, SubSetType.NONE).getValue();
+        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubsetType.NONE, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
         input.put(firstKey, "firstValue");
@@ -115,7 +115,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         mapFileds.put("thirdField", thirdKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubSetType.NONE, SubSetType.NONE).getValue();
+        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubsetType.NONE, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
         input.put(firstKey, "firstValue");
@@ -156,7 +156,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubSetType.NONE, SubSetType.NONE).getValue();
+        final var restructor = ReflectionRestructor.of(clazz, mapFileds, SubsetType.NONE, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
         final var input = new HashMap<TypeK, Object>();
