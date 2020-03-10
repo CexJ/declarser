@@ -14,11 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BigDecimalParserTest {
 
-    @BeforeEach
-    public void clean(){
-
-    }
-
     @Test
     public void testFlyWeightPattern(){
         assertEquals(BigDecimalParser.getInstance(), BigDecimalParser.getInstance());
