@@ -56,9 +56,10 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
 
         final var transformer =
                 Optional.ofNullable(field.getAnnotation(CsvField.class)).map(this::fieldTransformer)              .orElse(
-                        Optional.ofNullable(field.getAnnotation(CsvNode.class)) .map(node -> nodeTransformer(field, node)).orElse(
-                                Optional.ofNullable(autoFunctionClassMap.get(field.getType())).map(Try::success)                  .orElse(
-                                        Try.fail(new NullPointerException()))));
+                Optional.ofNullable(field.getAnnotation(CsvNode.class)) .map(node -> nodeTransformer(field, node)).orElse(
+                Optional.ofNullable(autoFunctionClassMap.get(field.getType())).map(Try::success)                  .orElse(
+                Try.fail(new NullPointerException()))));
+
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 
         return transformer.map(tra ->
