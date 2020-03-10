@@ -1,9 +1,9 @@
-package csv.validation;
+package csv.validation.utils;
 
-import csv.stages.annotations.validations.pre.CsvPreValidation;
 import kernel.validations.Validator;
 import kernel.exceptions.GroupedException;
 import kernel.tryapi.Try;
+import kernel.validations.impl.PreValidator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +36,9 @@ public final class CsvPreValidatorsFactory {
 
 
     public Try<Validator<String>> function(
-            final List<? extends CsvPreValidation> validatorAnns){
+            final List<? extends PreValidator<String>> validatorAnns){
         final var tryValidators = validatorAnns.stream()
-                .map(ann -> stringValidator(ann.value(), ann.params()))
+                .map(ann -> stringValidator(ann.getClazz(), ann.getParams()))
                 .collect(Collectors.toList());
 
         final var hasErrors = tryValidators.stream().anyMatch(Try::isFailure);

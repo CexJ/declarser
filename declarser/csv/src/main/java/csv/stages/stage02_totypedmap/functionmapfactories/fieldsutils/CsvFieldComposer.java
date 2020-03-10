@@ -6,7 +6,8 @@ import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.annotations.fields.CsvField;
 import csv.stages.annotations.fields.CsvNode;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
-import csv.validation.CsvPreValidatorsFactory;
+import csv.validation.utils.CsvPreValidatorsFactory;
+import csv.validation.utils.CsvPreValidatorsExtractor;
 import kernel.exceptions.GroupedException;
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import kernel.stages.stage02_totypedmap.impl.impl.Transformer;
@@ -24,26 +25,33 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
     public final static Class<?>[] EMPTY = new Class[]{};
 
     private final CsvPreValidatorsFactory preValidatorFactory;
+    private final CsvPreValidatorsExtractor csvPreValidatorsExtractor;
     private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;
     private final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap = CsvFunctionMapFactoryConst.autoFunctionClassMap;
     private final CsvDeclarserFactory csvDeclarserFactory;
 
+
     private CsvFieldComposer(
             final CsvDeclarserFactory csvDeclarserFactory,
             final CsvPreValidatorsFactory preValidatorFactory,
+            final CsvPreValidatorsExtractor csvPreValidatorsExtractor,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap) {
         this.csvDeclarserFactory = csvDeclarserFactory;
         this.preValidatorFactory = preValidatorFactory;
+        this.csvPreValidatorsExtractor = csvPreValidatorsExtractor;
         this.functionClassMap = new HashMap<>(functionClassMap);
+
     }
 
     public static CsvFieldComposer of(
             final CsvDeclarserFactory csvDeclarserFactory,
             final CsvPreValidatorsFactory preValidatorFactory,
+            final CsvPreValidatorsExtractor csvPreValidatorsExtractor,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap){
         return new CsvFieldComposer(
                 csvDeclarserFactory,
                 preValidatorFactory,
+                csvPreValidatorsExtractor,
                 functionClassMap);
     }
 
@@ -81,7 +89,7 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
         final var annFunction = csvField.value();
         final var annParams = csvField.params();
 
-        final var preValidator = preValidatorFactory.function(Arrays.asList(annPrevalidators));
+        final var preValidator = preValidatorFactory.function(csvPreValidatorsExtractor.extract(Arrays.asList(annPrevalidators)));
 
         final var transformer = Optional.ofNullable(functionClassMap.get(annFunction))
                 .map(f -> Try.success(f.apply(annParams)))

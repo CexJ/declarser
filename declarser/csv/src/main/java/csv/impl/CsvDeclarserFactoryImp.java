@@ -7,12 +7,13 @@ import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.CsvFieldComposer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.CsvFieldsExtractor;
+import csv.validation.utils.CsvPreValidatorsExtractor;
 import kernel.enums.SubsetType;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
-import csv.validation.CsvValidationConst;
-import csv.validation.CsvPreValidatorsFactory;
+import csv.validation.utils.CsvValidationConst;
+import csv.validation.utils.CsvPreValidatorsFactory;
 import kernel.Declarser;
 import kernel.enums.ParallelizationStrategyEnum;
 import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
@@ -36,6 +37,7 @@ public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
     private final CsvPreValidatorsFactory csvPreValidatorsFactory;
     private final CsvFunctionMapFactory mapFunctionFactory;
     private final SubsetType annotationsSubsetType;
+    private final CsvPreValidatorsExtractor preValidatorExtractor;
 
     private CsvDeclarserFactoryImp(
             final ParallelizationStrategyEnum parallelizationStrategy,
@@ -50,7 +52,8 @@ public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
         classFunctionMap.putAll(customConstructorMap);
 
         final var fieldsExtractor = CsvFieldsExtractor.getInstance();
-        final var functionComposer = CsvFieldComposer.of(this, csvPreValidatorsFactory, classFunctionMap);
+        this.preValidatorExtractor = CsvPreValidatorsExtractor.getInstance();
+        final var functionComposer = CsvFieldComposer.of(this, csvPreValidatorsFactory, preValidatorExtractor, classFunctionMap);
         this.mapFunctionFactory =  CsvFunctionMapFactory.of(fieldsExtractor, functionComposer);
 
         this.annotationsSubsetType = annotationsSubsetType;
@@ -103,6 +106,7 @@ public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
         return Optional.ofNullable(clazz.getAnnotation(CsvPreValidations.class))
                 .map(ann -> Stream.of(ann.value())
                         .collect(Collectors.toList()))
+                .map(preValidatorExtractor::extract)
                 .map(csvPreValidatorsFactory::function)
                 .orElse(Try.success(s -> Optional.empty()));
     }
