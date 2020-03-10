@@ -62,11 +62,6 @@ public final class CsvPreValidatorsFactory {
                         .collect(Collectors.toList())));
     }
 
-    public Try<Validator<String>> function(
-            final CsvPreValidation validatorAnn){
-       return stringValidator(validatorAnn.value(), validatorAnn.params());
-    }
-
     private Validator<String> ok() {
         return s -> Optional.empty();
     }
