@@ -26,11 +26,14 @@ public final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 			final Map<K, Function<V, Try<?>>> functionMap,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
 		return kvMap ->
-				parallelizationStrategy.exec(kvMap.entrySet().stream()).map( kv ->
-				Optional.ofNullable(functionMap.get(kv.getKey())).map(       f  ->
-						ToTypedMapComposition.of(kv.getKey(), kv.getValue(),f))
-				.orElse(ToTypedMapComposition.of(kv.getKey(), kv.getValue(),any ->
-						Try.fail(MissingFieldFunctionException.of(kv.getKey())))))
+				parallelizationStrategy.exec(kvMap.entrySet().stream()).map( kv  ->
+				Optional.ofNullable(functionMap.get(kv.getKey())).map(       fun ->
+						ToTypedMapComposition.of(
+								Transformer.of(kv.getKey(),fun),
+								kv.getValue()))
+				.orElse(ToTypedMapComposition.of(
+								Transformer.of(kv.getKey(),any -> Try.fail(MissingFieldFunctionException.of(kv.getKey()))),
+								kv.getValue())))
 				.collect(Collectors.toMap(ToTypedMapComposition::getKey, ToTypedMapComposition::apply));
 	}
 
@@ -49,34 +52,30 @@ public final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 }
 
 final class ToTypedMapComposition<K,V>{
-	private final K key;
+	private final Transformer<K,V> transformer;
 	private final V value;
-	private final Function<V, Try<?>> typedFunction;
 
 	private ToTypedMapComposition(
-			final K key,
-			final  V value,
-			final Function<V, Try<?>> typedFunction) {
+			final Transformer<K,V> transformer,
+			final  V value) {
 		super();
-		this.key = key;
+		this.transformer = transformer;
 		this.value = value;
-		this.typedFunction = typedFunction;
 	}
 
 	Try<?> apply(){
-		return typedFunction.apply(value)
-				.enrichException(ex -> TypingFieldException.of(key, value, ex));
+		return transformer.getFunction().apply(value)
+				.enrichException(ex -> TypingFieldException.of(transformer.getKey(), value, ex));
 	}
 
 	K getKey() {
-		return key;
+		return transformer.getKey();
 	}
 
 	static <K,V> ToTypedMapComposition<K,V> of(
-			final K key,
-			final  V value,
-			final  Function<V, Try<?>> typedFunction){
-		return new ToTypedMapComposition<>(key, value, typedFunction);
+			final Transformer<K,V> transformer,
+			final  V value){
+		return new ToTypedMapComposition<>(transformer, value);
 	}
 }
 
