@@ -21,7 +21,7 @@ public final class CsvPreValidatorsFactory {
             final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
             final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap) {
         this(validatorClassMap);
-        customMap.forEach(validatorClassMap::put);
+        this.validatorClassMap.putAll(customMap);
     }
     private CsvPreValidatorsFactory(
             final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap) {

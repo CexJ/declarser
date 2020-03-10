@@ -1,22 +1,22 @@
 package kernel.exceptions;
 
-import java.util.Collection;
+import java.util.List;
 
 public final class GroupedException extends Exception {
 
-    private final Collection<? extends Exception> exceptions;
+    private final List<? extends Exception> exceptions;
 
     private GroupedException(
-            final Collection<? extends Exception> exceptions) {
+            final List<? extends Exception> exceptions) {
         this.exceptions = exceptions;
     }
 
     public static GroupedException of(
-            final Collection<? extends Exception> exceptions){
+            final List<? extends Exception> exceptions){
         return new GroupedException(exceptions);
     }
 
-    public Collection<? extends Exception> getExceptions() {
+    public List<? extends Exception> getExceptions() {
         return exceptions;
     }
 }

@@ -5,18 +5,18 @@ import kernel.validations.Validator;
 public class PreValidator<T> {
 
     private final Class<? extends Validator<T>> clazz;
-    private final String[] params;
+    private final T[] params;
 
     private PreValidator(
             final Class<? extends Validator<T>> clazz,
-            final String[] params) {
+            final T[] params) {
         this.clazz = clazz;
         this.params = params;
     }
 
     public static <T> PreValidator<T> of(
             final Class<? extends Validator<T>> clazz,
-            final String[] params){
+            final T[] params){
         return new PreValidator<>(clazz, params);
     }
 
@@ -24,7 +24,7 @@ public class PreValidator<T> {
         return clazz;
     }
 
-    public String[] getParams() {
+    public T[] getParams() {
         return params;
     }
 }

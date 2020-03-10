@@ -2,7 +2,6 @@ package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils;
 
 import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.sample.DataSample;
-import kernel.parsers.fromstring.tonumber.BigDecimalParser;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
