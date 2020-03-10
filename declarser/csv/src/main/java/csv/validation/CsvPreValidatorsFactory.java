@@ -45,7 +45,7 @@ public final class CsvPreValidatorsFactory {
 
         return hasErrors ? collectedErrors(tryValidators) :
                            composedFunction(tryValidators);
-        }
+    }
 
     private Try<Validator<String>> composedFunction(
             final List<Try<Validator<String>>> tryValidators) {
