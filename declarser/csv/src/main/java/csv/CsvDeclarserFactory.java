@@ -4,7 +4,10 @@ import csv.stages.annotations.validations.pre.CsvPreValidations;
 import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.CsvFieldComposer;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.CsvFieldsExtractor;
 import kernel.enums.SubsetType;
+import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
@@ -45,10 +48,11 @@ public final class CsvDeclarserFactory {
         this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
         final var classFunctionMap = new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
         classFunctionMap.putAll(customConstructorMap);
-        this.mapFunctionFactory =  CsvFunctionMapFactory.of(
-                this,
-                csvPreValidatorsFactory,
-                classFunctionMap);
+
+        final var fieldsExtractor = CsvFieldsExtractor.getInstance();
+        final var functionComposer = CsvFieldComposer.of(this, csvPreValidatorsFactory, classFunctionMap);
+        this.mapFunctionFactory =  CsvFunctionMapFactory.of(fieldsExtractor, functionComposer);
+
         this.annotationsSubsetType = annotationsSubsetType;
 
     }
