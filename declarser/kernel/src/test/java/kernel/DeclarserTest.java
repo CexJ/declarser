@@ -1,5 +1,6 @@
 package kernel;
 
+import kernel.impl.DeclarserImpl;
 import kernel.stages.stage01_tomap.impl.ToMap;
 import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.stages.stage03_combinator.Combinator;
@@ -53,7 +54,7 @@ public class DeclarserTest {
                 combinedMap.equals(cm) ? Try.success(output)
                                        : Try.fail(new Exception("ToObject exception"));
         // AND a Declarser created from DM, DTM, DC, and DO
-        final var declarser = Declarser.of(toMap, toTypedMap, combinator, toObject);
+        final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
         final var result = declarser.parse(input);
         // THEN the result is a Success
@@ -103,7 +104,7 @@ public class DeclarserTest {
                 combinedMap.equals(cm) ? Try.fail(exception)
                         : Try.success(output);
         // AND a Declarser created from DM, DTM, DC, and DO
-        final var declarser = Declarser.of(toMap, toTypedMap, combinator, toObject);
+        final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
         final var result = declarser.parse(input);
         // THEN the result is a Failure
@@ -159,7 +160,7 @@ public class DeclarserTest {
                 combinedMap.equals(cm) ? Try.success(output)
                                        : Try.fail(new Exception("ToObject exception"));
         // AND a Declarser created from DM, DTM, and DC
-        final var declarser = Declarser.of(toMap, toTypedMap, combinator, toObject);
+        final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
         final var result = declarser.parse(input);
         // THEN the result is a Failure
@@ -212,7 +213,7 @@ public class DeclarserTest {
                 combinedMap.equals(cm) ? Try.success(output)
                                        : Try.fail(new Exception("ToObject exception"));
         // AND a Declarser created from DM, DTM, and DC
-        final var declarser = Declarser.of(toMap, toTypedMap, combinator, toObject);
+        final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
         final var result = declarser.parse(input);
         // THEN the result is a Failure

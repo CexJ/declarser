@@ -6,5 +6,5 @@ import kernel.tryapi.Try;
 import java.lang.reflect.Field;
 
 public interface FieldComposer<K,T> {
-    Try<Transformer<K,T>> computeTransformer(final Field field);
+    Try<Transformer<K,T>> compute(final Field field);
 }

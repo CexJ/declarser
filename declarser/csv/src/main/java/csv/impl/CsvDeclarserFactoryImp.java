@@ -8,13 +8,14 @@ import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryC
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.CsvFieldComposer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.CsvFieldsExtractor;
 import csv.validation.utils.CsvPreValidatorsExtractor;
+import kernel.Declarser;
 import kernel.enums.SubsetType;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
 import csv.validation.utils.CsvValidationConst;
 import csv.validation.utils.CsvPreValidatorsFactory;
-import kernel.Declarser;
+import kernel.impl.DeclarserImpl;
 import kernel.enums.ParallelizationStrategyEnum;
 import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
 import kernel.stages.stage02_totypedmap.impl.impl.ToTypedMapImpl;
@@ -50,14 +51,17 @@ public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
         this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
         final var classFunctionMap = new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
         classFunctionMap.putAll(customConstructorMap);
-
-        final var fieldsExtractor = CsvFieldsExtractor.getInstance();
         this.preValidatorExtractor = CsvPreValidatorsExtractor.getInstance();
-        final var functionComposer = CsvFieldComposer.of(this, csvPreValidatorsFactory, preValidatorExtractor, classFunctionMap);
-        this.mapFunctionFactory =  CsvFunctionMapFactory.of(fieldsExtractor, functionComposer);
-
+        final var functionComposer = CsvFieldComposer.of(
+                this,
+                csvPreValidatorsFactory,
+                preValidatorExtractor,
+                classFunctionMap,
+                CsvFunctionMapFactoryConst.autoFunctionClassMap);
+        this.mapFunctionFactory =  CsvFunctionMapFactory.of(
+                CsvFieldsExtractor.getInstance(),
+                functionComposer);
         this.annotationsSubsetType = annotationsSubsetType;
-
     }
 
     public <O> Try<Declarser<String, Integer, String, O>> declarserOf(
@@ -69,7 +73,7 @@ public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
                stage3().flatMap(                     combinator ->
                stage4(clazz, postValidator).map(     toObject   ->
 
-                       Declarser.of(toMap, toTypedMap, combinator, toObject))))) ;
+                       DeclarserImpl.of(toMap, toTypedMap, combinator, toObject))))) ;
     }
 
     private <O> Try<ToMapImpl<String, Integer, String>> stage1(

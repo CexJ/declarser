@@ -33,7 +33,7 @@ public final class CsvFunctionMapFactory {
     public Try<Map<Integer, Function<String, Try<?>>>> mapColumnToTransformer(
             final Class<?> clazz){
         final var partition = fieldsExtractor.extract(clazz).stream()
-                .map(functionComposer::computeTransformer)
+                .map(functionComposer::compute)
                 .collect(Collectors.partitioningBy(Try::isSuccess));
 
         final var success = partition.get(true);
