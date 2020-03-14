@@ -20,7 +20,7 @@ public class NonEmptyStringValidator implements Validator<String> {
 
     @Override
     public Optional<? extends Exception> apply(String s) {
-        return s!=null && s.isEmpty() ? Optional.of(EmptyStringException.of(s))
+        return s==null || s.isEmpty() ? Optional.of(EmptyStringException.of(s))
                                       : Optional.empty();
     }
 

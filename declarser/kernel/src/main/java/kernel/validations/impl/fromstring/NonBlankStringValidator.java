@@ -19,7 +19,7 @@ public class NonBlankStringValidator implements Validator<String> {
 
     @Override
     public Optional<? extends Exception> apply(String s) {
-        return s!=null && s.isEmpty() ? Optional.of(BlankStringException.of(s))
+        return s==null || s.isBlank() ? Optional.of(BlankStringException.of(s))
                                       : Optional.empty();
     }
 

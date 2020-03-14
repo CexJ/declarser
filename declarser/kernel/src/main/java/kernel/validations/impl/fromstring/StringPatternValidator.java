@@ -29,7 +29,7 @@ public class StringPatternValidator implements Validator<String> {
 
     @Override
     public Optional<? extends Exception> apply(String s) {
-        return s!=null && !s.matches(pattern) ? Optional.of(NonMathingPatternStringException.of(pattern, s))
+        return s==null || !s.matches(pattern) ? Optional.of(NonMathingPatternStringException.of(pattern, s))
                                               : Optional.empty();
     }
 
