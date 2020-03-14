@@ -4,6 +4,7 @@ import csv.CsvDeclarserFactory;
 import csv.stages.annotations.fields.CsvArray;
 import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.annotations.fields.CsvField;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.CsvFieldComposer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingArrayException;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingTransformerException;
 import csv.validation.utils.CsvPreValidatorsExtractor;

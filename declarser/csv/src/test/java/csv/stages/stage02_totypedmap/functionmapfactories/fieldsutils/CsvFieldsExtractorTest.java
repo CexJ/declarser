@@ -1,6 +1,7 @@
 package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils;
 
 import csv.stages.annotations.fields.CsvColumn;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor.CsvFieldsExtractor;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.sample.DataSample;
 import org.junit.jupiter.api.Test;
 

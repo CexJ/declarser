@@ -1,7 +1,6 @@
 package csv.validation.utils;
 
 import csv.stages.annotations.validations.pre.CsvPreValidation;
-import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.CsvFieldsExtractor;
 import csv.validation.utils.utils.ArgsValidatorClass1;
 import csv.validation.utils.utils.ArgsValidatorClass2;
 import kernel.validations.Validator;
