@@ -1,4 +1,4 @@
-package kernel.validations.impl;
+package kernel.validations.prevalidations;
 
 import kernel.validations.Validator;
 

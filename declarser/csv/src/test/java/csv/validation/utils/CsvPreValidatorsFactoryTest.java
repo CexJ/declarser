@@ -3,7 +3,7 @@ package csv.validation.utils;
 import csv.validation.utils.utils.*;
 import kernel.exceptions.GroupedException;
 import kernel.validations.Validator;
-import kernel.validations.impl.PreValidator;
+import kernel.validations.prevalidations.PreValidator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

@@ -3,7 +3,7 @@ package csv.validation.utils;
 import kernel.validations.Validator;
 import kernel.exceptions.GroupedException;
 import kernel.tryapi.Try;
-import kernel.validations.impl.PreValidator;
+import kernel.validations.prevalidations.PreValidator;
 
 import java.util.HashMap;
 import java.util.List;

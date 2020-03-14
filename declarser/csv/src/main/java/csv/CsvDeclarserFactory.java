@@ -1,7 +1,6 @@
 package csv;
 
 import kernel.Declarser;
-import kernel.impl.DeclarserImpl;
 import kernel.tryapi.Try;
 import kernel.validations.Validator;
 

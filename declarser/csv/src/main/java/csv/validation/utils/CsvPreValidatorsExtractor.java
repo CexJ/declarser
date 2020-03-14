@@ -1,7 +1,7 @@
 package csv.validation.utils;
 
 import csv.stages.annotations.validations.pre.CsvPreValidation;
-import kernel.validations.impl.PreValidator;
+import kernel.validations.prevalidations.PreValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;

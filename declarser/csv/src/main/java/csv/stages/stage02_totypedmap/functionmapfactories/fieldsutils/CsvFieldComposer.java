@@ -5,6 +5,8 @@ import csv.stages.annotations.fields.CsvArray;
 import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.annotations.fields.CsvField;
 import csv.stages.annotations.fields.CsvNode;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingArrayException;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingTransformerException;
 import csv.validation.utils.CsvPreValidatorsFactory;
 import csv.validation.utils.CsvPreValidatorsExtractor;
 import kernel.exceptions.GroupedException;
@@ -60,20 +62,33 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
 
     public Try<Transformer<Integer,String>> compute(
             final Field field) {
-        final var modifier = Optional.ofNullable(field.getAnnotation(CsvArray.class))
-                .map(arr -> (UnaryOperator<Function<String, Try<?>>>) (Function<String, Try<?>> fun) -> getArrayFunction(fun, arr.separator()))
-                .orElse(UnaryOperator.identity());
+        final var modifier = computeModifier(field);
 
-        final var transformer =
-                Optional.ofNullable(field.getAnnotation(CsvField.class)).map(this::fieldTransformer)              .orElse(
-                Optional.ofNullable(field.getAnnotation(CsvNode.class)) .map(node -> nodeTransformer(field, node)).orElse(
-                Optional.ofNullable(autoFunctionClassMap.get(field.getType())).map(Try::success)                  .orElse(
-                Try.fail(new NullPointerException()))));
+        final var transformer = computeTransformer(field);
 
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 
-        return transformer.map(tra ->
-                Transformer.of(csvColumn.value(), modifier.apply(tra)));
+        return transformer.flatMap( tra ->
+               modifier.map(        mod ->
+                       Transformer.of(csvColumn.value(), mod.apply(tra))));
+    }
+
+    private Try<Function<String, Try<?>>> computeTransformer(Field field) {
+        return Optional.ofNullable(field.getAnnotation(CsvField.class)).map(this::fieldTransformer)              .orElse(
+               Optional.ofNullable(field.getAnnotation(CsvNode.class)) .map(node -> nodeTransformer(field, node)).orElse(
+               Optional.ofNullable(autoFunctionClassMap.get(autoType(field.getType()))).map(Try::success)        .orElse(
+               Try.fail(MissingTransformerException.of(field)))));
+    }
+
+    private Try<UnaryOperator<Function<String, Try<?>>>> computeModifier(Field field) {
+        return Optional.ofNullable(field.getAnnotation(CsvArray.class))
+                .map(arr -> field.getType().isArray() ? Try.success(getArrayFunction(arr.value()))
+                                                      : Try.<UnaryOperator<Function<String, Try<?>>>>fail(MissingArrayException.of(field)))
+                .orElse(                                Try.success(UnaryOperator.identity()));
+    }
+
+    private Class<?> autoType(Class<?> type) {
+        return type.isArray() ? type.getComponentType() : type;
     }
 
 
@@ -103,13 +118,13 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
                                                                Try.fail(pre.apply(s).get())));
     }
 
-    private Function<String, Try<?>> getArrayFunction(
-            final Function<String, Try<?>> function,
+    private UnaryOperator<Function<String, Try<?>>> getArrayFunction(
             final String arraySeparator){
-        return s -> Try.go(() -> combine(Arrays.stream(s.split(arraySeparator))
-                .map(function)
-                .collect(Collectors.toList()))
-                .map(List::toArray));
+        return (Function<String, Try<?>> fun) ->
+                s -> combine(Arrays.stream(s.split(arraySeparator))
+                                .map(fun)
+                                .collect(Collectors.toList()))
+                    .map(List::toArray);
     }
 
     private Try<List<?>> combine(
@@ -122,7 +137,14 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
 
 
         return failures.isEmpty() ? collectSuccessList(success)
-                : collectFailureList(failures);
+                                  : collectFailureList(failures);
+    }
+
+    private Try<List<?>> collectSuccessList(
+            final List<Try<?>> success) {
+        return Try.success(success.stream()
+                .map(Try::getValue)
+                .collect(Collectors.toList()));
     }
 
     private Try<List<?>> collectFailureList(
@@ -132,10 +154,4 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
                 .collect(Collectors.toList())));
     }
 
-    private Try<List<?>> collectSuccessList(
-            final List<Try<?>> success) {
-        return Try.success(success.stream()
-                .map(Try::getValue)
-                .collect(Collectors.toList()));
-    }
 }
