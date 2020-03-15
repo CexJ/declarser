@@ -25,9 +25,26 @@ public class CsvFieldPrevalidatorImplTest {
     }
 
 
+    /*
+     * GIVEN a field FI with
+             the annotation CsvPreValidations with value a list of Validators VS
+     *  AND a string I
+     *  AND an exception E
+     *  AND a validator V that maps I into Optional.empty and Optional.of(Exception) the rest
+     *  AND a CsvPreValidatorsFactory CPVF such that it returns V when function is invoked
+     *  AND a prevalidator PV
+     *  AND a CsvPreValidatorsExtractor CPVE such that it returns V when function is invoked
+     *  AND a CsvFieldPrevalidator CFPV constructed with CPVF and CPVE
+     * WHEN the method compute is invoked with FI
+     * THEN the result is a success
+     *  AND the validator is V
+     *
+     */
     @Test
     public void test() throws NoSuchFieldException {
 
+        // GIVEN a field FI with
+        //       the annotation CsvPreValidations with value a list of Validators VS
         class TypeT{}
         class ComposerSample {
             @SuppressWarnings("unused")
@@ -37,19 +54,29 @@ public class CsvFieldPrevalidatorImplTest {
             private TypeT simpleData;
         }
         final var field = ComposerSample.class.getDeclaredField("simpleData");
+        // AND a string I
         final var input = "input";
+        // AND an exception E
         final var exception = new Exception();
+        // AND a validator V that maps I into Optional.empty and Optional.of(Exception) the rest
         final Validator<String> validator = s -> input.equals(s) ? Optional.empty() : Optional.of(exception);
+        // AND a CsvPreValidatorsFactory CPVF such that it returns V when function is invoked
         final var csvPreValidatorsFactory = Mockito.mock(CsvPreValidatorsFactory.class);
         Mockito.when(csvPreValidatorsFactory.function(Mockito.any())).thenReturn(Try.success(validator));
-        final var csvPreValidatorsExtractor = Mockito.mock(CsvPreValidatorsExtractor.class);
+        // AND a prevalidator PV
         final var preValidator = PreValidator.of(ValidatorMock.class, new String[]{});
+        // AND a CsvPreValidatorsExtractor CPVE such that it returns V when function is invoked
+        final var csvPreValidatorsExtractor = Mockito.mock(CsvPreValidatorsExtractor.class);
         Mockito.when(csvPreValidatorsExtractor.extract(Mockito.any())).thenReturn(preValidator);
+        // AND a CsvFieldPrevalidator CFPV constructed with CPVF and CPVE
         final var csvFieldPrevalidator = CsvFieldPrevalidator.of(
                 csvPreValidatorsFactory,
                 csvPreValidatorsExtractor);
+        // WHEN the method compute is invoked with FI
         final var result = csvFieldPrevalidator.compute(field);
+        // THEN the result is a success
         assertTrue(result.isSuccess());
+        // AND the validator is V
         final var value = result.getValue();
         assertTrue(value.apply(input).isEmpty());
         final var error = value.apply("NOT"+input);
