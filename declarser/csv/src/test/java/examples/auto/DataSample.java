@@ -1,3 +1,5 @@
+package examples.auto;
+
 import csv.stages.annotations.fields.CsvColumn;
 
 public class DataSample {
