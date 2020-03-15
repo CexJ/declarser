@@ -6,14 +6,14 @@ import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.CsvFieldComposer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor.CsvFieldsExtractor;
-import csv.validation.utils.CsvPreValidatorsExtractor;
+import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
 import kernel.Declarser;
 import kernel.enums.SubsetType;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
 import csv.validation.utils.CsvValidationConst;
-import csv.validation.utils.CsvPreValidatorsFactory;
+import csv.validation.utils.factory.CsvPreValidatorsFactory;
 import kernel.impl.DeclarserImpl;
 import kernel.enums.ParallelizationStrategyEnum;
 import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
@@ -122,8 +122,8 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
             final Class<O> clazz) {
         return Optional.ofNullable(clazz.getAnnotation(CsvPreValidations.class))
                 .map(ann -> Stream.of(ann.value())
+                        .map(preValidatorExtractor::extract)
                         .collect(Collectors.toList()))
-                .map(preValidatorExtractor::extract)
                 .map(csvPreValidatorsFactory::function)
                 .orElse(Try.success(s -> Optional.empty()));
     }

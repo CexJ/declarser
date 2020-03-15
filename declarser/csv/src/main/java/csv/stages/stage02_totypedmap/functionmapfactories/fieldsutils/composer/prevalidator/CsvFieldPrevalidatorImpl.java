@@ -2,15 +2,15 @@ package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.
 
 import csv.stages.annotations.validations.pre.CsvPreValidation;
 import csv.stages.annotations.validations.pre.CsvPreValidations;
-import csv.validation.utils.CsvPreValidatorsExtractor;
-import csv.validation.utils.CsvPreValidatorsFactory;
+import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
+import csv.validation.utils.factory.CsvPreValidatorsFactory;
 import kernel.tryapi.Try;
 import kernel.validations.Validator;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 final class CsvFieldPrevalidatorImpl implements CsvFieldPrevalidator {
 
@@ -31,11 +31,14 @@ final class CsvFieldPrevalidatorImpl implements CsvFieldPrevalidator {
     }
 
 
-    public Try<Validator<String>> compute(Field field){
+    public Try<Validator<String>> compute(
+            final Field field){
         final var annPrevalidators = Optional.ofNullable(field.getAnnotation(CsvPreValidations.class))
                 .map(CsvPreValidations::value)
                 .orElse(new CsvPreValidation[0]);
-        return preValidatorFactory.function(csvPreValidatorsExtractor.extract(Arrays.asList(annPrevalidators)));
+        return preValidatorFactory.function(Stream.of(annPrevalidators)
+                        .map(csvPreValidatorsExtractor::extract)
+                        .collect(Collectors.toList()));
 
     }
 

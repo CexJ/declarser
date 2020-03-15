@@ -1,4 +1,4 @@
-package csv.validation.utils;
+package csv.validation.utils.factory;
 
 import kernel.validations.Validator;
 import kernel.exceptions.GroupedException;
@@ -12,29 +12,29 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class CsvPreValidatorsFactory {
+final class CsvPreValidatorsFactoryImpl implements CsvPreValidatorsFactory {
 
     private final Map<Class<? extends Validator<String>>,
             Function<String[], Validator<String>>> validatorClassMap;
 
-    private CsvPreValidatorsFactory(
+    private CsvPreValidatorsFactoryImpl(
             final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
             final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap) {
         this(validatorClassMap);
         this.validatorClassMap.putAll(customMap);
     }
-    private CsvPreValidatorsFactory(
+    private CsvPreValidatorsFactoryImpl(
             final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap) {
         this.validatorClassMap = new HashMap<>(validatorClassMap);
     }
 
-    public static CsvPreValidatorsFactory of(
-            final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
-            final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap){
-        return new CsvPreValidatorsFactory(validatorClassMap, customMap);
+    static CsvPreValidatorsFactoryImpl of(
+            Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
+            Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap){
+        return new CsvPreValidatorsFactoryImpl(validatorClassMap, customMap);
     }
 
-
+    @Override
     public Try<Validator<String>> function(
             final List<? extends PreValidator<String>> validatorAnns){
         final var tryValidators = validatorAnns.stream()

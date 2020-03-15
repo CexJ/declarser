@@ -6,13 +6,12 @@ import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.CsvFieldComposer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingArrayException;
-import csv.validation.utils.CsvPreValidatorsExtractor;
-import csv.validation.utils.CsvPreValidatorsFactory;
+import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
+import csv.validation.utils.factory.CsvPreValidatorsFactory;
 import kernel.Declarser;
 import kernel.exceptions.GroupedException;
 import kernel.tryapi.Try;
 import kernel.validations.Validator;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.HashMap;

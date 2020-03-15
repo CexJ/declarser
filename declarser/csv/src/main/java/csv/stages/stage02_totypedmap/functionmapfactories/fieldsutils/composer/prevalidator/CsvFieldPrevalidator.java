@@ -1,7 +1,7 @@
 package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator;
 
-import csv.validation.utils.CsvPreValidatorsExtractor;
-import csv.validation.utils.CsvPreValidatorsFactory;
+import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
+import csv.validation.utils.factory.CsvPreValidatorsFactory;
 import kernel.tryapi.Try;
 import kernel.validations.Validator;
 
@@ -11,10 +11,10 @@ public interface CsvFieldPrevalidator {
 
     static CsvFieldPrevalidator of(
             final CsvPreValidatorsFactory preValidatorFactory,
-            final CsvPreValidatorsExtractor csvPreValidatorsExtractor) {
+            final CsvPreValidatorsExtractor Impl) {
         return CsvFieldPrevalidatorImpl.of(
                 preValidatorFactory,
-                csvPreValidatorsExtractor);
+                Impl);
     }
 
     Try<Validator<String>> compute(Field field);

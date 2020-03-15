@@ -5,8 +5,8 @@ import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.modifier.CsvFieldModifier;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator.CsvFieldPrevalidator;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
-import csv.validation.utils.CsvPreValidatorsFactory;
-import csv.validation.utils.CsvPreValidatorsExtractor;
+import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
+import csv.validation.utils.factory.CsvPreValidatorsFactory;
 
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import kernel.stages.stage02_totypedmap.impl.impl.Transformer;
