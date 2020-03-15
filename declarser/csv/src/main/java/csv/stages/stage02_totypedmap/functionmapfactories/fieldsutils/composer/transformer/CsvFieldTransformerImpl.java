@@ -4,12 +4,9 @@ import csv.CsvDeclarserFactory;
 import csv.stages.annotations.fields.CsvField;
 import csv.stages.annotations.fields.CsvNode;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingTransformerException;
-import csv.validation.utils.CsvPreValidatorsExtractor;
-import csv.validation.utils.CsvPreValidatorsFactory;
 import kernel.tryapi.Try;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -19,8 +16,6 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
 
     private final static Class<?>[] EMPTY = new Class[]{};
 
-    private final CsvPreValidatorsFactory preValidatorFactory;
-    private final CsvPreValidatorsExtractor csvPreValidatorsExtractor;
     private final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap;
     private final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap;
     private final CsvDeclarserFactory csvDeclarserFactory;
@@ -28,27 +23,19 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
 
     private CsvFieldTransformerImpl(
             final CsvDeclarserFactory csvDeclarserFactory,
-            final CsvPreValidatorsFactory preValidatorFactory,
-            final CsvPreValidatorsExtractor csvPreValidatorsExtractor,
             final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap,
             final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap) {
         this.csvDeclarserFactory = csvDeclarserFactory;
-        this.preValidatorFactory = preValidatorFactory;
-        this.csvPreValidatorsExtractor = csvPreValidatorsExtractor;
         this.functionClassMap = new HashMap<>(functionClassMap);
         this.autoFunctionClassMap = autoFunctionClassMap;
     }
 
     static CsvFieldTransformerImpl of(
             CsvDeclarserFactory csvDeclarserFactory,
-            CsvPreValidatorsFactory preValidatorFactory,
-            CsvPreValidatorsExtractor csvPreValidatorsExtractor,
             Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap,
             Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap) {
         return new CsvFieldTransformerImpl(
                 csvDeclarserFactory,
-                preValidatorFactory,
-                csvPreValidatorsExtractor,
                 functionClassMap,
                 autoFunctionClassMap);
     }
@@ -77,19 +64,12 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
 
     private Try<Function<String, Try<?>>> fieldTransformer(
             final CsvField csvField) {
-        final var annPrevalidators = csvField.csvPreValidations().value();
         final var annFunction = csvField.value();
         final var annParams = csvField.params();
 
-        final var preValidator = preValidatorFactory.function(csvPreValidatorsExtractor.extract(Arrays.asList(annPrevalidators)));
-
-        final var transformer = Optional.ofNullable(functionClassMap.get(annFunction))
+        return Optional.ofNullable(functionClassMap.get(annFunction))
                 .map(f -> Try.success(f.apply(annParams)))
                 .orElse(Try.go(() -> annFunction.getConstructor(EMPTY).newInstance()));
 
-        return preValidator.flatMap( pre ->
-                transformer.map(     tra ->
-                (String s) -> pre.apply(s).isEmpty() ? tra.apply(s) :
-                Try.fail(pre.apply(s).get())));
     }
 }

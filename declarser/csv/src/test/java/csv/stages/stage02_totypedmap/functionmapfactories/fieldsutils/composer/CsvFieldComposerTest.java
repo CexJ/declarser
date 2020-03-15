@@ -1,4 +1,4 @@
-package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils;
+package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer;
 
 import csv.CsvDeclarserFactory;
 import csv.stages.annotations.fields.CsvArray;
@@ -23,83 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CsvFieldComposerTest {
 
-    /*
-     * GIVEN an integer K
-     *  AND a field FI of type TypeT with the annotation CsvColumn with value K
-     *  AND a value of type TypeT T
-     *  AND an input string I
-     *  AND an exception E
-     *  AND a function F: String -> Try<?>  that map I -> Success(T) and other input into Fail(E)
-     *  AND a map M containing the entry (TypeT.class, F)
-     *  AND a CsvFieldComposer CsvFC constructed with M
-     * WHEN the method compute is invoked with FI
-     * THEN the result is a success
-     *  AND the value is a Transformer with key equals to K
-     *  AND function FR such that
-     *  AND FR maps I into Success(T)
-     *  AND Fail(E) otherwise
-     */
-    @Test
-    public void compute_automatically_a_valid_transformer_return_a_success() throws NoSuchFieldException {
-        final var csvDeclarserFactory = new CsvDeclarserFactory() {
-            @Override
-            public <O> Try<Declarser<String, Integer, String, O>> declarserOf(Class<O> clazz, Validator<O> postValidator, String cellSeparator) {
-                return Try.fail(new Exception());
-            }
-        };
-        final var csvPreValidatorsFactory = CsvPreValidatorsFactory.of(new HashMap<>(), new HashMap<>());
-        final var csvPreValidatorsExtractor = CsvPreValidatorsExtractor.getInstance();
 
-        // GIVEN an integer K
-        final int key = 0;
-        // AND a field FI of type TypeT with the annotation CsvColumn with value K
-        class TypeT {}
-        class ComposerSample {
-            @SuppressWarnings("unused")
-            @CsvColumn(key)
-            private TypeT simpleData;
-        }
-        final var field = ComposerSample.class.getDeclaredField("simpleData");
-        // AND a value of type TypeT T
-        final var type = new TypeT();
-        // AND an input string I
-        final var input = "input";
-        // AND an exception E
-        final var fail = new Exception();
-        // AND a function F: String -> Try<?>  that map I -> Success(T) and other input into Fail(E)
-        final Function<String, Try<?>> function = t -> input.equals(t) ? Try.success(type) : Try.fail(fail);
-        // AND a map M containing the entry (TypeT.class, F)
-        final var autoFunctionClassMap = new HashMap<Class<?>, Function<String, Try<?>>>();
-        autoFunctionClassMap.put(
-                TypeT.class,
-                function);
-        // AND a CsvFieldComposer CsvFC constructed with M
-        final var composer = CsvFieldComposer.of(
-                csvDeclarserFactory,
-                csvPreValidatorsFactory,
-                csvPreValidatorsExtractor,
-                new HashMap<>(),
-                autoFunctionClassMap);
-        // WHEN the method compute is invoked with FI
-        final var result = composer.compute(field);
-        // THEN the result is a success
-        assertTrue(result.isSuccess());
-        // AND the value is a Transformer with key equals to K
-        final var value = result.getValue();
-        assertEquals(Integer.valueOf(key), value.getKey());
-        // AND function FR such that
-        final var functionResult = value.getFunction();
-        // AND FR maps I into Success(T)
-        final var inputResult = functionResult.apply(input);
-        assertTrue(inputResult.isSuccess());
-        final var inputValue = inputResult.getValue();
-        assertEquals(inputValue, type);
-        // AND Fail(E) otherwise
-        final var failResult = functionResult.apply("NOT"+input);
-        assertTrue(failResult.isFailure());
-        final var failValue = failResult.getException();
-        assertEquals(failValue, fail);
-    }
 
     /*
      * GIVEN a value of type TypeT T

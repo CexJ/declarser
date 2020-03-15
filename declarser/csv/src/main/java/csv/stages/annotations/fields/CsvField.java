@@ -12,7 +12,6 @@ import java.util.function.Function;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface CsvField {
-    CsvPreValidations csvPreValidations() default @CsvPreValidations();
     Class<? extends Function<String, Try<?>>> value();
     String[] params() default {};
 }

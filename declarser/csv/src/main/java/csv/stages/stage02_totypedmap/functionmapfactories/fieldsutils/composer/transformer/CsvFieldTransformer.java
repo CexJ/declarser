@@ -12,15 +12,11 @@ import java.util.function.Function;
 public interface CsvFieldTransformer {
 
     static CsvFieldTransformer of(
-            CsvDeclarserFactory csvDeclarserFactory,
-            CsvPreValidatorsFactory preValidatorFactory,
-            CsvPreValidatorsExtractor csvPreValidatorsExtractor,
-            Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap,
-            Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap) {
+            final CsvDeclarserFactory csvDeclarserFactory,
+            final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap,
+            final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap) {
         return CsvFieldTransformerImpl.of(
                 csvDeclarserFactory,
-                preValidatorFactory,
-                csvPreValidatorsExtractor,
                 functionClassMap,
                 autoFunctionClassMap);
     }
