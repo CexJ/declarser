@@ -1,4 +1,4 @@
-package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils;
+package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor;
 
 import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor.CsvFieldsExtractor;

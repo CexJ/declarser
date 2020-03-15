@@ -1,12 +1,9 @@
 package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer;
 
-import csv.CsvDeclarserFactory;
 import csv.stages.annotations.fields.CsvColumn;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.modifier.CsvFieldModifier;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator.CsvFieldPrevalidator;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
-import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
-import csv.validation.utils.factory.CsvPreValidatorsFactory;
 
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import kernel.stages.stage02_totypedmap.impl.impl.Transformer;
@@ -14,7 +11,6 @@ import kernel.tryapi.Try;
 import kernel.validations.Validator;
 
 import java.lang.reflect.Field;
-import java.util.*;
 import java.util.function.Function;
 
 public class CsvFieldComposer implements FieldComposer<Integer, String> {
@@ -33,26 +29,18 @@ public class CsvFieldComposer implements FieldComposer<Integer, String> {
     }
 
     public static CsvFieldComposer of(
-            final CsvDeclarserFactory csvDeclarserFactory,
-            final CsvPreValidatorsFactory preValidatorFactory,
-            final CsvPreValidatorsExtractor csvPreValidatorsExtractor,
-            final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> functionClassMap,
-            final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap) {
-        final var csvFieldModifier = CsvFieldModifier.getInstance();
-        final var csvFieldPrevalidator = CsvFieldPrevalidator.of(preValidatorFactory, csvPreValidatorsExtractor);
-        final var csvFieldTransformer = CsvFieldTransformer.of(
-                csvDeclarserFactory,
-                functionClassMap,
-                autoFunctionClassMap);
+            final CsvFieldModifier csvFieldModifier,
+            final CsvFieldPrevalidator csvFieldPrevalidator,
+            final CsvFieldTransformer csvFieldTransformer){
         return new CsvFieldComposer(csvFieldModifier, csvFieldPrevalidator, csvFieldTransformer);
     }
 
 
     public Try<Transformer<Integer,String>> compute(
             final Field field) {
-        final var modifier = csvFieldModifier.compute(field);
+        final var modifier     = csvFieldModifier.compute(field);
         final var preValidator = csvFieldPrevalidator.compute(field);
-        final var transformer = csvFieldTransformer.compute(field);
+        final var transformer  = csvFieldTransformer.compute(field);
 
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 

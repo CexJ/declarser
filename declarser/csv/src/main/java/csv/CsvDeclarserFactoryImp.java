@@ -5,6 +5,9 @@ import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.CsvFieldComposer;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.modifier.CsvFieldModifier;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator.CsvFieldPrevalidator;
+import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor.CsvFieldsExtractor;
 import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
 import kernel.Declarser;
@@ -50,13 +53,21 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
         this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
         final var classFunctionMap = new HashMap<>(CsvFunctionMapFactoryConst.sharedFunctionClassMap);
         classFunctionMap.putAll(customConstructorMap);
+
         this.preValidatorExtractor = CsvPreValidatorsExtractor.getInstance();
-        final var functionComposer = CsvFieldComposer.of(
-                this,
+        final var csvFieldModifier = CsvFieldModifier.getInstance();
+        final var csvFieldPrevalidator = CsvFieldPrevalidator.of(
                 csvPreValidatorsFactory,
-                preValidatorExtractor,
+                preValidatorExtractor);
+        final var csvFieldTransformer = CsvFieldTransformer.of(
+                this,
                 classFunctionMap,
                 CsvFunctionMapFactoryConst.autoFunctionClassMap);
+        final var functionComposer = CsvFieldComposer.of(
+                csvFieldModifier,
+                csvFieldPrevalidator,
+                csvFieldTransformer);
+
         this.mapFunctionFactory =  CsvFunctionMapFactory.of(
                 CsvFieldsExtractor.getInstance(),
                 functionComposer);
