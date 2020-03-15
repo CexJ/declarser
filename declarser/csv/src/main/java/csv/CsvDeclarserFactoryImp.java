@@ -1,6 +1,5 @@
-package csv.impl;
+package csv;
 
-import csv.CsvDeclarserFactory;
 import csv.stages.annotations.validations.pre.CsvPreValidations;
 import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
@@ -32,7 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
+final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
     private final CsvPreValidatorsFactory csvPreValidatorsFactory;
@@ -62,6 +61,20 @@ public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
                 CsvFieldsExtractor.getInstance(),
                 functionComposer);
         this.annotationsSubsetType = annotationsSubsetType;
+    }
+
+    static CsvDeclarserFactoryImp of(
+            final ParallelizationStrategyEnum parallelizationStrategy,
+            final Map<Class<? extends Validator<String>>,
+                    Function<String[], Validator<String>>> customPreValidatorsMap,
+            final Map<Class<? extends Function<String, Try<?>>>,
+                    Function<String[], Function<String, Try<?>>>> customConstructorMap,
+            final SubsetType annotationsSubsetType) {
+        return new CsvDeclarserFactoryImp(
+                parallelizationStrategy,
+                customPreValidatorsMap,
+                customConstructorMap,
+                annotationsSubsetType);
     }
 
     public <O> Try<Declarser<String, Integer, String, O>> declarserOf(
@@ -113,59 +126,5 @@ public final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
                 .map(preValidatorExtractor::extract)
                 .map(csvPreValidatorsFactory::function)
                 .orElse(Try.success(s -> Optional.empty()));
-    }
-
-    public static Builder builder(){
-        return new Builder();
-    }
-
-    public static CsvDeclarserFactoryImp defaultFactory(){
-        return new Builder().build();
-    }
-
-    public static final class Builder {
-
-        private Builder(){}
-
-        private ParallelizationStrategyEnum parallelizationStrategy = ParallelizationStrategyEnum.SEQUENTIAL;
-        private Map<Class<? extends Validator<String>>,
-                Function<String[], Validator<String>>> customPreValidatorsMap = new HashMap<>();
-        private Map<Class<? extends Function<String, Try<?>>>,
-                Function<String[], Function<String, Try<?>>>> customConstructorMap =  new HashMap<>();
-        private SubsetType annotationsSubsetType = SubsetType.NONE;
-
-        public Builder withParallelizationStrategy(
-                final ParallelizationStrategyEnum parallelizationStrategy) {
-            if(parallelizationStrategy != null) this.parallelizationStrategy = parallelizationStrategy;
-            return this;
-        }
-
-        public Builder withCustomPreValidatorsMap(
-                final Map<Class<? extends Validator<String>>,
-                        Function<String[], Validator<String>>> customPreValidatorsMap) {
-            if(customPreValidatorsMap != null) this.customPreValidatorsMap = customPreValidatorsMap;
-            return this;
-        }
-
-        public Builder withCustomConstructorMap(
-                final Map<Class<? extends Function<String, Try<?>>>,
-                        Function<String[], Function<String, Try<?>>>> customConstructorMap) {
-            if(customConstructorMap != null) this.customConstructorMap = customConstructorMap;
-            return this;
-        }
-
-        public Builder withAnnotationsSubsetType(
-                final SubsetType annotationsSubsetType) {
-            if(annotationsSubsetType != null) this.annotationsSubsetType = annotationsSubsetType;
-            return this;
-        }
-
-        public CsvDeclarserFactoryImp build(){
-            return new CsvDeclarserFactoryImp(
-                    parallelizationStrategy,
-                    customPreValidatorsMap,
-                    customConstructorMap,
-                    annotationsSubsetType);
-        }
     }
 }
