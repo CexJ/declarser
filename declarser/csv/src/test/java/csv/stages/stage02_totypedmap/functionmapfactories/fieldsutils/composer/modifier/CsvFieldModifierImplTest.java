@@ -1,21 +1,12 @@
 package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.modifier;
 
-import csv.CsvDeclarserFactory;
 import csv.stages.annotations.fields.CsvArray;
-import csv.stages.annotations.fields.CsvColumn;
-import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.CsvFieldComposer;
-import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingArrayException;
-import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
-import csv.validation.utils.factory.CsvPreValidatorsFactory;
-import kernel.Declarser;
-import kernel.exceptions.GroupedException;
 import kernel.tryapi.Try;
-import kernel.validations.Validator;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,140 +15,86 @@ public class CsvFieldModifierImplTest {
 
 
     /*
-     * GIVEN a separator S
-     *  AND a field FI of type TypeT
-            with the annotation CsvArray with separator S
-     *  AND a value of type TypeT T
-     *  AND an input string I
-     *  AND an exception E
-     *  AND a function F: String -> Try<?>  that map I -> Success(T) and other input into Fail(E)
-     *  AND a map M containing the entry (TypeT.class, F)
-     *  AND a CsvFieldTransformer CsvFT constructed with M
+     * GIVEN a value T of TypeT
+     *  AND and exception E
+     *  AND a string I
+     *  AND a function F that map I into Success(I) and Fail(E) the rest
+     *  AND a separator S
+     *  AND a field FI with type array and the annotation CsvArray with separator S
+     *  AND a csvFieldModifier CFM
      * WHEN the method compute is invoked with FI
      * THEN the result is a success
-     *  AND the function maps I into Success(T)
-     *  AND Fail(E) otherwise
+     *  AND the operator transform the function F in NF such that
+     *      NF maps I+S+I+....+S+I into Success([T,T,...,T])
+     *      and Failure for the rest
      */
-    public void compute_array_transformer_return_a_success() throws NoSuchFieldException {
-        final var csvDeclarserFactory = Mockito.mock(CsvDeclarserFactory.class);
-        // GIVEN a separator S
+    @Test
+    public void compute_a_valid_modifier_return_success() throws NoSuchFieldException {
+        class TypeT{}
+        // GIVEN a value T of TypeT
+        final var value = new TypeT();
+        // AND and exception E
+        final var exception =  new Exception();
+        // AND a string I
+        final var input = "input";
+        // AND a function F that map I into Success(I) and Fail(E) the rest
+        final Function<String, Try<?>> function = s -> input.equals(s) ? Try.success(value) : Try.fail(exception);
+        // AND a separator S
         final var separator = "-";
-        // AND a field FI of type TypeT
-        //      with the annotation CsvArray with separator S
-        class TypeT {}
-        class ComposerSample {
+        // AND a field FI with the annotation CsvArray with separator S
+        class ModifierrSample {
             @SuppressWarnings("unused")
             @CsvArray(separator)
             private TypeT[] simpleData;
         }
-        final var field = ComposerSample.class.getDeclaredField("simpleData");
-        // AND a value of type TypeT T
-        final var type = new TypeT();
-        // AND an input string I
-        final var input = "input";
-        // AND an exception E
-        final var fail = new Exception();
-        // AND a function F: String -> Try<?>  that map I -> Success(T) and other input into Fail(E)
-        final Function<String, Try<?>> function = t -> input.equals(t) ? Try.success(type) : Try.fail(fail);
-        // AND a map M containing the entry (TypeT.class, F)
-        final var autoFunctionClassMap = new HashMap<Class<?>, Function<String, Try<?>>>();
-        autoFunctionClassMap.put(
-                TypeT.class,
-                function);
-        // AND a CsvFieldTransformer CsvFT constructed with M
-        final var transformer = CsvFieldTransformer.of(
-                csvDeclarserFactory,
-                new HashMap<>(),
-                autoFunctionClassMap);
+        final var field = ModifierrSample.class.getDeclaredField("simpleData");
+        // AND a csvFieldModifier CFM
+        final var csvFieldModifier = CsvFieldModifier.getInstance();
         // WHEN the method compute is invoked with FI
-        final var result = transformer.compute(field);
+        final var result = csvFieldModifier.compute(field);
         // THEN the result is a success
         assertTrue(result.isSuccess());
-        // AND function maps I+separator+I into Success(T)
-        final var functionResult = result.getValue();
-        final var inputResult = functionResult.apply(input+separator+input);
-        assertTrue(inputResult.isSuccess());
-        System.out.println(inputResult.getValue().getClass());
-        final Object[] inputValue = (Object[]) (inputResult.getValue());
-        System.out.println(inputValue[0]);
-        assertEquals(inputValue[0], type);
-        assertEquals(inputValue[1], type);
-        // AND Fail(E) otherwise
-        final var failResult = functionResult.apply("NOT"+input);
-        assertTrue(failResult.isFailure());
-        final var failValue = failResult.getException();
-        assertEquals(failValue.getClass(), GroupedException.class);
-        final var failValues = ((GroupedException) failValue).getExceptions();
-        assertEquals(failValues.size(), 1);
-        failValues.forEach( f ->
-                assertEquals(f, fail) );
+        // AND the operator transform the function F in NF such that
+        //     NF maps I+S+I+....+S+I into Success([T,T,...,T])
+        //     and Failure for the rest
+        final var operator = result.getValue();
+        final var modifiedFunction = operator.apply(function);
+        final var arrayInput = input+separator+input;
+        final var modifiedResult = modifiedFunction.apply(arrayInput);
+        assertTrue(modifiedResult.isSuccess());
+        final var modifiedValue = (Object[]) modifiedResult.getValue();
+        Stream.of(modifiedValue).forEach( v ->
+                assertEquals(v,value));
+        final var modifiedFail = modifiedFunction.apply("NOT INPUT");
+        assertTrue(modifiedFail.isFailure());
     }
 
     /*
-     * GIVEN an integer K
-     *  AND a field FI of type TypeT with the annotation CsvColumn with value K
-     *  AND a value of type TypeT T
-     *  AND an input string I
-     *  AND an exception E
-     *  AND a function F: String -> Try<?>  that map I -> Success(T) and other input into Fail(E)
-     *  AND a map M containing the entry (TypeT.class, F)
-     *  AND a CsvFieldComposer CsvFC constructed with M
+     * GIVEN a field FI with type not an array with the annotation CsvArray with separator S
+     *  AND a csvFieldModifier CFM
      * WHEN the method compute is invoked with FI
      * THEN the result is a failure
-     *  AND the exception is of type MissingArrayException
-     *  AND the message is formatted with FI
      */
-    public void compute_array_transformer_for_not_an_array_field_return_a_failure() throws NoSuchFieldException {
-        final var csvDeclarserFactory = new CsvDeclarserFactory() {
-            @Override
-            public <O> Try<Declarser<String, Integer, String, O>> declarserOf(Class<O> clazz, Validator<O> postValidator, String cellSeparator) {
-                return Try.fail(new Exception());
-            }
-        };
-        final var csvPreValidatorsFactory = CsvPreValidatorsFactory.of(new HashMap<>(), new HashMap<>());
-        final var csvPreValidatorsExtractor = CsvPreValidatorsExtractor.getInstance();
-
-        // GIVEN an integer K
-        final int key = 0;
-
+    @Test
+    public void testFail() throws NoSuchFieldException {
+        class TypeT{}
         final var separator = "-";
-        // AND a field FI of type TypeT with the annotation CsvColumn with value K
-        class TypeT {}
-        class ComposerSample {
+        // GIVEN a field FI with type not an array with the annotation CsvArray with separator S
+        class ModifierrSample {
             @SuppressWarnings("unused")
-            @CsvColumn(key)
             @CsvArray(separator)
             private TypeT simpleData;
         }
-        final var field = ComposerSample.class.getDeclaredField("simpleData");
-        // AND a value of type TypeT T
-        final var type = new TypeT();
-        // AND an input string I
-        final var input = "input";
-        // AND an exception E
-        final var fail = new Exception();
-        // AND a function F: String -> Try<?>  that map I -> Success(T) and other input into Fail(E)
-        final Function<String, Try<?>> function = t -> input.equals(t) ? Try.success(type) : Try.fail(fail);
-        // AND a map M containing the entry (TypeT.class, F)
-        final var autoFunctionClassMap = new HashMap<Class<?>, Function<String, Try<?>>>();
-        autoFunctionClassMap.put(
-                TypeT.class,
-                function);
-        // AND a CsvFieldComposer CsvFC constructed with M
-        final var composer = CsvFieldComposer.of(
-                csvDeclarserFactory,
-                csvPreValidatorsFactory,
-                csvPreValidatorsExtractor,
-                new HashMap<>(),
-                autoFunctionClassMap);
+        final var field = ModifierrSample.class.getDeclaredField("simpleData");
+        // AND a csvFieldModifier CFM
+        final var csvFieldModifier = CsvFieldModifier.getInstance();
         // WHEN the method compute is invoked with FI
-        final var result = composer.compute(field);
+        final var result = csvFieldModifier.compute(field);
         // THEN the result is a failure
         assertTrue(result.isFailure());
-        // AND the exception is of type MissingArrayException
         final var exception = result.getException();
         assertEquals(exception.getClass(), MissingArrayException.class);
-        // AND the message is formatted with FI
-        assertEquals(exception.getMessage(), String.format(MissingArrayException.messageFormatter, field.getName()));
+        assertEquals(exception.getMessage(),String.format(MissingArrayException.messageFormatter, field.getType().toString(), field.getName()));
+
     }
 }

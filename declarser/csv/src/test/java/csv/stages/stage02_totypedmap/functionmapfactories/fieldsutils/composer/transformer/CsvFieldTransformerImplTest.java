@@ -15,6 +15,7 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SuppressWarnings("unchecked")
 public class CsvFieldTransformerImplTest {
 
     /*
