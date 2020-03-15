@@ -107,7 +107,6 @@ public class CsvFieldComposerTest {
      *  AND that CFP.compute(FI) return Sucess(V)
      *  AND that CFT.compute(FI) return Sucess(F)
      *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
-     *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
      * WHEN the method compute is invokec with FI
      * THEN the result is a success
      *  AND the transformer has key equals to K
@@ -160,7 +159,6 @@ public class CsvFieldComposerTest {
      *  AND that CFP.compute(FI) return Sucess(V)
      *  AND that CFT.compute(FI) return Sucess(F)
      *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
-     *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
      * WHEN the method compute is invokec with FI
      * THEN the result is a failure
      *  AND the exception is E
@@ -184,7 +182,6 @@ public class CsvFieldComposerTest {
      *  AND that CFP.compute(FI) return Failure(E)
      *  AND that CFT.compute(FI) return Sucess(F)
      *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
-     *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
      * WHEN the method compute is invokec with FI
      * THEN the result is a failure
      *  AND the exception is E
@@ -207,7 +204,6 @@ public class CsvFieldComposerTest {
      *  AND that CFM.compute(FI) return Success(M)
      *  AND that CFP.compute(FI) return Sucess(V)
      *  AND that CFT.compute(FI) return Failure(E)
-     *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
      *  AND a CsvFieldComposer C constructed with CFM, CFP, and CFT
      * WHEN the method compute is invokec with FI
      * THEN the result is a failure

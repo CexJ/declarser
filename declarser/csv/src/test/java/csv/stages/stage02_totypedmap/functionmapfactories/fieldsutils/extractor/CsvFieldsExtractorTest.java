@@ -1,8 +1,6 @@
 package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor;
 
 import csv.stages.annotations.fields.CsvColumn;
-import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor.CsvFieldsExtractor;
-import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.sample.DataSample;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
@@ -17,6 +15,15 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CsvFieldsExtractorTest {
+
+    private static class TypeA {}
+    private static class TypeB {}
+    private static class DataSample {
+        @CsvColumn(0)
+        private TypeA valueA;
+        @CsvColumn(1)
+        private TypeB valueB;
+    }
 
     @Test
     public void testFlyWeightPattern(){
@@ -47,7 +54,7 @@ public class CsvFieldsExtractorTest {
         final var result = extractor.extract(clazz);
         // THEN the result is the set of fields annotated by CsvColumn
         assertEquals(2, result.size());
-        final var names = new HashSet<>(Arrays.asList("age", "name"));
+        final var names = new HashSet<>(Arrays.asList("valueA", "valueB"));
         final var resultNames = result.stream().map(Field::getName).collect(Collectors.toSet());
         assertEquals(resultNames, names);
         result.forEach(field -> assertNotNull(field.getAnnotation(CsvColumn.class)));
