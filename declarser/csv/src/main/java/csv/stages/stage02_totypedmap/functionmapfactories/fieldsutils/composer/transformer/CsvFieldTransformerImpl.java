@@ -57,8 +57,9 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
     private Try<Function<String, Try<?>>> nodeTransformer(
             final Field field,
             final CsvNode csvNode) {
-        final var cellSeparator = csvNode.cellSeparator();
-        return csvDeclarserFactory.declarserOf(field.getClass(), cellSeparator)
+        final var cellSeparator = csvNode.value();
+        return csvDeclarserFactory
+                .declarserOf(field.getClass(), cellSeparator)
                 .map( dec -> dec::parse);
     }
 
