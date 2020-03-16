@@ -48,7 +48,6 @@ class AutoSimpleExampleTest {
         final var result = declarser.parse(csv);
         assertTrue(result.isFailure());
         result.getException().printStackTrace();
-
     }
 }
 

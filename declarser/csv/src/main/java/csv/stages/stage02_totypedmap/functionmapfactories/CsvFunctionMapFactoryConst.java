@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -44,8 +45,8 @@ public final class CsvFunctionMapFactoryConst {
     static {
         autoFunctionClassMap = new HashMap<>();
         autoFunctionClassMap.put(LocalDate.class, LocalDateParser.getInstance("yyyy'-'MM'-'dd"));
-        autoFunctionClassMap.put(LocalDateTime.class, LocalDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff"));
-        autoFunctionClassMap.put(ZonedDateTime.class, ZonedDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')"));
+        autoFunctionClassMap.put(LocalDateTime.class, LocalDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss"));
+        autoFunctionClassMap.put(ZonedDateTime.class, ZonedDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss' 'z"));
         autoFunctionClassMap.put(BigDecimal.class, BigDecimalParser.getInstance());
         autoFunctionClassMap.put(BigInteger.class, BigIntegerParser.getInstance());
         autoFunctionClassMap.put(Boolean.class, BooleanParser.getInstance());
