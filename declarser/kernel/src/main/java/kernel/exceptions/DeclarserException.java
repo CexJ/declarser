@@ -3,15 +3,14 @@ package kernel.exceptions;
 public class DeclarserException extends Exception {
 
     public final static String messageFormatter =
-            "I encountered the following exception: %s, " +
-            "while parsing the following input: %s";
+            "%s while parsing the following input: %s";
 
     private Object input;
 
     public DeclarserException(
             final Object input,
             final Exception cause) {
-        super(String.format(messageFormatter, cause.toString(), input.toString()), cause);
+        super(String.format(messageFormatter, cause.getMessage(), input.toString()), cause);
         this.input = input;
     }
 

@@ -1,8 +1,8 @@
-package examples.auto;
+package examples.auto.sample;
 
 import csv.stages.annotations.fields.CsvColumn;
 
-public class DataSample {
+public class SimpleExample {
 
     @CsvColumn(0)
     private String name;

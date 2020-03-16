@@ -13,7 +13,7 @@ public class ParserException extends Exception {
             final Object value,
             final Class<?> clazz,
             final Exception cause) {
-        super(String.format(messageFormatter, value.toString(), clazz.toString(), cause.toString()), cause);
+        super(String.format(messageFormatter, value.toString(), clazz.getName(), cause.toString()), cause);
         this.value = value;
         this.clazz = clazz;
     }
@@ -23,5 +23,13 @@ public class ParserException extends Exception {
             final Class<?> clazz,
             final Exception cause){
         return new ParserException(value, clazz, cause);
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public Class<?> getClazz() {
+        return clazz;
     }
 }

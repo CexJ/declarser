@@ -4,15 +4,14 @@ package kernel.stages.stage03_combinator.exceptions;
 public final class CombiningException extends Exception {
 
     public final static String messageFormatter =
-            "I encountered the following exception: %s, " +
-            "while combining the following key: %s";
+            "%s while combining the following key: %s";
 
     private final Object key;
 
     private CombiningException(
             final Object key,
             final Exception cause) {
-        super(String.format(messageFormatter, cause.toString(), key.toString()), cause);
+        super(String.format(messageFormatter, cause.getMessage(), key.toString()), cause);
         this.key = key;
     }
 

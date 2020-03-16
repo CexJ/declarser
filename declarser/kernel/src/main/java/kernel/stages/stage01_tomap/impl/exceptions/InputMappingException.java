@@ -3,15 +3,14 @@ package kernel.stages.stage01_tomap.impl.exceptions;
 public class InputMappingException extends Exception {
 
     public final static String messageFormatter =
-            "I encountered the following exception: %s, " +
-            "while mapping the input %s ";
+            "%s while mapping the input %s ";
 
     private final Object value;
 
     private InputMappingException(
             final Object value,
             final Exception ex) {
-        super(String.format(messageFormatter, ex.toString(), value.toString()), ex);
+        super(String.format(messageFormatter, ex.getMessage(), value.toString()), ex);
         this.value = value;
     }
 
