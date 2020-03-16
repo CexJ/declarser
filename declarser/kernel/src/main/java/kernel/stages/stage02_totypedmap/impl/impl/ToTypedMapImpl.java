@@ -32,7 +32,8 @@ public final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 								Transformer.of(kv.getKey(),fun),
 								kv.getValue()))
 				.orElse(ToTypedMapComposition.of(
-								Transformer.of(kv.getKey(),any -> Try.fail(MissingFieldFunctionException.of(kv.getKey()))),
+						Transformer.of(
+								kv.getKey(), any -> Try.fail(MissingFieldFunctionException.of(kv.getKey()))),
 								kv.getValue())))
 				.collect(Collectors.toMap(ToTypedMapComposition::getKey, ToTypedMapComposition::apply));
 	}

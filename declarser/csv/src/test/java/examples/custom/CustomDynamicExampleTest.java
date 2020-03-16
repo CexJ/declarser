@@ -2,14 +2,11 @@ package examples.custom;
 
 import csv.CsvDeclarserFactory;
 import examples.custom.parsers.DynamicIntegerGreaterThanParser;
-import examples.custom.parsers.IntegerGreaterThanParser;
 import examples.custom.samples.CustomDynamicExample;
-import examples.custom.samples.CustomSimpleExample;
 import kernel.tryapi.Try;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

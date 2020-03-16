@@ -59,7 +59,7 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
             final CsvNode csvNode) {
         final var cellSeparator = csvNode.value();
         return csvDeclarserFactory
-                .declarserOf(field.getClass(), cellSeparator)
+                .declarserOf(field.getType(), cellSeparator)
                 .map( dec -> dec::parse);
     }
 
