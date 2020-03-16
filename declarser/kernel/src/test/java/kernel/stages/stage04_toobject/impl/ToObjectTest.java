@@ -94,7 +94,7 @@ public class ToObjectTest {
         assertEquals(resultException.getCause(), exception);
         // AND the message is formatted with M and E
         assertEquals(resultException.getMessage(),
-                String.format(OutputGluingException.messageFormatter, exception.toString(), map.toString()));
+                String.format(OutputGluingException.messageFormatter, exception.getMessage(), map.toString()));
     }
 
 
@@ -131,7 +131,7 @@ public class ToObjectTest {
         assertEquals(resultException.getCause(), exception);
         // AND the message is formatted with M and E
         assertEquals(resultException.getMessage(),
-                String.format(OutputGluingException.messageFormatter, exception.toString(), map.toString()));
+                String.format(OutputGluingException.messageFormatter, exception.getMessage(), map.toString()));
     }
 
 

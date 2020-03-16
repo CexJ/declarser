@@ -118,7 +118,7 @@ public class ZonedDateTimeParserTest {
         assertEquals(cause.getClass(), DateTimeParseException.class);
         // AND the message is formatted with S, ZonedDateTime.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, ZonedDateTime.class.toString(), cause.toString()));
+                string, ZonedDateTime.class.getName(), cause.toString()));
     }
 
 

@@ -115,7 +115,7 @@ public class LocalDateTimeParserTest {
         assertEquals(cause.getClass(), DateTimeParseException.class);
         // AND the message is formatted with S, LocalDateTime.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, LocalDateTime.class.toString(), cause.toString()));
+                string, LocalDateTime.class.getName(), cause.toString()));
     }
 
 

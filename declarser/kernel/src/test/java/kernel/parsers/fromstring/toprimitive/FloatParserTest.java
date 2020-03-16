@@ -101,7 +101,7 @@ public class FloatParserTest {
         assertEquals(cause.getClass(), NumberFormatException.class);
         // AND the message is formatted with S, Float.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, Float.class.toString(), cause.toString()));
+                string, Float.class.getName(), cause.toString()));
     }
 
     @Test

@@ -102,7 +102,7 @@ public class BigIntegerParserTest {
         assertEquals(cause.getClass(), NumberFormatException.class);
         // AND the message is formatted with S, BigInteger.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, BigInteger.class.toString(), cause.toString()));
+                string, BigInteger.class.getName(), cause.toString()));
     }
 
     @Test

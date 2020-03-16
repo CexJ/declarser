@@ -104,7 +104,7 @@ public class CharacterParserTest {
         assertEquals(cause.getClass(), IllegalArgumentException.class);
         // AND the message is formatted with S, Character.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, Character.class.toString(), cause.toString()));
+                string, Character.class.getName(), cause.toString()));
     }
 
     @Test

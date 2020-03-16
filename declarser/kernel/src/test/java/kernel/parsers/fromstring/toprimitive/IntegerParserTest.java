@@ -101,7 +101,7 @@ public class IntegerParserTest {
         assertEquals(cause.getClass(), NumberFormatException.class);
         // AND the message is formatted with S, Integer.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, Integer.class.toString(), cause.toString()));
+                string, Integer.class.getName(), cause.toString()));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package kernel.exceptions;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class GroupedException extends Exception {
 
@@ -11,7 +12,8 @@ public final class GroupedException extends Exception {
             final List<? extends Exception> exceptions) {
         super(exceptions.stream()
                 .map(Exception::getMessage)
-                .reduce((i,j) -> i+", "+j)
+                .filter(Objects::nonNull)
+                .reduce((i,j) -> ""+i+", "+j)
                 .orElse(""));
         this.exceptions = exceptions;
     }

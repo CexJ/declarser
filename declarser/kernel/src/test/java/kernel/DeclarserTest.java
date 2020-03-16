@@ -118,7 +118,7 @@ public class DeclarserTest {
         // AND the message is formatted with I and E
         final var message = exceptionResult.getMessage();
         assertEquals(message,
-                String.format(DeclarserException.messageFormatter, exception.toString(), input.toString()));
+                String.format(DeclarserException.messageFormatter, exception.getMessage(), input.toString()));
     }
 
 
@@ -174,7 +174,7 @@ public class DeclarserTest {
         // AND the message is formatted with I and E
         final var message = exceptionResult.getMessage();
         assertEquals(message,
-                String.format(DeclarserException.messageFormatter, exception.toString(), input.toString()));
+                String.format(DeclarserException.messageFormatter, exception.getMessage(), input.toString()));
     }
 
     /*
@@ -227,7 +227,7 @@ public class DeclarserTest {
         // AND the message is formatted with I and E
         final var message = exceptionResult.getMessage();
         assertEquals(message,
-                String.format(DeclarserException.messageFormatter, exception.toString(), input.toString()));
+                String.format(DeclarserException.messageFormatter, exception.getMessage(), input.toString()));
     }
 
 }

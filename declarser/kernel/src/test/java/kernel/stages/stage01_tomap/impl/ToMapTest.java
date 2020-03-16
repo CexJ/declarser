@@ -86,7 +86,7 @@ public class ToMapTest {
         // AND the message is formatted with I and E
         assertEquals(exceptionOutput.getMessage(),
                 String.format(InputMappingException.messageFormatter,
-                        exceptionInput.toString(), input.toString()));
+                        exceptionInput.getMessage(), input.toString()));
         // AND the value is I
         final var inputMappingException = (InputMappingException) exceptionOutput;
         assertEquals(inputMappingException.getValue(), input);
@@ -131,7 +131,7 @@ public class ToMapTest {
         // AND the message is formatted with I and E
         assertEquals(exceptionOutput.getMessage(),
                      String.format(InputMappingException.messageFormatter,
-                        exceptionInput.toString(), input.toString()));
+                        exceptionInput.getMessage(), input.toString()));
         // AND the value is I
         final var inputMappingException = (InputMappingException) exceptionOutput;
         assertEquals(inputMappingException.getValue(), input);

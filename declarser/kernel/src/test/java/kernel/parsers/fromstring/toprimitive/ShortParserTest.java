@@ -102,7 +102,7 @@ public class ShortParserTest {
         assertEquals(cause.getClass(), NumberFormatException.class);
         // AND the message is formatted with S, Short.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, Short.class.toString(), cause.toString()));
+                string, Short.class.getName(), cause.toString()));
     }
 
     @Test

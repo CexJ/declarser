@@ -2,7 +2,6 @@ package examples.auto;
 
 import csv.CsvDeclarserFactory;
 import examples.auto.sample.SimpleExample;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,7 +46,6 @@ class AutoSimpleExampleTest {
         final var declarser = tryDeclarser.getValue();
         final var result = declarser.parse(csv);
         assertTrue(result.isFailure());
-        result.getException().printStackTrace();
     }
 }
 

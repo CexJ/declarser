@@ -101,7 +101,7 @@ public class LongParserTest {
         assertEquals(cause.getClass(), NumberFormatException.class);
         // AND the message is formatted with S, Long.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, Long.class.toString(), cause.toString()));
+                string, Long.class.getName(), cause.toString()));
     }
 
     @Test

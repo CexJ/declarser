@@ -89,7 +89,7 @@ public class ToTypedMapTest {
         // AND the cause is E
         assertEquals(exceptionK.getCause(), exception);
         // AND the message is formatted with K, V, and E
-        assertEquals(exceptionK.getMessage(), String.format(TypingFieldException.messageFormatter, exception.toString(), k.toString(), v.toString()));
+        assertEquals(exceptionK.getMessage(), String.format(TypingFieldException.messageFormatter, exception.getMessage(), k.toString(), v.toString()));
     }
 
     /*

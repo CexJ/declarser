@@ -117,7 +117,7 @@ public class BigDecimalParserTest {
         assertEquals(cause.getClass(), NumberFormatException.class);
         // AND the message is formatted with S, BigDecimal.class, and the cause
         assertEquals(exception.getMessage(), String.format(ParserException.messageFormatter,
-                string, BigDecimal.class.toString(), cause.toString()));
+                string, BigDecimal.class.getName(), cause.toString()));
     }
 
 }
