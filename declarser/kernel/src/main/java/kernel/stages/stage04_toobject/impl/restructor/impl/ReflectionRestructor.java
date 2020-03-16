@@ -1,5 +1,6 @@
 package kernel.stages.stage04_toobject.impl.restructor.impl;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,13 +56,30 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 				.peek(f -> f.setAccessible(true))
 				.forEach(f -> {
 					try {
-						f.set(value, input.get(mapFileds.get(f.getName())) );
+						if(f.getType().isArray()) {
+							final var objectArray = (Object[])input.get(mapFileds.get(f.getName()));
+							final var type = f.getType().getComponentType();
+							final var typedArray = typeArray(type, objectArray);
+							f.set(value, typedArray);
+						} else {
+							f.set(value, input.get(mapFileds.get(f.getName())));
+						}
 					} catch (Exception e) {
 						exceptions.add(e);
 					}
 				});
 		return exceptions.isEmpty() ? Try.success(value)
 				                    : Try.fail(GroupedException.of(exceptions));
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private <T> T[] typeArray(Class<T> clazz, Object[] array){
+		T[] newArray =(T[]) clazz.arrayType().cast(Array.newInstance(clazz, array.length));
+		for(int i = 0; i< array.length; i++){
+			newArray[i] = (T) array[i];
+		}
+		return newArray;
 	}
 }
 

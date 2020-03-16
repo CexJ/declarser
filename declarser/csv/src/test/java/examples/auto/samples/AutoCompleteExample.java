@@ -1,4 +1,4 @@
-package examples.auto.sample;
+package examples.auto.samples;
 
 import csv.stages.annotations.fields.CsvColumn;
 
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-public class CompleteExample {
+public class AutoCompleteExample {
 
     @CsvColumn(0)
     private LocalDate aLocalDate;

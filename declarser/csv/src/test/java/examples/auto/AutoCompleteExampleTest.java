@@ -1,7 +1,6 @@
 package examples.auto;
 
 import csv.CsvDeclarserFactory;
-import examples.auto.sample.CompleteExample;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -14,7 +13,7 @@ import java.time.ZonedDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AutoCompleteExample {
+public class AutoCompleteExampleTest {
 
 
     @Test
@@ -35,7 +34,7 @@ public class AutoCompleteExample {
                 "string";
 
         final var declarserFactory = CsvDeclarserFactory.defaultFactory();
-        final var tryDeclarser = declarserFactory.declarserOf(CompleteExample.class,  ";");
+        final var tryDeclarser = declarserFactory.declarserOf(examples.auto.samples.AutoCompleteExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
         final var result = declarser.parse(csv);
