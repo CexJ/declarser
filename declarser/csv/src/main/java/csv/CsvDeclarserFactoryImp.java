@@ -1,6 +1,6 @@
 package csv;
 
-import csv.stages.annotations.validations.pre.CsvPreValidations;
+import csv.stages.annotations.prevalidations.CsvPreValidations;
 import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;

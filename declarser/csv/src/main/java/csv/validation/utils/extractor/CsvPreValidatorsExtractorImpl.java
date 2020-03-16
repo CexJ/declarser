@@ -1,6 +1,6 @@
 package csv.validation.utils.extractor;
 
-import csv.stages.annotations.validations.pre.CsvPreValidation;
+import csv.stages.annotations.prevalidations.CsvPreValidation;
 import kernel.validations.prevalidations.PreValidator;
 
 class CsvPreValidatorsExtractorImpl implements CsvPreValidatorsExtractor {
