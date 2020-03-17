@@ -1,4 +1,4 @@
-package csv.validation.utils;
+package csv.validation.consts;
 
 import kernel.validations.Validator;
 import kernel.validations.impl.fromstring.NonBlankStringValidator;

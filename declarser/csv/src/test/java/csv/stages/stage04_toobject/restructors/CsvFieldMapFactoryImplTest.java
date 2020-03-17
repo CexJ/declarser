@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /*
  * A class is valid if it does not contains @CsvColumn annotations with repeated value
  */
-public class CsvFieldMapFactoryTest {
+public class CsvFieldMapFactoryImplTest {
 
     /*
      * GIVEN a valid sample class S
@@ -24,7 +24,7 @@ public class CsvFieldMapFactoryTest {
     public void map_valid_class_return_success(){
         // GIVEN a valid sample class S
         // WHEN mapFieldNameColumn method is invoked with S
-        final var result = CsvFieldMapFactory.mapFieldNameColumn(ValidSample.class);
+        final var result = CsvFieldMapFactory.getInstance().mapFieldNameColumn(ValidSample.class);
         // THEN the result is a success
         assertTrue(result.isSuccess());
         // AND the values corresponds to field name -> column
@@ -46,7 +46,7 @@ public class CsvFieldMapFactoryTest {
     public void map_valid_class_return_failure(){
         // GIVEN a invalid sample class S
         // WHEN mapFieldNameColumn method is invoked with S
-        final var result = CsvFieldMapFactory.mapFieldNameColumn(InvalidSample.class);
+        final var result = CsvFieldMapFactory.getInstance().mapFieldNameColumn(InvalidSample.class);
         // THEN the result is a failure
         assertTrue(result.isFailure());
         // AND the exception is of type RepeatedCsvColumnIndexException

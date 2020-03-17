@@ -1,6 +1,5 @@
 package csv.validation.utils;
 
-import csv.validation.utils.factory.CsvPreValidatorsFactory;
 import csv.validation.utils.utils.*;
 import kernel.exceptions.GroupedException;
 import kernel.validations.Validator;

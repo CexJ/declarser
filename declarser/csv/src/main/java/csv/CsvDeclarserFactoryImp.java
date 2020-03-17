@@ -3,7 +3,7 @@ package csv;
 import csv.stages.annotations.prevalidations.CsvPreValidations;
 import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
-import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactoryConst;
+import csv.stages.stage02_totypedmap.functionmapfactories.consts.CsvFunctionMapFactoryConst;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.CsvFieldComposer;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.modifier.CsvFieldModifier;
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator.CsvFieldPrevalidator;
@@ -15,8 +15,8 @@ import kernel.enums.SubsetType;
 import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
 import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
-import csv.validation.utils.CsvValidationConst;
-import csv.validation.utils.factory.CsvPreValidatorsFactory;
+import csv.validation.consts.CsvValidationConst;
+import csv.validation.utils.CsvPreValidatorsFactory;
 import kernel.impl.DeclarserImpl;
 import kernel.enums.ParallelizationStrategyEnum;
 import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
@@ -123,7 +123,7 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
     private <O> Try<ToObjectImpl<Integer, O>> stage4(
             final Class<O> clazz,
             final Validator<O> postValidator) {
-        final var mapFields = CsvFieldMapFactory.mapFieldNameColumn(clazz);
+        final var mapFields = CsvFieldMapFactory.getInstance().mapFieldNameColumn(clazz);
         final var restructor = mapFields.flatMap( mf ->
                 ReflectionRestructor.of(clazz, mf, annotationsSubsetType, SubsetType.CONTAINED));
         return restructor.map(res -> ToObjectImpl.of(postValidator,res));

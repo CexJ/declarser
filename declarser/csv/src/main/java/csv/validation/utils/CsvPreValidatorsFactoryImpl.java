@@ -1,4 +1,4 @@
-package csv.validation.utils.factory;
+package csv.validation.utils;
 
 import kernel.validations.Validator;
 import kernel.exceptions.GroupedException;

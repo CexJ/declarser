@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CsvFunctionMapFactoryTest {
+public class CsvFunctionMapFactoryImplTest {
 
     private static class TypeA {}
     private static class DataSample {

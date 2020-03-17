@@ -1,4 +1,4 @@
-package csv.stages.stage02_totypedmap.functionmapfactories;
+package csv.stages.stage02_totypedmap.functionmapfactories.consts;
 
 import kernel.parsers.fromstring.todate.LocalDateParser;
 import kernel.parsers.fromstring.todate.LocalDateTimeParser;

@@ -3,7 +3,7 @@ package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.
 import csv.stages.annotations.prevalidations.CsvPreValidation;
 import csv.stages.annotations.prevalidations.CsvPreValidations;
 import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
-import csv.validation.utils.factory.CsvPreValidatorsFactory;
+import csv.validation.utils.CsvPreValidatorsFactory;
 import kernel.tryapi.Try;
 import kernel.validations.Validator;
 
