@@ -50,7 +50,9 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 						.flatMap( value -> injectValues(input, value)));
 	}
 
-	private Try<O> injectValues(Map<K, ?> input, O value) {
+	private Try<O> injectValues(
+			final Map<K, ?> input,
+			final O value) {
 		final List<Exception> exceptions = new LinkedList<>();
 		Stream.of(clazz.getDeclaredFields())
 				.peek(f -> f.setAccessible(true))
@@ -74,7 +76,9 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 
 
 	@SuppressWarnings("unchecked")
-	private <T> T[] typeArray(Class<T> clazz, Object[] array){
+	private <T> T[] typeArray(
+			final Class<T> clazz,
+			final Object[] array){
 		T[] newArray =(T[]) clazz.arrayType().cast(Array.newInstance(clazz, array.length));
 		for(int i = 0; i< array.length; i++){
 			newArray[i] = (T) array[i];

@@ -5,7 +5,7 @@ public class DeclarserException extends Exception {
     public final static String messageFormatter =
             "%s while parsing the following input: %s";
 
-    private Object input;
+    private final Object input;
 
     public DeclarserException(
             final Object input,

@@ -28,7 +28,8 @@ public class StringPatternValidator implements Validator<String> {
     }
 
     @Override
-    public Optional<? extends Exception> apply(String s) {
+    public Optional<? extends Exception> apply(
+            final String s) {
         return s==null || !s.matches(pattern) ? Optional.of(NonMathingPatternStringException.of(pattern, s))
                                               : Optional.empty();
     }
@@ -40,13 +41,17 @@ public class StringPatternValidator implements Validator<String> {
         private final String string;
         private final String pattern;
 
-        private NonMathingPatternStringException(String pattern, String string) {
+        private NonMathingPatternStringException(
+                final String pattern,
+                final String string) {
             super(String.format(messageFormatter, pattern, string));
             this.pattern = pattern;
             this.string = string;
         }
 
-        public static NonMathingPatternStringException of(String pattern, String string) {
+        public static NonMathingPatternStringException of(
+                final String pattern,
+                final String string) {
             return new NonMathingPatternStringException(pattern, string);
         }
 

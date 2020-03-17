@@ -29,8 +29,8 @@ final class CsvPreValidatorsFactoryImpl implements CsvPreValidatorsFactory {
     }
 
     static CsvPreValidatorsFactoryImpl of(
-            Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
-            Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap){
+            final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> validatorClassMap,
+            final Map<Class<? extends Validator<String>>, Function<String[], Validator<String>>> customMap){
         return new CsvPreValidatorsFactoryImpl(validatorClassMap, customMap);
     }
 

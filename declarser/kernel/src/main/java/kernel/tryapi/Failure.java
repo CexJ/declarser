@@ -33,18 +33,21 @@ public class Failure<T> implements Try<T> {
 	}
 
 	@Override
-	public Try<T> continueIf(Validator<T> validator) {
+	public Try<T> continueIf(
+			final Validator<T> validator) {
 		return this;
 	}
 
 	@Override
-	public Try<T> enrichException(Function<Exception, ? extends Exception> enricher) {
+	public Try<T> enrichException(
+			final Function<Exception, ? extends Exception> enricher) {
 		return Try.fail(enricher.apply(exception));
 	}
 
 
 	@Override
-	public <U> Try<U> map(Function<T, ? extends U> map) {
+	public <U> Try<U> map(
+			final Function<T, ? extends U> map) {
 		return of(exception);
 	}
 

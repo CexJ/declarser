@@ -13,14 +13,19 @@ public class SubsetTypeException extends Exception {
     @SuppressWarnings("rawtypes")
     private final Collection second;
 
-    public <T> SubsetTypeException(Collection<T> first, Collection<T> second, Collection<T> delta) {
+    public <T> SubsetTypeException(
+            final Collection<T> first,
+            final Collection<T> second,
+            final Collection<T> delta) {
         super(String.format(messageFormatter, first, second, delta));
         this.first = first;
         this.second = second;
 
     }
 
-    public static <T> SubsetTypeException of(Collection<T> first, Collection<T> second) {
+    public static <T> SubsetTypeException of(
+            final Collection<T> first,
+            final Collection<T> second) {
         final var delta = first.stream()
                 .filter(f -> ! second.contains(f))
                 .collect(Collectors.toSet());

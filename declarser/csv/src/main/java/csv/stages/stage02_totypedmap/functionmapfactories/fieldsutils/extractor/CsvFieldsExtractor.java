@@ -20,7 +20,8 @@ public class CsvFieldsExtractor implements FieldsExtractor {
     }
 
     @Override
-    public Set<Field> extract(Class<?> clazz) {
+    public Set<Field> extract(
+            final Class<?> clazz) {
         return Stream.of(clazz.getDeclaredFields())
                 .filter(f -> f.getAnnotation(CsvColumn.class) != null)
                 .collect(Collectors.toSet());

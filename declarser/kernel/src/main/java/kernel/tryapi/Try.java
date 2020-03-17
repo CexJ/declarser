@@ -9,15 +9,18 @@ import java.util.function.Predicate;
 
 public interface Try<T> {
 
-	static <T> Try<T> success(T value){
+	static <T> Try<T> success(
+			final T value){
 		return Success.of(value);
 	}
 	
-	static <T> Try<T> fail(Exception exception){
+	static <T> Try<T> fail(
+			final Exception exception){
 		return Failure.of(exception);
 	}
 	
-	static <T> Try<T> go(Callable<T> callable){
+	static <T> Try<T> go(
+			final Callable<T> callable){
 		try {
 			return Success.of(callable.call());
 		}catch(Exception exception) {
@@ -27,14 +30,14 @@ public interface Try<T> {
 
 	boolean isSuccess();
 	boolean isFailure();
-	Try<T> continueIf(Validator<T> validator);
-	Try<T> enrichException(Function<Exception, ? extends Exception> enricher);
-	<U> Try<U> map(Function<T,? extends U> map);
-	<U> Try<U> flatMap(Function<T,Try<U>> map);
-	Try<T> filter(Predicate<T> predicate);
-	Try<T> or(Try<T> alternative);
-	T getOrElse(T defaultValue);
+	Try<T> continueIf(final Validator<T> validator);
+	Try<T> enrichException(final Function<Exception, ? extends Exception> enricher);
+	<U> Try<U> map(final Function<T,? extends U> map);
+	<U> Try<U> flatMap(final Function<T,Try<U>> map);
+	Try<T> filter(final Predicate<T> predicate);
+	Try<T> or(final Try<T> alternative);
+	T getOrElse(final T defaultValue);
 	T getValue();
 	Exception getException();
-	void ifPresent(Consumer<T> consumer);
+	void ifPresent(final Consumer<T> consumer);
 }

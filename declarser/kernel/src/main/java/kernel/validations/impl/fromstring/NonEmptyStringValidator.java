@@ -19,7 +19,8 @@ public class NonEmptyStringValidator implements Validator<String> {
 
 
     @Override
-    public Optional<? extends Exception> apply(String s) {
+    public Optional<? extends Exception> apply(
+            final String s) {
         return s==null || s.isEmpty() ? Optional.of(EmptyStringException.of(s))
                                       : Optional.empty();
     }
@@ -30,12 +31,14 @@ public class NonEmptyStringValidator implements Validator<String> {
 
         private final String string;
 
-        private EmptyStringException(String string) {
+        private EmptyStringException(
+                final String string) {
             super(String.format(messageFormatter, string));
             this.string = string;
         }
 
-        public static EmptyStringException of(String string) {
+        public static EmptyStringException of(
+                final String string) {
             return new EmptyStringException(string);
         }
 

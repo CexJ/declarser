@@ -18,7 +18,8 @@ public class NonBlankStringValidator implements Validator<String> {
 
 
     @Override
-    public Optional<? extends Exception> apply(String s) {
+    public Optional<? extends Exception> apply(
+            final String s) {
         return s==null || s.isBlank() ? Optional.of(BlankStringException.of(s))
                                       : Optional.empty();
     }
@@ -29,12 +30,14 @@ public class NonBlankStringValidator implements Validator<String> {
 
         private final String string;
 
-        private BlankStringException(String string) {
+        private BlankStringException(
+                final String string) {
             super(String.format(messageFormatter, string));
             this.string = string;
         }
 
-        public static BlankStringException of(String string) {
+        public static BlankStringException of(
+                final String string) {
             return new BlankStringException(string);
         }
 

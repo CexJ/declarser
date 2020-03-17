@@ -16,5 +16,5 @@ public interface CsvPreValidatorsFactory {
     }
 
     Try<Validator<String>> function(
-            List<? extends PreValidator<String>> validatorAnns);
+            final List<? extends PreValidator<String>> validatorAnns);
 }
