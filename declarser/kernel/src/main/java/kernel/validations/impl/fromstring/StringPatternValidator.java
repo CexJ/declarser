@@ -5,11 +5,12 @@ import kernel.validations.Validator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class StringPatternValidator implements Validator<String> {
 
 
-    private final String pattern;
+    private final Pattern pattern;
 
     private static final Map<String, StringPatternValidator> instancesMap = new HashMap<>();
 
@@ -23,15 +24,16 @@ public class StringPatternValidator implements Validator<String> {
     }
 
     private StringPatternValidator(
-            final String format){
-        this.pattern = format;
+            final String regex){
+        this.pattern = Pattern.compile(regex, Pattern.MULTILINE);
     }
 
     @Override
     public Optional<? extends Exception> apply(
             final String s) {
-        return s==null || !s.matches(pattern) ? Optional.of(NonMathingPatternStringException.of(pattern, s))
-                                              : Optional.empty();
+        final var matcher = pattern.matcher(s);
+        return ! matcher.matches() ? Optional.of(NonMathingPatternStringException.of(pattern.pattern(), s))
+                                   : Optional.empty();
     }
 
     public final static class NonMathingPatternStringException extends Exception {
