@@ -2,7 +2,6 @@ package examples.prevalidation.dynamic;
 
 import csv.CsvDeclarserFactory;
 import examples.prevalidation.dynamic.samples.DynamicPrevalidationExample;
-import examples.prevalidation.global.samples.GlobalPrevalidationExample;
 import kernel.validations.Validator;
 import kernel.validations.impl.fromstring.StringPatternValidator;
 import org.junit.jupiter.api.Test;
