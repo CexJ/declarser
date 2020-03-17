@@ -1,6 +1,6 @@
 package csv;
 
-import csv.stages.annotations.prevalidations.CsvPreValidations;
+import csv.stages.annotations.prevalidations.CsvPreValidation;
 import csv.stages.stage01_tomap.destructors.CsvDestructor;
 import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import csv.stages.stage02_totypedmap.functionmapfactories.consts.CsvFunctionMapFactoryConst;
@@ -131,8 +131,8 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
 
     private <O> Try<Validator<String>> preValidator(
             final Class<O> clazz) {
-        return Optional.ofNullable(clazz.getAnnotation(CsvPreValidations.class))
-                .map(ann -> Stream.of(ann.value())
+        return Optional.ofNullable(clazz.getAnnotationsByType(CsvPreValidation.class))
+                .map(anns -> Stream.of(anns)
                         .map(preValidatorExtractor::extract)
                         .collect(Collectors.toList()))
                 .map(csvPreValidatorsFactory::function)

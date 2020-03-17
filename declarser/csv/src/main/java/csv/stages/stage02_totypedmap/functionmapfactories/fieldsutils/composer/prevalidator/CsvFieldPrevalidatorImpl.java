@@ -1,7 +1,6 @@
 package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator;
 
 import csv.stages.annotations.prevalidations.CsvPreValidation;
-import csv.stages.annotations.prevalidations.CsvPreValidations;
 import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
 import csv.validation.utils.CsvPreValidatorsFactory;
 import kernel.tryapi.Try;
@@ -33,8 +32,7 @@ final class CsvFieldPrevalidatorImpl implements CsvFieldPrevalidator {
 
     public Try<Validator<String>> compute(
             final Field field){
-        final var annPrevalidators = Optional.ofNullable(field.getAnnotation(CsvPreValidations.class))
-                .map(CsvPreValidations::value)
+        final var annPrevalidators = Optional.ofNullable(field.getAnnotationsByType(CsvPreValidation.class))
                 .orElse(new CsvPreValidation[0]);
         return preValidatorFactory.function(Stream.of(annPrevalidators)
                         .map(csvPreValidatorsExtractor::extract)

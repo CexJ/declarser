@@ -1,7 +1,6 @@
 package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator;
 
 import csv.stages.annotations.prevalidations.CsvPreValidation;
-import csv.stages.annotations.prevalidations.CsvPreValidations;
 import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
 import csv.validation.utils.CsvPreValidatorsFactory;
 import kernel.tryapi.Try;
@@ -48,9 +47,8 @@ public class CsvFieldPrevalidatorImplTest {
         class TypeT{}
         class ComposerSample {
             @SuppressWarnings("unused")
-            @CsvPreValidations({
-                    @CsvPreValidation(ValidatorMock.class),
-                    @CsvPreValidation(ValidatorMock.class)})
+            @CsvPreValidation(ValidatorMock.class)
+            @CsvPreValidation(ValidatorMock.class)
             private TypeT simpleData;
         }
         final var field = ComposerSample.class.getDeclaredField("simpleData");
