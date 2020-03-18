@@ -113,7 +113,7 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
             final Class<O> clazz) {
         final var mapFunction = mapFunctionFactory.mapColumnToTransformer(clazz);
         return mapFunction.map( mf ->
-                ToTypedMapImpl.of( mf, parallelizationStrategy));
+                ToTypedMapImpl.of( mf, annotationsSubsetType, parallelizationStrategy));
     }
 
     private Try<Combinator<Integer>> stage3() {

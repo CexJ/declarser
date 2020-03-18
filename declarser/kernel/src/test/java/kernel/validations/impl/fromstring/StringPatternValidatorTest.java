@@ -87,7 +87,7 @@ public class StringPatternValidatorTest {
     @Test
     public void validate_null_string_return_non_empty(){
         // GIVEN a StringPatternValidator V
-        final var pattern = "a-z";
+        final var pattern = "[a-z]*";
         final var validator = StringPatternValidator.getInstance(pattern);
         // WHEN the method apply is invoked with null
         final var result = validator.apply(null);

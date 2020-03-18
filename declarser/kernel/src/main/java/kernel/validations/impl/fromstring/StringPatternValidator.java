@@ -31,9 +31,9 @@ public class StringPatternValidator implements Validator<String> {
     @Override
     public Optional<? extends Exception> apply(
             final String s) {
-        final var matcher = pattern.matcher(s);
-        return ! matcher.matches() ? Optional.of(NonMathingPatternStringException.of(pattern.pattern(), s))
-                                   : Optional.empty();
+        return s == null                     ? Optional.of(NonMathingPatternStringException.of(pattern.pattern(), s)) :
+               !pattern.matcher(s).matches() ? Optional.of(NonMathingPatternStringException.of(pattern.pattern(), s)) :
+                                               Optional.empty();
     }
 
     public final static class NonMathingPatternStringException extends Exception {
