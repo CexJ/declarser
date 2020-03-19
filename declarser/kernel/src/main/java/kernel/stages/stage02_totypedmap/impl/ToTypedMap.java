@@ -11,11 +11,11 @@ public interface ToTypedMap<K, V> {
 
     static <K,V> ToTypedMap<K,V> of(
             final Map<K, Function<V, Try<?>>> mapFunction,
-            final SubsetType annotationsSubsetType,
+            final SubsetType subsetType,
             final ParallelizationStrategyEnum parallelizationStrategy) {
         return ToTypedMapImpl.of(
                 mapFunction,
-                annotationsSubsetType,
+                subsetType,
                 parallelizationStrategy);
     }
 

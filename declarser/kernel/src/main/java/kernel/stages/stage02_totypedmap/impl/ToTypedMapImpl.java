@@ -18,15 +18,15 @@ final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 
 	private ToTypedMapImpl(
 			final Map<K, Function<V, Try<?>>> functionMap,
-			final SubsetType annotationsSubsetType,
+			final SubsetType subsetType,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
 		super();
-		this.mapFunction = fromFunctionMapToMapFunction(functionMap, annotationsSubsetType, parallelizationStrategy);
+		this.mapFunction = fromFunctionMapToMapFunction(functionMap, subsetType, parallelizationStrategy);
 	}
 
 	private Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(
 			final Map<K, Function<V, Try<?>>> functionMap,
-			final SubsetType annotationsSubsetType,
+			final SubsetType subsetType,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
 		return kvMap ->
 				parallelizationStrategy.exec(kvMap.entrySet().stream()).map( kv  ->
@@ -39,7 +39,7 @@ final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 						ToTypedMapComposition.of(
 								Transformer.of(kv.getKey(), any -> Try.fail(MissingFieldFunctionException.of(kv.getKey()))),
 								kv.getValue())))
-				.filter(opt -> annotationsSubsetType.isStrict() || functionMap.get(kv.getKey()) != null))
+				.filter(opt -> subsetType.isStrict() || functionMap.get(kv.getKey()) != null))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.collect(Collectors.toMap(ToTypedMapComposition::getKey, ToTypedMapComposition::apply));
