@@ -1,14 +1,13 @@
-package kernel.stages.stage01_tomap.impl.impl;
+package kernel.stages.stage01_tomap.impl;
 
 import java.util.Map;
 
-import kernel.stages.stage01_tomap.impl.ToMap;
 import kernel.stages.stage01_tomap.impl.destructor.Destructor;
 import kernel.stages.stage01_tomap.impl.exceptions.InputMappingException;
 import kernel.tryapi.Try;
 import kernel.validations.Validator;
 
-public final class ToMapImpl<I,K,V> implements ToMap<I, K, V> {
+final class ToMapImpl<I,K,V> implements ToMap<I, K, V> {
 
 	private final Validator<I> inputValidator;
 	private final Destructor<I,K,V> destructor;
@@ -21,7 +20,7 @@ public final class ToMapImpl<I,K,V> implements ToMap<I, K, V> {
 		this.destructor = destructor;
 	}
 
-	public static <I,K,V> ToMapImpl<I,K,V> of(
+	static <I,K,V> ToMapImpl<I,K,V> of(
 			final Validator<I> inputValidator,
 			final Destructor<I, K, V> destructor) {
 		return new ToMapImpl<>(inputValidator, destructor);

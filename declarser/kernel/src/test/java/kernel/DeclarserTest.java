@@ -1,6 +1,5 @@
 package kernel;
 
-import kernel.impl.DeclarserImpl;
 import kernel.stages.stage01_tomap.impl.ToMap;
 import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.stages.stage03_combinator.Combinator;

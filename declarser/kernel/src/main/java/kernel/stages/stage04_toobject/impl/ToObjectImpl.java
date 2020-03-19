@@ -1,14 +1,13 @@
-package kernel.stages.stage04_toobject.impl.impl;
+package kernel.stages.stage04_toobject.impl;
 
 import java.util.Map;
 
-import kernel.stages.stage04_toobject.impl.ToObject;
 import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.validations.Validator;
 import kernel.stages.stage04_toobject.impl.exceptions.OutputGluingException;
 import kernel.tryapi.Try;
 
-public final class ToObjectImpl<K,O> implements ToObject<K, O> {
+final class ToObjectImpl<K,O> implements ToObject<K, O> {
 
 	private final Validator<O> outputValidator;
 	private final Restructor<K,O> restructor;
@@ -21,7 +20,7 @@ public final class ToObjectImpl<K,O> implements ToObject<K, O> {
 		this.restructor = restructor;
 	}
 	
-	public static <K,O> ToObjectImpl<K,O> of(
+	static <K,O> ToObjectImpl<K,O> of(
 			final Validator<O> outputValidator,
 			final Restructor<K,O> restructor){
 		return new ToObjectImpl<>(outputValidator, restructor);

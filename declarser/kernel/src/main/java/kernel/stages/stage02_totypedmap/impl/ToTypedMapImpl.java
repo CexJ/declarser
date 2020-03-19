@@ -1,10 +1,10 @@
-package kernel.stages.stage02_totypedmap.impl.impl;
+package kernel.stages.stage02_totypedmap.impl;
 
 import kernel.enums.ParallelizationStrategyEnum;
 import kernel.enums.SubsetType;
 import kernel.stages.stage02_totypedmap.impl.exceptions.MissingFieldFunctionException;
 import kernel.stages.stage02_totypedmap.impl.exceptions.TypingFieldException;
-import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
+import kernel.stages.stage02_totypedmap.impl.trasformer.Transformer;
 import kernel.tryapi.Try;
 
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
+final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 
 	private final Function<Map<K, V> , Map<K,Try<?>>> mapFunction;
 
@@ -24,7 +24,7 @@ public final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 		this.mapFunction = fromFunctionMapToMapFunction(functionMap, annotationsSubsetType, parallelizationStrategy);
 	}
 
-	public Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(
+	private Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(
 			final Map<K, Function<V, Try<?>>> functionMap,
 			final SubsetType annotationsSubsetType,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
@@ -45,7 +45,7 @@ public final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 				.collect(Collectors.toMap(ToTypedMapComposition::getKey, ToTypedMapComposition::apply));
 	}
 
-	public static <K,V> ToTypedMapImpl<K,V> of(
+	static <K,V> ToTypedMapImpl<K,V> of(
 			final Map<K, Function<V, Try<?>>> mapFunction,
 			final SubsetType annotationsSubsetType,
 			final ParallelizationStrategyEnum parallelizationStrategy) {

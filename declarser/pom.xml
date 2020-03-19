@@ -7,6 +7,7 @@
   <modules>
     <module>kernel</module>
     <module>csv</module>
+      <module>mapper</module>
   </modules>
   <name>declarser</name>
   <description>A declarative parser framework</description>

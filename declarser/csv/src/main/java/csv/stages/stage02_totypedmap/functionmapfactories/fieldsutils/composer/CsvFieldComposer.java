@@ -6,7 +6,7 @@ import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.p
 import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
 
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
-import kernel.stages.stage02_totypedmap.impl.impl.Transformer;
+import kernel.stages.stage02_totypedmap.impl.trasformer.Transformer;
 import kernel.tryapi.Try;
 import kernel.validations.Validator;
 

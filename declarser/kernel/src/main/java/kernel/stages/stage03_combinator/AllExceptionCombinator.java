@@ -1,13 +1,12 @@
-package kernel.stages.stage03_combinator.impl;
+package kernel.stages.stage03_combinator;
 
 import kernel.enums.ParallelizationStrategyEnum;
-import kernel.stages.stage03_combinator.Combinator;
 import kernel.tryapi.Try;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class AllExceptionCombinator<K> implements Combinator<K> {
+final class AllExceptionCombinator<K> implements Combinator<K> {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
 
@@ -16,7 +15,7 @@ public final class AllExceptionCombinator<K> implements Combinator<K> {
         this.parallelizationStrategy = parallelizationStrategy;
     }
 
-    public static <K> AllExceptionCombinator<K> of(
+    static <K> AllExceptionCombinator<K> of(
             final ParallelizationStrategyEnum parallelizationStrategy){
         return new AllExceptionCombinator<>(parallelizationStrategy);
     }

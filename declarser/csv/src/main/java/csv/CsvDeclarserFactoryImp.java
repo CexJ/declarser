@@ -12,17 +12,15 @@ import csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.extractor.
 import csv.validation.utils.extractor.CsvPreValidatorsExtractor;
 import kernel.Declarser;
 import kernel.enums.SubsetType;
-import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
+import kernel.stages.stage01_tomap.impl.ToMap;
+import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import csv.stages.stage04_toobject.CsvFieldMapFactory;
-import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
+import kernel.stages.stage04_toobject.impl.ToObject;
 import csv.validation.consts.CsvValidationConst;
 import csv.validation.utils.CsvPreValidatorsFactory;
-import kernel.impl.DeclarserImpl;
 import kernel.enums.ParallelizationStrategyEnum;
-import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
-import kernel.stages.stage02_totypedmap.impl.impl.ToTypedMapImpl;
 import kernel.stages.stage03_combinator.Combinator;
-import kernel.stages.stage04_toobject.impl.impl.ToObjectImpl;
+import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.validations.Validator;
 import kernel.tryapi.Try;
 
@@ -97,36 +95,36 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
                stage3().flatMap(                     combinator ->
                stage4(clazz, postValidator).map(     toObject   ->
 
-                       DeclarserImpl.of(toMap, toTypedMap, combinator, toObject))))) ;
+                       Declarser.of(toMap, toTypedMap, combinator, toObject))))) ;
     }
 
-    private <O> Try<ToMapImpl<String, Integer, String>> stage1(
+    private <O> Try<ToMap<String, Integer, String>> stage1(
             final Class<O> clazz,
             final String cellSeparator) {
         final var preValidator = preValidator(clazz);
         final var destructor = CsvDestructor.of(cellSeparator);
         return preValidator.map( pv ->
-                ToMapImpl.of(pv, destructor));
+                ToMap.of(pv, destructor));
     }
 
-    private <O> Try<ToTypedMapImpl<Integer, String>> stage2(
+    private <O> Try<ToTypedMap<Integer, String>> stage2(
             final Class<O> clazz) {
         final var mapFunction = mapFunctionFactory.mapColumnToTransformer(clazz);
         return mapFunction.map( mf ->
-                ToTypedMapImpl.of( mf, annotationsSubsetType, parallelizationStrategy));
+                ToTypedMap.of( mf, annotationsSubsetType, parallelizationStrategy));
     }
 
     private Try<Combinator<Integer>> stage3() {
-        return Try.success(NoExceptionCombinator.of(parallelizationStrategy));
+        return Try.success(Combinator.noException(parallelizationStrategy));
     }
 
-    private <O> Try<ToObjectImpl<Integer, O>> stage4(
+    private <O> Try<ToObject<Integer, O>> stage4(
             final Class<O> clazz,
             final Validator<O> postValidator) {
         final var mapFields = CsvFieldMapFactory.getInstance().mapFieldNameColumn(clazz);
         final var restructor = mapFields.flatMap( mf ->
-                ReflectionRestructor.of(clazz, mf, annotationsSubsetType, SubsetType.CONTAINED));
-        return restructor.map(res -> ToObjectImpl.of(postValidator,res));
+                Restructor.reflection(clazz, mf, annotationsSubsetType, SubsetType.CONTAINED));
+        return restructor.map(res -> ToObject.of(postValidator,res));
     }
 
     private <O> Try<Validator<String>> preValidator(

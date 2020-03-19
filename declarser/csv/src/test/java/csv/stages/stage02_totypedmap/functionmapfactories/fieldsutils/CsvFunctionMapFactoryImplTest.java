@@ -4,7 +4,7 @@ import csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import kernel.exceptions.GroupedException;
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldsExtractor;
-import kernel.stages.stage02_totypedmap.impl.impl.Transformer;
+import kernel.stages.stage02_totypedmap.impl.trasformer.Transformer;
 import kernel.tryapi.Try;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

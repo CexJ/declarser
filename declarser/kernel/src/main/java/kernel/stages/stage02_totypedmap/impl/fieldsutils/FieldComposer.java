@@ -1,6 +1,6 @@
 package kernel.stages.stage02_totypedmap.impl.fieldsutils;
 
-import kernel.stages.stage02_totypedmap.impl.impl.Transformer;
+import kernel.stages.stage02_totypedmap.impl.trasformer.Transformer;
 import kernel.tryapi.Try;
 
 import java.lang.reflect.Field;

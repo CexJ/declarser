@@ -1,7 +1,6 @@
 package kernel.stages.stage01_tomap.impl;
 
 import kernel.stages.stage01_tomap.impl.destructor.Destructor;
-import kernel.stages.stage01_tomap.impl.impl.ToMapImpl;
 import kernel.validations.Validator;
 
 import org.junit.jupiter.api.Test;

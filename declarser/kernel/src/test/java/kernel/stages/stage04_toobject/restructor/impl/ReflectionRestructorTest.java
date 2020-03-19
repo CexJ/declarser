@@ -2,7 +2,7 @@ package kernel.stages.stage04_toobject.restructor.impl;
 
 import kernel.enums.SubsetType;
 import kernel.exceptions.SubsetTypeException;
-import kernel.stages.stage04_toobject.impl.restructor.impl.ReflectionRestructor;
+import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.stages.stage04_toobject.restructor.impl.sample.TypeO;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -59,7 +59,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 SubsetType.valueOf(inputSubsetType), SubsetType.valueOf(fieldSubsetType)).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -103,7 +103,7 @@ public class ReflectionRestructorTest {
         final var mapFileds = new HashMap<String, TypeK>();
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -146,7 +146,7 @@ public class ReflectionRestructorTest {
         final var mapFileds = new HashMap<String, TypeK>();
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -187,7 +187,7 @@ public class ReflectionRestructorTest {
         final var mapFileds = new HashMap<String, TypeK>();
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -230,7 +230,7 @@ public class ReflectionRestructorTest {
         final var mapFileds = new HashMap<String, TypeK>();
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -263,13 +263,12 @@ public class ReflectionRestructorTest {
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
         // AND a list of key of type TypeK: K1,K2, ..., KN
-        final var firstKey = new TypeK();
         final var secondKey = new TypeK();
         // LET M be the map Fi -> Ki except for some i in a set J
         final var mapFileds = new HashMap<String, TypeK>();
         mapFileds.put("secondField", secondKey);
         // WHEN a restructor R is constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINED);
         // THEN is a failure
         assertTrue(restructor.isFailure());
@@ -296,13 +295,12 @@ public class ReflectionRestructorTest {
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
         // AND a list of key of type TypeK: K1,K2, ..., KN
-        final var firstKey = new TypeK();
         final var secondKey = new TypeK();
         // LET M be the map Fi -> Ki except for some i in a set J
         final var mapFileds = new HashMap<String, TypeK>();
         mapFileds.put("secondField", secondKey);
         // WHEN a restructor R is constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.BIJECTIVE);
         // THEN is a failure
         assertTrue(restructor.isFailure());
@@ -340,7 +338,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         mapFileds.put("thirdField", thirdKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -386,7 +384,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         mapFileds.put("thirdField", thirdKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -427,7 +425,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         mapFileds.put("thirdField", thirdKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -473,7 +471,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         mapFileds.put("thirdField", thirdKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
@@ -516,7 +514,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         mapFileds.put("thirdField", thirdKey);
         // WHEN a restructor R is constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINS);
         // THEN is a failure
         assertTrue(restructor.isFailure());
@@ -553,7 +551,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         mapFileds.put("thirdField", thirdKey);
         // WHEN a restructor R is constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.BIJECTIVE);
         // THEN is a failure
         assertTrue(restructor.isFailure());
@@ -591,7 +589,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
@@ -637,7 +635,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
@@ -682,7 +680,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
@@ -725,7 +723,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
@@ -770,7 +768,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
@@ -813,7 +811,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.BIJECTIVE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
@@ -858,7 +856,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.BIJECTIVE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     except for i in J<(1,...,N) for which there is no entry
@@ -901,7 +899,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
@@ -949,7 +947,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.NONE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
@@ -994,7 +992,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
@@ -1042,7 +1040,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
@@ -1087,7 +1085,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
@@ -1135,7 +1133,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
@@ -1180,7 +1178,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.BIJECTIVE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
@@ -1228,7 +1226,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("firstField",firstKey);
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
-        final var restructor = ReflectionRestructor.of(clazz, mapFileds,
+        final var restructor = Restructor.reflection(clazz, mapFileds,
                 inputSubsetType, SubsetType.BIJECTIVE).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj

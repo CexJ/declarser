@@ -2,7 +2,6 @@ package kernel.stages.stage02_totypedmap.impl;
 
 import kernel.enums.ParallelizationStrategyEnum;
 import kernel.enums.SubsetType;
-import kernel.stages.stage02_totypedmap.impl.impl.ToTypedMapImpl;
 import kernel.stages.stage02_totypedmap.impl.exceptions.MissingFieldFunctionException;
 import kernel.stages.stage02_totypedmap.impl.exceptions.TypingFieldException;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,6 +1,5 @@
-package kernel.impl;
+package kernel;
 
-import kernel.Declarser;
 import kernel.stages.stage01_tomap.impl.ToMap;
 import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.stages.stage03_combinator.Combinator;
@@ -8,7 +7,7 @@ import kernel.stages.stage04_toobject.impl.ToObject;
 import kernel.exceptions.DeclarserException;
 import kernel.tryapi.Try;
 
-public final class DeclarserImpl<I,K,V,O> implements Declarser<I,K,V,O> {
+final class DeclarserImpl<I,K,V,O> implements Declarser<I,K,V,O> {
 
 	private final ToMap<I, K, V> toMap;
 	private final ToTypedMap<K, V> toTypedMap;
@@ -27,7 +26,7 @@ public final class DeclarserImpl<I,K,V,O> implements Declarser<I,K,V,O> {
 		this.toObject = toObject;
 	}
 	
-	public static <I,K,V,O> DeclarserImpl<I,K,V,O> of(
+	static <I,K,V,O> DeclarserImpl<I,K,V,O> of(
 			final ToMap<I, K, V> toMap,
 			final ToTypedMap<K, V> toTypedMap,
 			final Combinator<K> combinator,

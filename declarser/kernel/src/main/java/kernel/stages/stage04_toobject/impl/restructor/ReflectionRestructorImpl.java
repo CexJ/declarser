@@ -1,4 +1,4 @@
-package kernel.stages.stage04_toobject.impl.restructor.impl;
+package kernel.stages.stage04_toobject.impl.restructor;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -9,17 +9,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import kernel.enums.SubsetType;
-import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.exceptions.GroupedException;
 import kernel.tryapi.Try;
 
-public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
+public final class ReflectionRestructorImpl<K,O> implements Restructor<K,O> {
 
 	private final Class<O> clazz;
 	private final Map<String,K> mapFileds;
 	private final SubsetType inputMapType;
 
-	private ReflectionRestructor(
+	private ReflectionRestructorImpl(
 			final Class<O> clazz,
 			final Map<String,K> mapFileds,
 			final SubsetType inputMapType) {
@@ -28,7 +27,7 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 		this.inputMapType = inputMapType;
 	}
 
-	public static <K,O> Try<ReflectionRestructor<K,O>> of(
+	static <K,O> Try<ReflectionRestructorImpl<K,O>> of(
 			final Class<O> clazz,
 			final Map<String,K> mapFields,
 			final SubsetType inputMapType,
@@ -37,8 +36,8 @@ public final class ReflectionRestructor<K,O> implements Restructor<K,O> {
 				.map(Field::getName)
 				.collect(Collectors.toSet());
 		return fieldMapType.validation(mapFields.keySet(), fieldsname)
-				.map(Try::<ReflectionRestructor<K,O>>fail)
-				.orElse(Try.success(new ReflectionRestructor<>(clazz, mapFields,inputMapType)));
+				.map(Try::<ReflectionRestructorImpl<K,O>>fail)
+				.orElse(Try.success(new ReflectionRestructorImpl<>(clazz, mapFields,inputMapType)));
 	}
 
 	@Override

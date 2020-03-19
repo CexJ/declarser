@@ -3,7 +3,7 @@ package csv.stages.stage02_totypedmap.functionmapfactories;
 import kernel.exceptions.GroupedException;
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldsExtractor;
-import kernel.stages.stage02_totypedmap.impl.impl.Transformer;
+import kernel.stages.stage02_totypedmap.impl.trasformer.Transformer;
 import kernel.tryapi.Try;
 
 import java.util.*;

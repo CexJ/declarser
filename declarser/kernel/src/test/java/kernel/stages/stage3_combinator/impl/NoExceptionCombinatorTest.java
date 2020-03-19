@@ -1,9 +1,9 @@
 package kernel.stages.stage3_combinator.impl;
 
 import kernel.enums.ParallelizationStrategyEnum;
+import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage03_combinator.exceptions.CombiningException;
 import kernel.exceptions.GroupedException;
-import kernel.stages.stage03_combinator.impl.NoExceptionCombinator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import kernel.tryapi.Try;
@@ -30,7 +30,7 @@ public class NoExceptionCombinatorTest {
     @ParameterizedTest
     @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
     public void when_combine_success_return_success(String name){
-        final NoExceptionCombinator<TypeK> allExceptionCombinator = NoExceptionCombinator.of(ParallelizationStrategyEnum.valueOf(name));
+        final Combinator<TypeK> allExceptionCombinator = Combinator.noException(ParallelizationStrategyEnum.valueOf(name));
 
         // GIVEN a map S containing entry of type (TypeK, Success)
         final var sucessMap = new HashMap<TypeK, Try<?>>();
@@ -64,7 +64,7 @@ public class NoExceptionCombinatorTest {
     @ParameterizedTest
     @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
     public void when_combine_success_and_failure_return_failure(String name){
-        final NoExceptionCombinator<TypeK> allExceptionCombinator = NoExceptionCombinator.of(ParallelizationStrategyEnum.valueOf(name));
+        final Combinator<TypeK> allExceptionCombinator = Combinator.noException(ParallelizationStrategyEnum.valueOf(name));
 
         // GIVEN a map S containing entry of type (TypeK, Success)
         final var sucessMap = new HashMap<TypeK, Try<?>>();

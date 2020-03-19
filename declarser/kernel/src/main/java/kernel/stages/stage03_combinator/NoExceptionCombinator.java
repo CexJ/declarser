@@ -1,7 +1,6 @@
-package kernel.stages.stage03_combinator.impl;
+package kernel.stages.stage03_combinator;
 
 import kernel.enums.ParallelizationStrategyEnum;
-import kernel.stages.stage03_combinator.Combinator;
 import kernel.exceptions.GroupedException;
 import kernel.stages.stage03_combinator.exceptions.CombiningException;
 import kernel.tryapi.Try;
@@ -9,7 +8,7 @@ import kernel.tryapi.Try;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class NoExceptionCombinator<K> implements Combinator<K> {
+final class NoExceptionCombinator<K> implements Combinator<K> {
 
     private final ParallelizationStrategyEnum parallelizationStrategy;
 
@@ -18,7 +17,7 @@ public final class NoExceptionCombinator<K> implements Combinator<K> {
         this.parallelizationStrategy = parallelizationStrategy;
     }
 
-    public static <K> NoExceptionCombinator<K> of(
+    static <K> NoExceptionCombinator<K> of(
             final ParallelizationStrategyEnum parallelizationStrategy){
         return new NoExceptionCombinator<>(parallelizationStrategy);
     }

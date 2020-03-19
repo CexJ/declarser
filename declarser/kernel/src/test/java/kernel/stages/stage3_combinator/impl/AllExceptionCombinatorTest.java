@@ -1,7 +1,7 @@
 package kernel.stages.stage3_combinator.impl;
 
 import kernel.enums.ParallelizationStrategyEnum;
-import kernel.stages.stage03_combinator.impl.AllExceptionCombinator;
+import kernel.stages.stage03_combinator.Combinator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import kernel.tryapi.Try;
@@ -29,7 +29,7 @@ public class AllExceptionCombinatorTest {
     @ParameterizedTest
     @ValueSource(strings = { "SEQUENTIAL", "PARALLEL"})
     public void when_combine_success_and_failure_return_success(String name){
-        final AllExceptionCombinator<TypeK> allExceptionCombinator = AllExceptionCombinator.of(ParallelizationStrategyEnum.valueOf(name));
+        final Combinator<TypeK> allExceptionCombinator = Combinator.allException(ParallelizationStrategyEnum.valueOf(name));
 
         // GIVEN a map S containing entry of type (TypeK, Success)
         final var sucessMap = new HashMap<TypeK, Try<Object>>();
