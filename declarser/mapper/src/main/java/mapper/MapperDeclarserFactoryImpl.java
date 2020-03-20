@@ -7,7 +7,9 @@ import kernel.stages.stage01_tomap.impl.ToMap;
 import kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage04_toobject.impl.ToObject;
+import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.tryapi.Try;
+import kernel.validations.Validator;
 import mapper.stages.stage_01.destructor.MapperDestructor;
 
 import java.lang.reflect.Field;
@@ -17,21 +19,27 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-final class MapperDeclarserFactoryImpl implements MapperDeclarserFactory{
+public final class MapperDeclarserFactoryImpl implements MapperDeclarserFactory{
 
 
 
     @Override
     public <I, O> Try<Declarser<I, String, Object, O>> declarserOf(
             final Class<I> fromClazz,
-            final Class<I> toClazz) {
+            final Class<O> toClazz) {
         final var toMap = stage01(fromClazz);
         final var toTypedMap = ToTypedMap.of(
                 mapFunction(fromClazz),
                 SubsetType.BIJECTIVE,
                 ParallelizationStrategyEnum.SEQUENTIAL);
         final var combinator = Combinator.<String>noException(ParallelizationStrategyEnum.SEQUENTIAL);
-        ToObject<String, O> toObject = null;
+        final var toObject = ToObject.of(
+                o -> Optional.empty(),
+                Restructor.reflection(
+                        toClazz,
+                        mapField(toClazz),
+                        SubsetType.BIJECTIVE,
+                        SubsetType.BIJECTIVE).getValue());
         return Try.success(Declarser.of(
                 toMap,
                 toTypedMap,
@@ -39,9 +47,15 @@ final class MapperDeclarserFactoryImpl implements MapperDeclarserFactory{
                 toObject));
     }
 
+    private <O> Map<String, String> mapField(Class<O> toClazz) {
+        return Stream.of(toClazz.getDeclaredFields())
+                .collect(Collectors.toMap(
+                        Field::getName,
+                        Field::getName));
+    }
+
     private <I> Map<String, Function<Object, Try<?>>> mapFunction(Class<I> fromClazz) {
         return Stream.of(fromClazz.getDeclaredFields())
-                .peek(field -> field.setAccessible(true))
                 .collect(Collectors.toMap(
                         Field::getName,
                         field -> (Function<Object, Try<?>>) Try::success));
