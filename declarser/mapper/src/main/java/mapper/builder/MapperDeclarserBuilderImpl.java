@@ -1,4 +1,4 @@
-package mapper;
+package mapper.builder;
 
 import kernel.Declarser;
 import kernel.enums.ParallelizationStrategyEnum;
@@ -9,7 +9,6 @@ import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage04_toobject.impl.ToObject;
 import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.tryapi.Try;
-import kernel.validations.Validator;
 import mapper.stages.stage_01.destructor.MapperDestructor;
 
 import java.lang.reflect.Field;
@@ -19,14 +18,27 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class MapperDeclarserFactoryImpl implements MapperDeclarserFactory{
+class MapperDeclarserBuilderImpl<I, O>   {
+
+    private final Class<I> fromClazz;
+    private final Class<O> toClazz;
 
 
+    private MapperDeclarserBuilderImpl(
+            final Class<I> fromClazz,
+            final Class<O> toClazz){
+        this.fromClazz = fromClazz;
+        this.toClazz = toClazz;
+    }
 
-    @Override
-    public <I, O> Try<Declarser<I, String, Object, O>> declarserOf(
+    static <I,O> MapperDeclarserBuilderImpl of(
             final Class<I> fromClazz,
             final Class<O> toClazz) {
+        return new MapperDeclarserBuilderImpl(fromClazz, toClazz);
+    }
+
+
+    Try<Declarser<I, String, Object, O>> build() {
         final var toMap = stage01(fromClazz);
         final var toTypedMap = ToTypedMap.of(
                 mapFunction(fromClazz),
