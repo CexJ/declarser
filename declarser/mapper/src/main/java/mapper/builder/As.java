@@ -15,7 +15,7 @@ public class As<I, O> {
         return new As<>(mapperDeclarserBuilder);
     }
 
-    public Try<With<I, O>>  with(
+    public With<I, O>  with(
             final String fieldName){
         return mapperDeclarserBuilder.with(fieldName);}
 

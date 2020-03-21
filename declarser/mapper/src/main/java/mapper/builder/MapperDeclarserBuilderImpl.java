@@ -9,7 +9,6 @@ import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage04_toobject.impl.ToObject;
 import kernel.stages.stage04_toobject.impl.restructor.Restructor;
 import kernel.tryapi.Try;
-import mapper.builder.exceptions.FieldNotFoundException;
 import mapper.stages.stage_01.destructor.MapperDestructor;
 
 import java.lang.reflect.Field;
@@ -43,14 +42,14 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
         return new MapperDeclarserBuilderImpl<>(fromClazz, toClazz, fieldFunctionMap);
     }
 
-    Try<With<I, O>>  with(
+    With<I, O>  with(
             final String fieldName){
         return Stream.of(toClazz.getDeclaredFields())
                 .map(Field::getName)
                 .dropWhile(name -> ! name.equals(fieldName))
                 .findFirst()
-                .map(field -> Try.success(With.of(this, field)))
-                .orElse(Try.fail(FieldNotFoundException.of(fieldName, toClazz)));
+                .map(field -> With.of(this, fieldName))
+                .orElse(With.ofNothing(this, fieldName));
     }
 
     MapperDeclarserBuilderImpl<I,O> withAs(
@@ -62,19 +61,10 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
     }
 
     Try<Declarser<I, String, Try<?>, O>> build() {
-        final var toMap = stage01(fromClazz);
-        final var toTypedMap = ToTypedMap.of(
-                mapFunction(fromClazz),
-                SubsetType.BIJECTIVE,
-                ParallelizationStrategyEnum.SEQUENTIAL);
-        final var combinator = Combinator.<String>noException(ParallelizationStrategyEnum.SEQUENTIAL);
-        final var toObject = ToObject.of(
-                o -> Optional.empty(),
-                Restructor.reflection(
-                        toClazz,
-                        mapField(toClazz),
-                        SubsetType.BIJECTIVE,
-                        SubsetType.BIJECTIVE).getValue());
+        final var toMap = stage01();
+        final var toTypedMap = stage02();
+        final var combinator = stage03();
+        final var toObject = stage04();
         return Try.success(Declarser.of(
                 toMap,
                 toTypedMap,
@@ -82,24 +72,53 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
                 toObject));
     }
 
-    private Map<String, String> mapField(Class<O> toClazz) {
+    private ToMap<I, String, Try<?>> stage01() {
+        return ToMap.of(
+                i -> Optional.empty(),
+                MapperDestructor.of(fromClazz, fieldFunctionMap));
+    }
+
+    private ToTypedMap<String, Try<?>> stage02() {
+        return ToTypedMap.of(
+                mapFunction(),
+                SubsetType.NONE,
+                ParallelizationStrategyEnum.SEQUENTIAL);
+    }
+
+    private Combinator<String> stage03() {
+        return Combinator.noException(ParallelizationStrategyEnum.SEQUENTIAL);
+    }
+
+    private ToObject<String, O> stage04() {
+        return ToObject.of(
+                o -> Optional.empty(),
+                Restructor.reflection(
+                        toClazz,
+                        mapField(),
+                        SubsetType.NONE,
+                        SubsetType.NONE).getValue());
+    }
+
+    private Map<String, String> mapField() {
         return Stream.of(toClazz.getDeclaredFields())
                 .collect(Collectors.toMap(
                         Field::getName,
                         Field::getName));
     }
 
-    private Map<String, Function<Try<?>, Try<?>>> mapFunction(Class<I> fromClazz) {
-        return Stream.of(fromClazz.getDeclaredFields())
+    private Map<String, Function<Try<?>, Try<?>>> mapFunction() {
+        return Stream.of(Stream.of(toClazz.getDeclaredFields()).map(Field::getName),
+                fieldFunctionMap.keySet().stream())
+                .flatMap(i -> i)
+                .distinct()
                 .collect(Collectors.toMap(
-                        Field::getName,
-                        field -> (Function<Try<?>, Try<?>>) t -> t));
-
+                        Function.identity(),
+                        fieldName -> (Function<Try<?>, Try<?>>) t -> t));
     }
 
-    private ToMap<I, String, Try<?>> stage01(Class<I> fromClazz) {
-        return ToMap.of(
-                i -> Optional.empty(),
-                MapperDestructor.of(fromClazz, fieldFunctionMap));
+
+    Class<O> getToClazz() {
+        return toClazz;
     }
+
 }

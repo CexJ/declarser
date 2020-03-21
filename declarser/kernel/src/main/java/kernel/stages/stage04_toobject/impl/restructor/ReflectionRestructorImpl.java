@@ -27,7 +27,7 @@ public final class ReflectionRestructorImpl<K,O> implements Restructor<K,O> {
 		this.inputMapType = inputMapType;
 	}
 
-	static <K,O> Try<ReflectionRestructorImpl<K,O>> of(
+	static <K,O> Try<Restructor<K,O>> of(
 			final Class<O> clazz,
 			final Map<String,K> mapFields,
 			final SubsetType inputMapType,
@@ -36,7 +36,7 @@ public final class ReflectionRestructorImpl<K,O> implements Restructor<K,O> {
 				.map(Field::getName)
 				.collect(Collectors.toSet());
 		return fieldMapType.validation(mapFields.keySet(), fieldsname)
-				.map(Try::<ReflectionRestructorImpl<K,O>>fail)
+				.map(Try::<Restructor<K,O>>fail)
 				.orElse(Try.success(new ReflectionRestructorImpl<>(clazz, mapFields,inputMapType)));
 	}
 

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface Restructor<K,O> {
 
-    static <K,O> Try<ReflectionRestructorImpl<K,O>> reflection(
+    static <K,O> Try<Restructor<K,O>> reflection(
             final Class<O> clazz,
             final Map<String,K> mapFields,
             final SubsetType inputMapType,
