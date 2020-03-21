@@ -18,5 +18,6 @@ public interface With<I,O> {
         return WithoutImpl.of(mapperDeclarserBuilder, fieldName);
     }
 
-    As<I,O> as(final Function<I, Try<?>> function);
+    As<I,O> as(
+            final Function<I, Try<?>> function);
 }

@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
+final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
 
     private final Class<I> fromClazz;
     private final Class<O> toClazz;
@@ -57,17 +57,17 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
                 .orElse(With.ofNothing(this, fieldName));
     }
 
-    MapperDeclarserBuilderImpl<I,O> withAs(
+    As<I,O> withAs(
             final String fieldName,
             final Function<I, Try<?>> function) {
         final var newFieldFunctionMap = new HashMap<>(fieldFunctionMap);
         newFieldFunctionMap.put(fieldName, function);
-        return of(fromClazz, toClazz, newFieldFunctionMap, subsetType);
+        return As.of(of(fromClazz, toClazz, newFieldFunctionMap, subsetType));
     }
 
-    MapperDeclarserBuilderImpl<I,O> asMap(
+    As<I,O> asMap(
             final FunctionType functionType) {
-        return of(fromClazz, toClazz, fieldFunctionMap, functionType.getCodomainType());
+        return As.of(of(fromClazz, toClazz, fieldFunctionMap, functionType.getCodomainType()));
     }
 
     Try<Declarser<I, String, Try<?>, O>> build() {

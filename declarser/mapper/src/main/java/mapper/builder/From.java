@@ -1,23 +1,11 @@
 package mapper.builder;
 
-public final class From<I> {
-
-    private final Class<I> fromClazz;
-
-    private From(
-            final Class<I> fromClazz){
-        this.fromClazz = fromClazz;
-    }
-
+public interface From<I> {
     static <I> From<I> of(
             final Class<I> fromClazz) {
-        return new From<>(fromClazz);
+        return FromImpl.of(fromClazz);
     }
 
-
-
-    public <O> To<I,O> to(
-            final Class<O> toClazz) {
-        return To.of(fromClazz, toClazz);
-    }
+    <O> To<I,O> to(
+            final Class<O> toClazz);
 }

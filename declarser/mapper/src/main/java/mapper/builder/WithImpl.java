@@ -24,6 +24,6 @@ final class WithImpl<I, O> implements With<I,O> {
 
     public As<I,O> as(
             final Function<I, Try<?>> function){
-        return As.of(mapperDeclarserBuilder.withAs(fieldName, function));
+        return mapperDeclarserBuilder.withAs(fieldName, function);
     }
 }

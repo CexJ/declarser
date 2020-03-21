@@ -26,6 +26,6 @@ final class WithoutImpl<I, O> implements With<I,O>{
     public As<I,O> as(
             final Function<I, Try<?>> function){
         final Function<I, Try<?>> exceptionFunction = i -> Try.fail(FieldNotFoundException.of(fieldName, mapperDeclarserBuilder.getToClazz()));
-        return As.of(mapperDeclarserBuilder.withAs(fieldName, exceptionFunction));
+        return mapperDeclarserBuilder.withAs(fieldName, exceptionFunction);
     }
 }
