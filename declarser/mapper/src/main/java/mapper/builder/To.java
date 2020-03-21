@@ -2,6 +2,7 @@ package mapper.builder;
 
 import kernel.Declarser;
 import kernel.enums.FunctionType;
+import kernel.enums.SubsetType;
 import kernel.tryapi.Try;
 
 
@@ -13,8 +14,8 @@ public interface To<I, O> {
         return ToImpl.of(fromClazz, toClazz);
     }
 
-    As<I, O> asMap(
-            final FunctionType functionType);
+    As<I, O> withToFields(
+            final SubsetType functionType);
 
     With<I, O> with(
             final String fieldName);

@@ -1,13 +1,10 @@
 package mapper.builder;
 
 import kernel.Declarser;
-import kernel.enums.FunctionType;
 import kernel.enums.SubsetType;
 import kernel.tryapi.Try;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 final class ToImpl<I,O> implements To<I, O> {
 
@@ -26,9 +23,9 @@ final class ToImpl<I,O> implements To<I, O> {
     }
 
     @Override
-    public As<I,O> asMap(
-            final FunctionType functionType) {
-        return mapperDeclarserBuilder.asMap(functionType);
+    public As<I,O> withToFields(
+            final SubsetType subsetType) {
+        return mapperDeclarserBuilder.withToFields(subsetType);
     }
 
     @Override

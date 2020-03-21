@@ -65,9 +65,9 @@ final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
         return As.of(of(fromClazz, toClazz, newFieldFunctionMap, subsetType));
     }
 
-    As<I,O> asMap(
-            final FunctionType functionType) {
-        return As.of(of(fromClazz, toClazz, fieldFunctionMap, functionType.getCodomainType()));
+    As<I,O> withToFields(
+            final SubsetType subsetType) {
+        return As.of(of(fromClazz, toClazz, fieldFunctionMap, subsetType));
     }
 
     Try<Declarser<I, String, Try<?>, O>> build() {
