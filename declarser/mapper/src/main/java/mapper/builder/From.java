@@ -1,6 +1,6 @@
 package mapper.builder;
 
-public class From<I> {
+public final class From<I> {
 
     private final Class<I> fromClazz;
 

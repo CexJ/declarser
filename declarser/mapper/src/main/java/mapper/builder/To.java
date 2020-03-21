@@ -3,22 +3,32 @@ package mapper.builder;
 import kernel.Declarser;
 import kernel.tryapi.Try;
 
-public class To<I,O> {
+import java.util.HashMap;
 
-    private final MapperDeclarserBuilderImpl mapperDeclarserBuilder;
+public final class To<I,O> {
+
+    private final MapperDeclarserBuilderImpl<I,O> mapperDeclarserBuilder;
 
     private To(
-            final MapperDeclarserBuilderImpl mapperDeclarserBuilder){
+            final MapperDeclarserBuilderImpl<I,O> mapperDeclarserBuilder){
         this.mapperDeclarserBuilder = mapperDeclarserBuilder;
     }
 
     static <I,O> To<I,O> of(
             final Class<I> fromClazz,
             final Class<O> toClazz) {
-        return new To<>(MapperDeclarserBuilderImpl.of(fromClazz, toClazz));
+        final var mapperDeclarserBuilder = MapperDeclarserBuilderImpl.of(fromClazz, toClazz, new HashMap<>());
+        return new To<>(mapperDeclarserBuilder);
     }
 
-    public <O> Try<Declarser<I, String, Object, O>> build() {
+
+    public Try<With<I, O>>  with(
+            final String fieldName) {
+        return mapperDeclarserBuilder.with(fieldName);
+    }
+
+    public Try<Declarser<I, String, Try<?>, O>> build() {
         return mapperDeclarserBuilder.build();
     }
+
 }

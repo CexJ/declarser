@@ -19,7 +19,7 @@ public class SubsetContainedExampleTest {
         final var tryDeclarser = declarserFactory.declarserOf(SubsetExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
-        final var result = declarser.parse(csv);
+        final var result = declarser.apply(csv);
         assertTrue(result.isFailure());
     }
 
@@ -32,7 +32,7 @@ public class SubsetContainedExampleTest {
         final var tryDeclarser = declarserFactory.declarserOf(SubsetExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
-        final var result = declarser.parse(csv);
+        final var result = declarser.apply(csv);
         assertTrue(result.isSuccess());
         final var value = result.getValue();
         assertEquals(value.getFirstString(),"first");
@@ -48,7 +48,7 @@ public class SubsetContainedExampleTest {
         final var tryDeclarser = declarserFactory.declarserOf(SubsetExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
-        final var result = declarser.parse(csv);
+        final var result = declarser.apply(csv);
         assertTrue(result.isSuccess());
         final var value = result.getValue();
         assertEquals(value.getFirstString(),"first");

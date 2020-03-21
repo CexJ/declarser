@@ -55,7 +55,7 @@ public class DeclarserTest {
         // AND a Declarser created from DM, DTM, DC, and DO
         final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
-        final var result = declarser.parse(input);
+        final var result = declarser.apply(input);
         // THEN the result is a Success
         assertTrue(result.isSuccess());
         // AND the value is O
@@ -105,7 +105,7 @@ public class DeclarserTest {
         // AND a Declarser created from DM, DTM, DC, and DO
         final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
-        final var result = declarser.parse(input);
+        final var result = declarser.apply(input);
         // THEN the result is a Failure
         assertTrue(result.isFailure());
         // AND the Exception type is DeclarserException
@@ -161,7 +161,7 @@ public class DeclarserTest {
         // AND a Declarser created from DM, DTM, and DC
         final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
-        final var result = declarser.parse(input);
+        final var result = declarser.apply(input);
         // THEN the result is a Failure
         assertTrue(result.isFailure());
         // AND the Exception type is DeclarserException
@@ -214,7 +214,7 @@ public class DeclarserTest {
         // AND a Declarser created from DM, DTM, and DC
         final var declarser = DeclarserImpl.of(toMap, toTypedMap, combinator, toObject);
         // WHEN the parse method is invoked with I
-        final var result = declarser.parse(input);
+        final var result = declarser.apply(input);
         // THEN the result is a Failure
         assertTrue(result.isFailure());
         // AND the Exception type is DeclarserException

@@ -6,7 +6,9 @@ import kernel.stages.stage03_combinator.Combinator;
 import kernel.stages.stage04_toobject.impl.ToObject;
 import kernel.tryapi.Try;
 
-public interface Declarser<I,K,V,O> {
+import java.util.function.Function;
+
+public interface Declarser<I,K,V,O> extends Function<I,Try<?>> {
 
     static <I,K,V,O> DeclarserImpl<I,K,V,O> of(
             final ToMap<I, K, V> toMap,
@@ -20,5 +22,5 @@ public interface Declarser<I,K,V,O> {
                 toObject);
     }
 
-    Try<O> parse(final I input);
+    Try<O> apply(final I input);
 }

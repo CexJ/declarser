@@ -34,7 +34,7 @@ final class DeclarserImpl<I,K,V,O> implements Declarser<I,K,V,O> {
 		return new DeclarserImpl<>(toMap, toTypedMap, combinator, toObject);
 	}
 
-	public Try<O> parse(
+	public Try<O> apply(
 			final I input) {
 		return toMap.mapping(input)
 				.map(toTypedMap::typing)

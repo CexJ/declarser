@@ -27,7 +27,7 @@ public class DynamicPrevalidationExampleTest {
         final var tryDeclarser = declarserFactory.declarserOf(DynamicPrevalidationExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
-        final var result = declarser.parse(csv);
+        final var result = declarser.apply(csv);
         assertTrue(result.isSuccess());
         final var value = result.getValue();
         assertEquals(value.getFirstString(),"First");
@@ -47,7 +47,7 @@ public class DynamicPrevalidationExampleTest {
         final var tryDeclarser = declarserFactory.declarserOf(DynamicPrevalidationExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
-        final var result = declarser.parse(csv);
+        final var result = declarser.apply(csv);
         assertTrue(result.isFailure());
     }
 }

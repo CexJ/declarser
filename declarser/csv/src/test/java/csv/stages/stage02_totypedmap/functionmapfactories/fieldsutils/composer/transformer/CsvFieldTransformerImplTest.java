@@ -183,7 +183,7 @@ public class CsvFieldTransformerImplTest {
         Mockito.when(csvDeclarserFactory.declarserOf(Mockito.any(), Mockito.any()))
                 .thenReturn(Try.success(declarser));
         //noinspection unchecked
-        Mockito.when(declarser.parse(Mockito.any()))
+        Mockito.when(declarser.apply(Mockito.any()))
                 .thenReturn(Try.success(type));
         // AND a field FI of type TypeT with
         //      the annotation CsvNode and separator S

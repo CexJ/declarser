@@ -1,7 +1,6 @@
 package examples.postvalidation;
 
 import csv.CsvDeclarserFactory;
-import examples.auto.samples.AutoSimpleExample;
 import examples.postvalidation.samples.PostValidationExample;
 import kernel.validations.Validator;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ class PostValidationExampleTest {
                 ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
-        final var result = declarser.parse(csv);
+        final var result = declarser.apply(csv);
         assertTrue(result.isSuccess());
         final var value = result.getValue();
         assertEquals(value.getSubQuantity1(), 10);
@@ -50,7 +49,7 @@ class PostValidationExampleTest {
                 ";");
         assertTrue(tryDeclarser.isSuccess());
         final var declarser = tryDeclarser.getValue();
-        final var result = declarser.parse(csv);
+        final var result = declarser.apply(csv);
         assertTrue(result.isFailure());
     }
 }
