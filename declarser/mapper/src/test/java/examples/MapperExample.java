@@ -4,6 +4,7 @@ import examples.samples.From;
 import examples.samples.From2;
 import examples.samples.To;
 import examples.samples.To2;
+import kernel.enums.FunctionType;
 import kernel.tryapi.Try;
 import mapper.builder.MapperDeclarserBuilder;
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,18 @@ public class MapperExample {
     }
 
     @Test
+    public void test5Bis(){
+        final var declarser = MapperDeclarserBuilder
+                .from(From.class)
+                .to(To2.class)
+                .asMap(FunctionType.SURJECTIVE)
+                .build().getValue();
+        final var from = new From("first",2);
+        final var result = declarser.apply(from);
+        assertTrue(result.isFailure());
+    }
+
+    @Test
     public void test6(){
         final var declarser = MapperDeclarserBuilder
                 .from(From2.class)
@@ -109,5 +122,16 @@ public class MapperExample {
         assertEquals(result.getSecondValue(), from.getSecondValue());
     }
 
+    @Test
+    public void test6Bis(){
+        final var declarser = MapperDeclarserBuilder
+                .from(From2.class)
+                .to(To.class)
+                .asMap(FunctionType.INJECTIVE)
+                .build().getValue();
+        final var from = new From2("first",2,3);
+        final var result = declarser.apply(from);
+        assertTrue(result.isFailure());
+    }
 
 }

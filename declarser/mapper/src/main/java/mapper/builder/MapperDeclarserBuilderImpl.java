@@ -1,6 +1,7 @@
 package mapper.builder;
 
 import kernel.Declarser;
+import kernel.enums.FunctionType;
 import kernel.enums.ParallelizationStrategyEnum;
 import kernel.enums.SubsetType;
 import kernel.stages.stage01_tomap.impl.ToMap;
@@ -24,22 +25,26 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
     private final Class<I> fromClazz;
     private final Class<O> toClazz;
     private final Map<String, Function<I, Try<?>>> fieldFunctionMap;
+    private final SubsetType subsetType;
 
 
     private MapperDeclarserBuilderImpl(
             final Class<I> fromClazz,
             final Class<O> toClazz,
-            final Map<String, Function<I, Try<?>>> fieldFunctionMap){
+            final Map<String, Function<I, Try<?>>> fieldFunctionMap,
+            final SubsetType subsetType){
         this.fromClazz = fromClazz;
         this.toClazz = toClazz;
         this.fieldFunctionMap = fieldFunctionMap;
+        this.subsetType = subsetType;
     }
 
     static <I,O> MapperDeclarserBuilderImpl<I,O> of(
             final Class<I> fromClazz,
             final Class<O> toClazz,
-            final Map<String, Function<I, Try<?>>> fieldFunctionMap) {
-        return new MapperDeclarserBuilderImpl<>(fromClazz, toClazz, fieldFunctionMap);
+            final Map<String, Function<I, Try<?>>> fieldFunctionMap,
+            final SubsetType subsetType) {
+        return new MapperDeclarserBuilderImpl<>(fromClazz, toClazz, fieldFunctionMap, subsetType);
     }
 
     With<I, O>  with(
@@ -57,19 +62,20 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
             final Function<I, Try<?>> function) {
         final var newFieldFunctionMap = new HashMap<>(fieldFunctionMap);
         newFieldFunctionMap.put(fieldName, function);
-        return of(fromClazz, toClazz, newFieldFunctionMap);
+        return of(fromClazz, toClazz, newFieldFunctionMap, subsetType);
+    }
+
+    MapperDeclarserBuilderImpl<I,O> asMap(
+            final FunctionType functionType) {
+        return of(fromClazz, toClazz, fieldFunctionMap, functionType.getCodomainType());
     }
 
     Try<Declarser<I, String, Try<?>, O>> build() {
         final var toMap = stage01();
         final var toTypedMap = stage02();
         final var combinator = stage03();
-        final var toObject = stage04();
-        return Try.success(Declarser.of(
-                toMap,
-                toTypedMap,
-                combinator,
-                toObject));
+        final var tryToObject = stage04();
+        return tryToObject.map( toObject -> Declarser.of(toMap, toTypedMap, combinator, toObject));
     }
 
     private ToMap<I, String, Try<?>> stage01() {
@@ -81,7 +87,7 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
     private ToTypedMap<String, Try<?>> stage02() {
         return ToTypedMap.of(
                 mapFunction(),
-                SubsetType.NONE,
+                subsetType,
                 ParallelizationStrategyEnum.SEQUENTIAL);
     }
 
@@ -89,21 +95,14 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
         return Combinator.noException(ParallelizationStrategyEnum.SEQUENTIAL);
     }
 
-    private ToObject<String, O> stage04() {
-        return ToObject.of(
-                o -> Optional.empty(),
-                Restructor.reflection(
-                        toClazz,
-                        mapField(),
-                        SubsetType.NONE,
-                        SubsetType.NONE).getValue());
+    private Try<ToObject<String, O>> stage04() {
+        return Restructor.reflection(toClazz, mapField(), subsetType, SubsetType.NONE)
+                .map(restructor -> ToObject.of(o -> Optional.empty(),restructor));
     }
 
     private Map<String, String> mapField() {
         return Stream.of(toClazz.getDeclaredFields())
-                .collect(Collectors.toMap(
-                        Field::getName,
-                        Field::getName));
+                .collect(Collectors.toMap(Field::getName, Field::getName));
     }
 
     private Map<String, Function<Try<?>, Try<?>>> mapFunction() {
@@ -111,9 +110,7 @@ public final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBu
                 fieldFunctionMap.keySet().stream())
                 .flatMap(i -> i)
                 .distinct()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        fieldName -> (Function<Try<?>, Try<?>>) t -> t));
+                .collect(Collectors.toMap(Function.identity(), fieldName -> (Function<Try<?>, Try<?>>) t -> t));
     }
 
 
