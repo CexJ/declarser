@@ -3,7 +3,7 @@ package csv.validation.utils.extractor;
 import csv.stages.annotations.prevalidations.CsvPreValidation;
 import kernel.validations.prevalidations.PreValidator;
 
-class CsvPreValidatorsExtractorImpl implements CsvPreValidatorsExtractor {
+final class CsvPreValidatorsExtractorImpl implements CsvPreValidatorsExtractor {
 
     private CsvPreValidatorsExtractorImpl() {}
 
@@ -17,7 +17,7 @@ class CsvPreValidatorsExtractorImpl implements CsvPreValidatorsExtractor {
 
     @Override
     public PreValidator<String> extract(
-            final CsvPreValidation validatorAnns){
-        return PreValidator.of(validatorAnns.value(), validatorAnns.params());
+            final CsvPreValidation validatorAnnotation){
+        return PreValidator.of(validatorAnnotation.value(), validatorAnnotation.params());
     }
 }

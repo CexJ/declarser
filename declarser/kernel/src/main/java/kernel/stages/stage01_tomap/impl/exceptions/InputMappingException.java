@@ -1,6 +1,6 @@
 package kernel.stages.stage01_tomap.impl.exceptions;
 
-public class InputMappingException extends Exception {
+public final class InputMappingException extends Exception {
 
     public final static String messageFormatter =
             "%s while mapping the input %s ";

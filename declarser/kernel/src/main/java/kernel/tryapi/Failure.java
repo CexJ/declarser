@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class Failure<T> implements Try<T> {
+final class Failure<T> implements Try<T> {
 
 	private final Exception exception;
 	

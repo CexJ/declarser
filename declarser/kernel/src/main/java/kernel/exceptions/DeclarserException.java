@@ -1,6 +1,6 @@
 package kernel.exceptions;
 
-public class DeclarserException extends Exception {
+public final class DeclarserException extends Exception {
 
     public final static String messageFormatter =
             "%s while parsing the following input: %s";

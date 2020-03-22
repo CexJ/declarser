@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-public class RepeatedCsvColumnIndexException extends Exception{
+public final class RepeatedCsvColumnIndexException extends Exception{
 
     public final static String messageFormatter =
             "I find the following repetitions %s " +

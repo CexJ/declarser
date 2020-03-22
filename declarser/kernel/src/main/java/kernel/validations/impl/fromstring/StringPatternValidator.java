@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class StringPatternValidator implements Validator<String> {
+public final class StringPatternValidator implements Validator<String> {
 
 
     private final Pattern pattern;

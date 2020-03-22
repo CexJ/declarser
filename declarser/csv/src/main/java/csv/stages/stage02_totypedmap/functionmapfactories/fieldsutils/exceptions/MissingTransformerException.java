@@ -2,7 +2,7 @@ package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exception
 
 import java.lang.reflect.Field;
 
-public class MissingTransformerException extends Exception {
+public final class MissingTransformerException extends Exception {
 
     public final static String messageFormatter =
             "Missing transformer for the field: %s";

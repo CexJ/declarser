@@ -1,6 +1,6 @@
 package kernel.parsers.exceptions;
 
-public class ParserException extends Exception {
+public final class ParserException extends Exception {
 
     public final static String messageFormatter =
             "I cannot parse: %s into a %s because %s";

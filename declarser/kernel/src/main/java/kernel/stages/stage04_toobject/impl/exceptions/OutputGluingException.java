@@ -2,7 +2,7 @@ package kernel.stages.stage04_toobject.impl.exceptions;
 
 import java.util.Map;
 
-public class OutputGluingException extends Exception {
+public final class OutputGluingException extends Exception {
 
     public final static String messageFormatter =
             "%s while gluing the following map: %s";

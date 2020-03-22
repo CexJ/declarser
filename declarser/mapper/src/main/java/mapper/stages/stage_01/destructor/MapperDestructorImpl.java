@@ -10,7 +10,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class MapperDestructorImpl<I> implements  MapperDestructor<I> {
+final class MapperDestructorImpl<I> implements  MapperDestructor<I> {
 
     private final Set<Field> fields;
     private final Map<String, Function<I, Try<?>>> fieldFunctionMap;

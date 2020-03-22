@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CsvFieldsExtractor implements FieldsExtractor {
+public final class CsvFieldsExtractor implements FieldsExtractor {
 
     private CsvFieldsExtractor() {}
 

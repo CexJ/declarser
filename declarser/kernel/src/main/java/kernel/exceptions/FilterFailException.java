@@ -1,4 +1,4 @@
 package kernel.exceptions;
 
-public class FilterFailException extends Exception {
+public final class FilterFailException extends Exception {
 }

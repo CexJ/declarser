@@ -1,6 +1,6 @@
 package kernel.stages.stage02_totypedmap.impl.exceptions;
 
-public class TypingFieldException extends Exception {
+public final class TypingFieldException extends Exception {
 
     public final static String messageFormatter =
             "%s while typing the field of key %s from the value %s";

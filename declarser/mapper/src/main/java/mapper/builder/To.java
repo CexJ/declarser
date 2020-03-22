@@ -1,7 +1,6 @@
 package mapper.builder;
 
 import kernel.Declarser;
-import kernel.enums.FunctionType;
 import kernel.enums.SubsetType;
 import kernel.tryapi.Try;
 

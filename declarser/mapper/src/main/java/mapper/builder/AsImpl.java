@@ -3,7 +3,7 @@ package mapper.builder;
 import kernel.Declarser;
 import kernel.tryapi.Try;
 
-class AsImpl<I, O> implements As<I, O> {
+final class AsImpl<I, O> implements As<I, O> {
 
     private final MapperDeclarserBuilderImpl<I,O> mapperDeclarserBuilder;
 

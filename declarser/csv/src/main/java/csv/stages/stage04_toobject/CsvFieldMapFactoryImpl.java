@@ -30,7 +30,8 @@ final class CsvFieldMapFactoryImpl implements CsvFieldMapFactory {
                 .filter(es -> es.getValue().size() > 1)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         return repetitions.isEmpty() ? Try.success(group.entrySet().stream()
-                                    .collect(Collectors.toMap(es -> es.getValue().get(0).getName(), Map.Entry::getKey)))
-                              : Try.fail(RepeatedCsvColumnIndexException.of(repetitions, clazz));
+                                          .collect(Collectors.toMap(es -> es.getValue().get(0).getName(),
+                                                                    Map.Entry::getKey)))
+                                     : Try.fail(RepeatedCsvColumnIndexException.of(repetitions, clazz));
     }
 }

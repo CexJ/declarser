@@ -1,11 +1,10 @@
 package kernel.validations.impl.fromstring;
 
-import kernel.parsers.fromstring.tonumber.BigDecimalParser;
 import kernel.validations.Validator;
 
 import java.util.Optional;
 
-public class NonEmptyStringValidator implements Validator<String> {
+public final class NonEmptyStringValidator implements Validator<String> {
 
     private static class InstanceHolder {
         private static final NonEmptyStringValidator instance = new NonEmptyStringValidator();

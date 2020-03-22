@@ -3,7 +3,7 @@ package kernel.exceptions;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class SubsetTypeException extends Exception {
+public final class SubsetTypeException extends Exception {
 
     public final static String messageFormatter =
             "I was expecting that the list %s was contained into %s but I find these elements: %s";

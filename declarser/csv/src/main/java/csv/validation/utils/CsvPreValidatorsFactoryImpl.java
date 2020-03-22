@@ -36,8 +36,8 @@ final class CsvPreValidatorsFactoryImpl implements CsvPreValidatorsFactory {
 
     @Override
     public Try<Validator<String>> function(
-            final List<? extends PreValidator<String>> validatorAnns){
-        final var tryValidators = validatorAnns.stream()
+            final List<? extends PreValidator<String>> validatorAnnotations){
+        final var tryValidators = validatorAnnotations.stream()
                 .map(ann -> stringValidator(ann.getClazz(), ann.getParams()))
                 .collect(Collectors.toList());
 

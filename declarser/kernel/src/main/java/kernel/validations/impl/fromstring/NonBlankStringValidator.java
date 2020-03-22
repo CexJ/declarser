@@ -4,7 +4,7 @@ import kernel.validations.Validator;
 
 import java.util.Optional;
 
-public class NonBlankStringValidator implements Validator<String> {
+public final class NonBlankStringValidator implements Validator<String> {
 
     private static class InstanceHolder {
         private static final NonBlankStringValidator instance = new NonBlankStringValidator();

@@ -1,6 +1,5 @@
 package kernel.parsers.fromstring.toprimitive;
 
-import kernel.parsers.exceptions.ParserException;
 import kernel.tryapi.Try;
 
 import java.util.function.Function;

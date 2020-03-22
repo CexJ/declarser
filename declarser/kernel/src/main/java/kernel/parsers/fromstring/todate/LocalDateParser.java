@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public final  class LocalDateParser implements Function<String, Try<?>> {
+public final class LocalDateParser implements Function<String, Try<?>> {
 
     private final String format;
 

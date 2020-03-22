@@ -2,7 +2,7 @@ package kernel.validations.prevalidations;
 
 import kernel.validations.Validator;
 
-public class PreValidator<T> {
+public final class PreValidator<T> {
 
     private final Class<? extends Validator<T>> clazz;
     private final T[] params;

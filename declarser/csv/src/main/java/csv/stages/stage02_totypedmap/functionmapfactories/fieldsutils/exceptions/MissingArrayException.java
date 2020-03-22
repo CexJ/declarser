@@ -2,7 +2,7 @@ package csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exception
 
 import java.lang.reflect.Field;
 
-public class MissingArrayException extends Exception {
+public final class MissingArrayException extends Exception {
     public final static String messageFormatter =
             "Expecting an array but found: %s for the field %s";
 

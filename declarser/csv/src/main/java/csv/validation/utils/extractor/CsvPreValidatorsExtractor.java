@@ -10,5 +10,5 @@ public interface CsvPreValidatorsExtractor {
     }
 
     PreValidator<String> extract(
-            final CsvPreValidation validatorAnns);
+            final CsvPreValidation validatorAnnotation);
 }

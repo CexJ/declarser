@@ -13,7 +13,7 @@ import kernel.validations.Validator;
 import java.lang.reflect.Field;
 import java.util.function.Function;
 
-public class CsvFieldComposer implements FieldComposer<Integer, String> {
+public final class CsvFieldComposer implements FieldComposer<Integer, String> {
 
     private final CsvFieldModifier csvFieldModifier;
     private final CsvFieldTransformer csvFieldTransformer;

@@ -1,6 +1,6 @@
 package kernel.stages.stage02_totypedmap.impl.exceptions;
 
-public class MissingFieldFunctionException extends Exception {
+public final class MissingFieldFunctionException extends Exception {
 
     public final static String messageFormatter =
             "Missing function for the key: %s";

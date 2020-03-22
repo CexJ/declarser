@@ -42,11 +42,18 @@ public final class CsvFunctionMapFactoryConst {
     }
 
     public static final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap;
+
+    public static final String LOCAL_DATE_DEFAULT_FORMAT = "yyyy'-'MM'-'dd";
+
+    public static final String LOCAL_DATE_TIME_DEFAULT_FORMAT = "yyyy'-'MM'-'dd'T'HH':'mm':'ss";
+
+    public static final String ZONED_DATE_TIME_DEFAULT_FORMAT = "yyyy'-'MM'-'dd'T'HH':'mm':'ss' 'z";
+
     static {
         autoFunctionClassMap = new HashMap<>();
-        autoFunctionClassMap.put(LocalDate.class, LocalDateParser.getInstance("yyyy'-'MM'-'dd"));
-        autoFunctionClassMap.put(LocalDateTime.class, LocalDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss"));
-        autoFunctionClassMap.put(ZonedDateTime.class, ZonedDateTimeParser.getInstance("yyyy'-'MM'-'dd'T'HH':'mm':'ss' 'z"));
+        autoFunctionClassMap.put(LocalDate.class, LocalDateParser.getInstance(LOCAL_DATE_DEFAULT_FORMAT));
+        autoFunctionClassMap.put(LocalDateTime.class, LocalDateTimeParser.getInstance(LOCAL_DATE_TIME_DEFAULT_FORMAT));
+        autoFunctionClassMap.put(ZonedDateTime.class, ZonedDateTimeParser.getInstance(ZONED_DATE_TIME_DEFAULT_FORMAT));
         autoFunctionClassMap.put(BigDecimal.class, BigDecimalParser.getInstance());
         autoFunctionClassMap.put(BigInteger.class, BigIntegerParser.getInstance());
         autoFunctionClassMap.put(Boolean.class, BooleanParser.getInstance());
