@@ -22,7 +22,7 @@ public final class BigDecimalParser implements Function<String, Try<?>> {
     public Try<BigDecimal> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> new BigDecimal(s))
+        else return Try.call(() -> new BigDecimal(s))
                 .enrichException(ex -> ParserException.of(s, BigDecimal.class, ex));
     }
 }

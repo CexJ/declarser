@@ -21,7 +21,7 @@ public final class IntegerParser implements Function<String, Try<?>> {
     public Try<Integer> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> Integer.parseInt(s))
+        else return Try.call(() -> Integer.parseInt(s))
                 .enrichException(ex -> ParserException.of(s, Integer.class, ex));
     }
 }

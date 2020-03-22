@@ -70,8 +70,8 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
 
         return Optional.ofNullable(functionClassMap.get(annFunction))
                 .map(f -> Try.success(f.apply(annParams)))
-                .orElse(Try.go(() -> annFunction.getConstructor(String[].class).newInstance((Object) annParams)))
-                .or(Try.go(() -> annFunction.getConstructor(EMPTY).newInstance()));
+                .orElse(Try.call(() -> annFunction.getConstructor(String[].class).newInstance((Object) annParams)))
+                .or(Try.call(() -> annFunction.getConstructor(EMPTY).newInstance()));
 
     }
 }

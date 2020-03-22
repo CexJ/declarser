@@ -93,12 +93,12 @@ final class CsvPreValidatorsFactoryImpl implements CsvPreValidatorsFactory {
     private Try<Validator<String>> fromParamsConstructor(
             final Class<? extends Validator<String>> clazz,
             final String[] params) {
-        return Try.go( () -> clazz.getConstructor(String[].class).newInstance((Object) params));
+        return Try.call( () -> clazz.getConstructor(String[].class).newInstance((Object) params));
     }
 
     private Try<Validator<String>> fromNoArgsConstructor(
             final Class<? extends Validator<String>> clazz) {
-        return Try.go( () ->clazz.getConstructor().newInstance());
+        return Try.call( () ->clazz.getConstructor().newInstance());
     }
 
 }

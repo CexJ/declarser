@@ -22,7 +22,7 @@ public final class BigIntegerParser implements Function<String, Try<?>> {
     public Try<BigInteger> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> new BigInteger(s))
+        else return Try.call(() -> new BigInteger(s))
                 .enrichException(ex -> ParserException.of(s, BigInteger.class, ex));
     }
 }

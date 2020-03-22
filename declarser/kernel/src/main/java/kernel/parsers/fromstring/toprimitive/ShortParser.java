@@ -21,7 +21,7 @@ public final class ShortParser implements Function<String, Try<?>> {
     public Try<Short> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> Short.parseShort(s))
+        else return Try.call(() -> Short.parseShort(s))
                 .enrichException(ex -> ParserException.of(s, Short.class, ex));
     }
 }

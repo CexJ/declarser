@@ -22,7 +22,7 @@ public final class DoubleParser implements Function<String, Try<?>> {
     public Try<Double> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> Double.parseDouble(s))
+        else return Try.call(() -> Double.parseDouble(s))
                 .enrichException(ex -> ParserException.of(s, Double.class, ex));
     }
 }

@@ -18,7 +18,7 @@ public class DynamicIntegerGreaterThanParser implements Function<String, Try<?>>
     @Override
     public Try<Integer> apply(String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        return  Try.go(() -> Integer.parseInt(s))
+        return  Try.call(() -> Integer.parseInt(s))
                 .flatMap(v -> v <= min ? Try.fail(new InvalidAttributesException()) :  Try.success(v))
                 .enrichException(ex -> ParserException.of(s, Integer.class, ex));
     }

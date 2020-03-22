@@ -33,7 +33,7 @@ public final class LocalDateTimeParser implements Function<String, Try<?>> {
     public Try<LocalDateTime> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> LocalDateTime.parse(s,DateTimeFormatter.ofPattern(format)))
+        else return Try.call(() -> LocalDateTime.parse(s,DateTimeFormatter.ofPattern(format)))
                 .enrichException(ex -> ParserException.of(s, LocalDateTime.class, ex));
     }
 }

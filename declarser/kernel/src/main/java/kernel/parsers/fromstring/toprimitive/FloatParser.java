@@ -21,7 +21,7 @@ public final class FloatParser implements Function<String, Try<?>> {
     public Try<Float> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> Float.parseFloat(s))
+        else return Try.call(() -> Float.parseFloat(s))
                 .enrichException(ex -> ParserException.of(s, Float.class, ex));
     }
 }

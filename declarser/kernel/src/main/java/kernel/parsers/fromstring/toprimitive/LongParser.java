@@ -21,7 +21,7 @@ public final class LongParser implements Function<String, Try<?>> {
     public Try<Long> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> Long.parseLong(s))
+        else return Try.call(() -> Long.parseLong(s))
                 .enrichException(ex -> ParserException.of(s, Long.class, ex));
     }
 }

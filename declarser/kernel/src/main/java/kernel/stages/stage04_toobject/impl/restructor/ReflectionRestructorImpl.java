@@ -2,7 +2,6 @@ package kernel.stages.stage04_toobject.impl.restructor;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,32 +44,31 @@ public final class ReflectionRestructorImpl<K,O> implements Restructor<K,O> {
 			final Map<K,?> input){
 		return inputMapType.validation(input.keySet(), mapFileds.values())
 				.map(Try::<O>fail)
-				.orElse(Try.go(() -> clazz.getConstructor().newInstance())
+				.orElse(Try.call(() -> clazz.getConstructor().newInstance())
 						.flatMap( value -> injectValues(input, value)));
 	}
 
 	private Try<O> injectValues(
 			final Map<K, ?> input,
 			final O value) {
-		final List<Exception> exceptions = new LinkedList<>();
-		Stream.of(clazz.getDeclaredFields())
+		final List<Exception> exceptions = Stream.of(clazz.getDeclaredFields())
 				.peek(f -> f.setAccessible(true))
-				.forEach(f -> {
-					try {
-						if(f.getType().isArray()) {
-							final var objectArray = (Object[])input.get(mapFileds.get(f.getName()));
-							final var type = f.getType().getComponentType();
-							final var typedArray = typeArray(type, objectArray);
-							f.set(value, typedArray);
-						} else {
-							f.set(value, input.get(mapFileds.get(f.getName())));
-						}
-					} catch (Exception e) {
-						exceptions.add(e);
-					}
-				});
+				.map(f -> Try.run(() ->
+						f.set(value, f.getType().isArray() ? arrayValue(input, f)
+							                               : input.get(mapFileds.get(f.getName())))))
+				.filter(Try::isFailure)
+				.map(Try::getException)
+				.collect(Collectors.toList());
 		return exceptions.isEmpty() ? Try.success(value)
 				                    : Try.fail(GroupedException.of(exceptions));
+	}
+
+	private Object arrayValue(Map<K, ?> input, Field f) {
+		Object fieldValue;
+		final var objectArray = (Object[])input.get(mapFileds.get(f.getName()));
+		final var type = f.getType().getComponentType();
+		fieldValue = typeArray(type, objectArray);
+		return fieldValue;
 	}
 
 
@@ -79,9 +77,8 @@ public final class ReflectionRestructorImpl<K,O> implements Restructor<K,O> {
 			final Class<T> clazz,
 			final Object[] array){
 		T[] newArray =(T[]) clazz.arrayType().cast(Array.newInstance(clazz, array.length));
-		for(int i = 0; i< array.length; i++){
-			newArray[i] = (T) array[i];
-		}
+		Stream.iterate(0, i -> i+1).limit(array.length)
+				.forEach(i -> newArray[i] = (T) array[i]);
 		return newArray;
 	}
 }

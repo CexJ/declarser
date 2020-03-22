@@ -1,11 +1,14 @@
 package kernel.tryapi;
 
+import kernel.enums.Unit;
 import kernel.validations.Validator;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static kernel.enums.Unit.*;
 
 public interface Try<T> {
 
@@ -19,10 +22,20 @@ public interface Try<T> {
 		return Failure.of(exception);
 	}
 	
-	static <T> Try<T> go(
+	static <T> Try<T> call(
 			final Callable<T> callable){
 		try {
 			return Success.of(callable.call());
+		}catch(Exception exception) {
+			return Failure.of(exception);
+		}
+	}
+
+	static Try<Unit> run(
+			final DangerousRunnable runnable){
+		try {
+			runnable.run();
+			return Success.of(UNIT);
 		}catch(Exception exception) {
 			return Failure.of(exception);
 		}

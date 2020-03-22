@@ -25,7 +25,7 @@ public class TryTest {
         // AND a Callable C that produce T
         final Callable<TypeT> callable = () -> value;
         // WHEN the method go is invoked
-        final var result =  Try.go(callable);
+        final var result =  Try.call(callable);
         // THEN the result is a success
         assertTrue(result.isSuccess());
         // AND the value is T
@@ -47,7 +47,7 @@ public class TryTest {
         // AND a Callable C that produce T
         final Callable<TypeT> callable = () -> {throw exception;};
         // WHEN the method go is invoked with C
-        final var result =  Try.go(callable);
+        final var result =  Try.call(callable);
         // THEN the result is a failure
         assertTrue(result.isFailure());
         // AND the exception is E

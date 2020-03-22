@@ -40,7 +40,7 @@ class MapperDestructorImpl<I> implements  MapperDestructor<I> {
     private Map<String, Try<?>> baseMap(I input) {
         return fields.stream().collect(Collectors.toMap(
                 Field::getName,
-                field -> Try.go(() -> field.get(input))));
+                field -> Try.call(() -> field.get(input))));
     }
 
     private Map<String, Try<?>> customMap(I input) {

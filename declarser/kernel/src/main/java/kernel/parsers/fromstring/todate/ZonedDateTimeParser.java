@@ -33,7 +33,7 @@ public final class ZonedDateTimeParser implements Function<String, Try<?>> {
     public Try<ZonedDateTime> apply(
             final String s) {
         if(s == null || s.isEmpty()) return Try.success(null);
-        else return Try.go(() -> ZonedDateTime.parse(s,DateTimeFormatter.ofPattern(format)))
+        else return Try.call(() -> ZonedDateTime.parse(s,DateTimeFormatter.ofPattern(format)))
                 .enrichException(ex -> ParserException.of(s, ZonedDateTime.class, ex));
     }
 }
