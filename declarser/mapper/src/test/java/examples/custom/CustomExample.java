@@ -6,8 +6,8 @@ import examples.samples.fields.FieldType3;
 import examples.samples.from.From2;
 import examples.samples.to.To2;
 import examples.samples.to.To3;
-import kernel.tryapi.Try;
-import mapper.builder.MapperDeclarserBuilder;
+import io.github.cexj.declarser.kernel.tryapi.Try;
+import io.github.cexj.declarser.mapper.builder.MapperDeclarserBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,8 +1,8 @@
 package examples.postvalidation;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.postvalidation.samples.PostValidationExample;
-import kernel.validations.Validator;
+import io.github.cexj.declarser.kernel.validations.Validator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package examples.custom.parsers;
 
-import kernel.parsers.exceptions.ParserException;
-import kernel.tryapi.Try;
+import io.github.cexj.declarser.kernel.parsers.exceptions.ParserException;
+import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import javax.naming.directory.InvalidAttributesException;
 import java.util.function.Function;

@@ -1,10 +1,10 @@
 package examples.subset.contains;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.subset.samples.SubsetExample;
 import org.junit.jupiter.api.Test;
 
-import static kernel.enums.SubsetType.CONTAINS;
+import static io.github.cexj.declarser.kernel.enums.SubsetType.CONTAINS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

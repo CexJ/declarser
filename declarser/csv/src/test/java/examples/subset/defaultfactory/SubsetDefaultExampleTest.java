@@ -1,6 +1,6 @@
 package examples.subset.defaultfactory;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.subset.samples.SubsetExample;
 import org.junit.jupiter.api.Test;
 

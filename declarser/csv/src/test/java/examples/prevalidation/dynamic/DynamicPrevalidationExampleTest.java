@@ -1,9 +1,9 @@
 package examples.prevalidation.dynamic;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.prevalidation.dynamic.samples.DynamicPrevalidationExample;
-import kernel.validations.Validator;
-import kernel.validations.impl.fromstring.StringPatternValidator;
+import io.github.cexj.declarser.kernel.validations.Validator;
+import io.github.cexj.declarser.kernel.validations.impl.fromstring.StringPatternValidator;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

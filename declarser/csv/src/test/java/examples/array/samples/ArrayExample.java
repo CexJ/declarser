@@ -1,7 +1,7 @@
 package examples.array.samples;
 
-import csv.stages.annotations.fields.CsvArray;
-import csv.stages.annotations.fields.CsvColumn;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvArray;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
 
 public class ArrayExample {
 

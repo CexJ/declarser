@@ -1,10 +1,9 @@
 package examples.subset.contained;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.subset.samples.SubsetExample;
 import org.junit.jupiter.api.Test;
 
-import static kernel.enums.SubsetType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SubsetContainedExampleTest {

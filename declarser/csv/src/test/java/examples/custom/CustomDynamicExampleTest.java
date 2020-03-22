@@ -1,9 +1,9 @@
 package examples.custom;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.custom.parsers.DynamicIntegerGreaterThanParser;
 import examples.custom.samples.CustomDynamicExample;
-import kernel.tryapi.Try;
+import io.github.cexj.declarser.kernel.tryapi.Try;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

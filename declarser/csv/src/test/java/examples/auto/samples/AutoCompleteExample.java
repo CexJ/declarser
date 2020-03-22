@@ -1,6 +1,6 @@
 package examples.auto.samples;
 
-import csv.stages.annotations.fields.CsvColumn;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

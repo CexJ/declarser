@@ -1,6 +1,6 @@
 package examples.auto;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

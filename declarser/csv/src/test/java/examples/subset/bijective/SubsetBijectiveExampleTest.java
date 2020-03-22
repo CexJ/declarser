@@ -1,8 +1,8 @@
 package examples.subset.bijective;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.subset.samples.SubsetExample;
-import kernel.enums.SubsetType;
+import io.github.cexj.declarser.kernel.enums.SubsetType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

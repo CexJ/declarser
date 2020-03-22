@@ -1,6 +1,6 @@
 package examples.auto.samples;
 
-import csv.stages.annotations.fields.CsvColumn;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
 
 public class AutoSimpleExample {
 

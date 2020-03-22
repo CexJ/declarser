@@ -1,8 +1,8 @@
 package examples.prevalidation.dynamic.samples;
 
-import csv.stages.annotations.fields.CsvColumn;
-import csv.stages.annotations.prevalidations.CsvPreValidation;
-import kernel.validations.impl.fromstring.StringPatternValidator;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
+import io.github.cexj.declarser.csv.stages.annotations.prevalidations.CsvPreValidation;
+import io.github.cexj.declarser.kernel.validations.impl.fromstring.StringPatternValidator;
 
 
 public class DynamicPrevalidationExample {

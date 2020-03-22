@@ -1,6 +1,6 @@
 package examples.parallel.samples;
 
-import csv.stages.annotations.fields.CsvColumn;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
 
 public class ParallelExample {
 

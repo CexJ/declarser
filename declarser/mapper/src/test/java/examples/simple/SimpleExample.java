@@ -8,7 +8,7 @@ import examples.samples.from.FromWithOutsider;
 import examples.samples.to.To1;
 import examples.samples.to.To2;
 import examples.samples.to.ToWithOutsider;
-import mapper.builder.MapperDeclarserBuilder;
+import io.github.cexj.declarser.mapper.builder.MapperDeclarserBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

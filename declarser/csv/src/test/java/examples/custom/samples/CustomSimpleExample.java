@@ -1,7 +1,7 @@
 package examples.custom.samples;
 
-import csv.stages.annotations.fields.CsvColumn;
-import csv.stages.annotations.fields.CsvField;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvField;
 import examples.custom.parsers.IntegerGreaterThanParser;
 
 public class CustomSimpleExample {

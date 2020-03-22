@@ -1,8 +1,8 @@
 package examples.parallel;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.subset.samples.SubsetExample;
-import kernel.enums.ParallelizationStrategyEnum;
+import io.github.cexj.declarser.kernel.enums.ParallelizationStrategyEnum;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

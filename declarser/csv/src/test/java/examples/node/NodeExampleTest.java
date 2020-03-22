@@ -1,6 +1,6 @@
 package examples.node;
 
-import csv.CsvDeclarserFactory;
+import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.node.samples.NodeExample;
 import org.junit.jupiter.api.Test;
 

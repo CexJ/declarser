@@ -1,7 +1,7 @@
 package examples.node.samples;
 
-import csv.stages.annotations.fields.CsvColumn;
-import csv.stages.annotations.fields.CsvNode;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
+import io.github.cexj.declarser.csv.stages.annotations.fields.CsvNode;
 
 public class NodeExample {
 
