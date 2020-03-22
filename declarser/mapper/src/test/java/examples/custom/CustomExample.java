@@ -3,13 +3,9 @@ package examples.custom;
 import examples.samples.fields.FieldType1;
 import examples.samples.fields.FieldType2;
 import examples.samples.fields.FieldType3;
-import examples.samples.from.From1;
 import examples.samples.from.From2;
-import examples.samples.from.FromWithOutsider;
-import examples.samples.to.To1;
 import examples.samples.to.To2;
 import examples.samples.to.To3;
-import examples.samples.to.ToWithOutsider;
 import kernel.tryapi.Try;
 import mapper.builder.MapperDeclarserBuilder;
 import org.junit.jupiter.api.Test;
@@ -71,9 +67,6 @@ public class CustomExample {
         final var built = MapperDeclarserBuilder.from(From2.class).to(To2.class)
                 .with("NOT A FIELD")
                 .as(from2 -> Try.success(newValue2)).build();
-        assertTrue(built.isSuccess());
-        final var declarser = built.getValue();
-        final var result = declarser.apply(from);
-        assertTrue(result.isFailure());
+        assertTrue(built.isFailure());
     }
 }
