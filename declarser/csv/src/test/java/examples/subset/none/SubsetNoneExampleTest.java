@@ -14,7 +14,7 @@ public class SubsetNoneExampleTest {
     public void parse_contained_input_return_success(){
         final var csv = "first";
         final var declarserFactory = CsvDeclarserFactory.builder()
-                .withAnnotationsSubsetType(SubsetType.NONE)
+                .withInputSubsetType(SubsetType.NONE)
                 .build();
         final var tryDeclarser = declarserFactory.declarserOf(SubsetExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
@@ -29,7 +29,7 @@ public class SubsetNoneExampleTest {
     public void parse_bijective_input_return_success(){
         final var csv = "first;second";
         final var declarserFactory = CsvDeclarserFactory.builder()
-                .withAnnotationsSubsetType(SubsetType.NONE)
+                .withInputSubsetType(SubsetType.NONE)
                 .build();
         final var tryDeclarser = declarserFactory.declarserOf(SubsetExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());
@@ -45,7 +45,7 @@ public class SubsetNoneExampleTest {
     public void parse_contain_input_return_failure(){
         final var csv = "first;second;third";
         final var declarserFactory = CsvDeclarserFactory.builder()
-                .withAnnotationsSubsetType(SubsetType.NONE)
+                .withInputSubsetType(SubsetType.NONE)
                 .build();
         final var tryDeclarser = declarserFactory.declarserOf(SubsetExample.class,  ";");
         assertTrue(tryDeclarser.isSuccess());

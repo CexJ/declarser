@@ -12,7 +12,6 @@ import mapper.builder.MapperDeclarserBuilder;
 import org.junit.jupiter.api.Test;
 
 import static kernel.enums.SubsetType.BIJECTIVE;
-import static kernel.enums.SubsetType.CONTAINS;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BijectiveExample {
@@ -21,7 +20,7 @@ public class BijectiveExample {
         final var value1 = new FieldType1();
         final var value2 = new FieldType2();
         final var from = new From2(value1,value2);
-        final var built = MapperDeclarserBuilder.from(From2.class).to(To2.class).withToFields(BIJECTIVE).build();
+        final var built = MapperDeclarserBuilder.from(From2.class).to(To2.class).withTargetFields(BIJECTIVE).build();
         assertTrue(built.isSuccess());
         final var declarser = built.getValue();
         final var result = declarser.apply(from);
@@ -36,36 +35,19 @@ public class BijectiveExample {
 
     @Test
     public void mapping_contains_class_return_failure(){
-        final var value1 = new FieldType1();
-        final var from = new From1(value1);
-        final var built = MapperDeclarserBuilder.from(From1.class).to(To2.class).withToFields(BIJECTIVE).build();
-        assertTrue(built.isSuccess());
-        final var declarser = built.getValue();
-        final var result = declarser.apply(from);
-        assertTrue(result.isFailure());
+        final var built = MapperDeclarserBuilder.from(From1.class).to(To2.class).withTargetFields(BIJECTIVE).build();
+        assertTrue(built.isFailure());
     }
 
     @Test
     public void mapping_contained_class_return_failure(){
-        final var value1 = new FieldType1();
-        final var value2 = new FieldType2();
-        final var from = new From2(value1,value2);
-        final var built = MapperDeclarserBuilder.from(From2.class).to(To1.class).withToFields(BIJECTIVE).build();
-        assertTrue(built.isSuccess());
-        final var declarser = built.getValue();
-        final var result = declarser.apply(from);
-        assertTrue(result.isFailure());
+        final var built = MapperDeclarserBuilder.from(From2.class).to(To1.class).withTargetFields(BIJECTIVE).build();
+        assertTrue(built.isFailure());
     }
 
     @Test
     public void mapping_with_outsiders_return_failure(){
-        final var value1 = new FieldType1();
-        final var value2 = new FieldType2();
-        final var from = new FromWithOutsider(value1,value2);
-        final var built = MapperDeclarserBuilder.from(FromWithOutsider.class).to(ToWithOutsider.class).withToFields(BIJECTIVE).build();
-        assertTrue(built.isSuccess());
-        final var declarser = built.getValue();
-        final var result = declarser.apply(from);
-        assertTrue(result.isFailure());
+        final var built = MapperDeclarserBuilder.from(FromWithOutsider.class).to(ToWithOutsider.class).withTargetFields(BIJECTIVE).build();
+        assertTrue(built.isFailure());
     }
 }

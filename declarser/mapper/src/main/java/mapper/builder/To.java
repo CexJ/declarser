@@ -14,7 +14,7 @@ public interface To<I, O> {
         return ToImpl.of(fromClazz, toClazz);
     }
 
-    As<I, O> withToFields(
+    As<I, O> withTargetFields(
             final SubsetType functionType);
 
     With<I, O> with(

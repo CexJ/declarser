@@ -61,7 +61,7 @@ public interface CsvDeclarserFactory {
             return this;
         }
 
-        public Builder withAnnotationsSubsetType(
+        public Builder withInputSubsetType(
                 final SubsetType annotationsSubsetType) {
             if(annotationsSubsetType != null) this.annotationsSubsetType = annotationsSubsetType;
             return this;

@@ -23,7 +23,7 @@ final class ToImpl<I,O> implements To<I, O> {
     }
 
     @Override
-    public As<I,O> withToFields(
+    public As<I,O> withTargetFields(
             final SubsetType subsetType) {
         return mapperDeclarserBuilder.withToFields(subsetType);
     }

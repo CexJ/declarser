@@ -111,7 +111,7 @@ public class ToTypedMapTest {
         // AND a map FM from TypeK to Function: TypeV -> Try<?> without an Entry for K
         final var functionMap = new HashMap<TypeK, Function<TypeV, Try<?>>>();
         // AND a ToTypedMap created with FM
-        final var toTypedMap = ToTypedMapImpl.of(functionMap, SubsetType.CONTAINS, ParallelizationStrategyEnum.valueOf(name));
+        final var toTypedMap = ToTypedMapImpl.of(functionMap, SubsetType.CONTAINED, ParallelizationStrategyEnum.valueOf(name));
         // WHEN the typing method is invoked with M
         final var result = toTypedMap.typing(inputMap);
         // THEN the result is a map M that contains an entry (K, Failure)

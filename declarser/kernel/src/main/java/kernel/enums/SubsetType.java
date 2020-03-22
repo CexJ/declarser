@@ -8,19 +8,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum SubsetType {
-    CONTAINED(false){
-        public <T> Optional<SubsetTypeException> validation(
-                final Collection<T> first,
-                final Collection<T> second){
-            final var notContained = second.stream().filter(s -> ! first.contains(s)).collect(Collectors.toList());
-            if(notContained.isEmpty()) return Optional.empty();
-            else return Optional.of(SubsetTypeException.of(first, second));
-        }},
-    CONTAINS(true) {
+    CONTAINED(true) {
         public <T> Optional<SubsetTypeException> validation(
                 final Collection<T> first,
                 final Collection<T> second){
             final var notContained = first.stream().filter(f -> ! second.contains(f)).collect(Collectors.toList());
+            if(notContained.isEmpty()) return Optional.empty();
+            else return Optional.of(SubsetTypeException.of(first, second));
+        }},
+    CONTAINS(false){
+        public <T> Optional<SubsetTypeException> validation(
+        final Collection<T> first,
+        final Collection<T> second){
+            final var notContained = second.stream().filter(s -> ! first.contains(s)).collect(Collectors.toList());
             if(notContained.isEmpty()) return Optional.empty();
             else return Optional.of(SubsetTypeException.of(first, second));
         }},

@@ -94,7 +94,6 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
                stage2(clazz).flatMap(                toTypedMap ->
                stage3().flatMap(                     combinator ->
                stage4(clazz, postValidator).map(     toObject   ->
-
                        Declarser.of(toMap, toTypedMap, combinator, toObject))))) ;
     }
 

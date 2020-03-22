@@ -11,7 +11,6 @@ import examples.samples.to.ToWithOutsider;
 import mapper.builder.MapperDeclarserBuilder;
 import org.junit.jupiter.api.Test;
 
-import static kernel.enums.SubsetType.CONTAINS;
 import static kernel.enums.SubsetType.NONE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +20,7 @@ public class NoneExample {
         final var value1 = new FieldType1();
         final var value2 = new FieldType2();
         final var from = new From2(value1,value2);
-        final var built = MapperDeclarserBuilder.from(From2.class).to(To2.class).withToFields(NONE).build();
+        final var built = MapperDeclarserBuilder.from(From2.class).to(To2.class).withTargetFields(NONE).build();
         assertTrue(built.isSuccess());
         final var declarser = built.getValue();
         final var result = declarser.apply(from);
@@ -38,7 +37,7 @@ public class NoneExample {
     public void mapping_contains_class_return_success(){
         final var value1 = new FieldType1();
         final var from = new From1(value1);
-        final var built = MapperDeclarserBuilder.from(From1.class).to(To2.class).withToFields(NONE).build();
+        final var built = MapperDeclarserBuilder.from(From1.class).to(To2.class).withTargetFields(NONE).build();
         assertTrue(built.isSuccess());
         final var declarser = built.getValue();
         final var result = declarser.apply(from);
@@ -55,7 +54,7 @@ public class NoneExample {
         final var value1 = new FieldType1();
         final var value2 = new FieldType2();
         final var from = new From2(value1,value2);
-        final var built = MapperDeclarserBuilder.from(From2.class).to(To1.class).withToFields(NONE).build();
+        final var built = MapperDeclarserBuilder.from(From2.class).to(To1.class).withTargetFields(NONE).build();
         assertTrue(built.isSuccess());
         final var declarser = built.getValue();
         final var result = declarser.apply(from);
@@ -71,7 +70,7 @@ public class NoneExample {
         final var value1 = new FieldType1();
         final var value2 = new FieldType2();
         final var from = new FromWithOutsider(value1,value2);
-        final var built = MapperDeclarserBuilder.from(FromWithOutsider.class).to(ToWithOutsider.class).withToFields(NONE).build();
+        final var built = MapperDeclarserBuilder.from(FromWithOutsider.class).to(ToWithOutsider.class).withTargetFields(NONE).build();
         assertTrue(built.isSuccess());
         final var declarser = built.getValue();
         final var result = declarser.apply(from);

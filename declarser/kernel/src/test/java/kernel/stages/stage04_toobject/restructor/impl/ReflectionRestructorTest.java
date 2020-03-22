@@ -92,7 +92,7 @@ public class ReflectionRestructorTest {
      *  AND foreach j in J Fj is null
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
     public void restruct_a_class_missing_mapfield_entries_is_a_success(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -135,7 +135,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
     public void restruct_a_class_missing_mapfield_entries_is_a_failure(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -176,7 +176,7 @@ public class ReflectionRestructorTest {
      *  AND foreach j in J Fj is null
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
     public void restruct_a_class_missing_mapfield_entries_is_a_success_fields_contained(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -188,7 +188,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
         final var restructor = Restructor.reflection(clazz, mapFileds,
-                inputSubsetType, SubsetType.CONTAINS).getValue();
+                inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
         input.put(firstKey, "firstValue");
@@ -219,7 +219,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
     public void restruct_a_class_missing_mapfield_entries_is_a_failure_fields_contained(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -231,7 +231,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
         final var restructor = Restructor.reflection(clazz, mapFileds,
-                inputSubsetType, SubsetType.CONTAINS).getValue();
+                inputSubsetType, SubsetType.CONTAINED).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
         input.put(firstKey, "firstValue");
@@ -269,7 +269,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         // WHEN a restructor R is constructed with C and M
         final var restructor = Restructor.reflection(clazz, mapFileds,
-                inputSubsetType, SubsetType.CONTAINED);
+                inputSubsetType, SubsetType.CONTAINS);
         // THEN is a failure
         assertTrue(restructor.isFailure());
         // AND the Exception is of type SubsetException
@@ -324,7 +324,7 @@ public class ReflectionRestructorTest {
      *  AND foreach Fi its value is Vi
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
     public void restrict_a_class_with_excessive_mansfield_entry_is_a_success(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -370,7 +370,7 @@ public class ReflectionRestructorTest {
      *  AND foreach Fi its value is Vi
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
     public void restrict_a_class_with_excessive_mansfield_entry_is_a_failure(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -411,7 +411,7 @@ public class ReflectionRestructorTest {
      *  AND foreach Fi its value is Vi
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
     public void restrict_a_class_with_excessive_mansfield_entry_is_a_success_fields_contains(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -426,7 +426,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("thirdField", thirdKey);
         // AND a restructor R constructed with C and M
         final var restructor = Restructor.reflection(clazz, mapFileds,
-                inputSubsetType, SubsetType.CONTAINED).getValue();
+                inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
         input.put(firstKey, "firstValue");
@@ -457,7 +457,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
     public void restrict_a_class_with_excessive_mansfield_entry_is_a_failure_fields_contains(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -472,7 +472,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("thirdField", thirdKey);
         // AND a restructor R constructed with C and M
         final var restructor = Restructor.reflection(clazz, mapFileds,
-                inputSubsetType, SubsetType.CONTAINED).getValue();
+                inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         final var input = new HashMap<TypeK, Object>();
         input.put(firstKey, "firstValue");
@@ -515,7 +515,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("thirdField", thirdKey);
         // WHEN a restructor R is constructed with C and M
         final var restructor = Restructor.reflection(clazz, mapFileds,
-                inputSubsetType, SubsetType.CONTAINS);
+                inputSubsetType, SubsetType.CONTAINED);
         // THEN is a failure
         assertTrue(restructor.isFailure());
         // AND the Exception is of type SubsetException
@@ -577,7 +577,7 @@ public class ReflectionRestructorTest {
      *  AND foreach j in J Fj is null
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
     public void restruct_a_class_from_missing_input_is_a_success(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -623,7 +623,7 @@ public class ReflectionRestructorTest {
      *  AND foreach j in J Fj is null
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
     public void restruct_a_class_from_missing_input_is_a_success_fields_contains(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -668,7 +668,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
     public void restruct_a_class_from_missing_input_is_a_failure_fields_contains(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -711,7 +711,7 @@ public class ReflectionRestructorTest {
      *  AND foreach j in J Fj is null
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
     public void restruct_a_class_from_missing_input_is_a_success_fields_contained(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -756,7 +756,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
     public void restruct_a_class_from_missing_input_is_a_failure_fields_contained(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -799,7 +799,7 @@ public class ReflectionRestructorTest {
      *  AND foreach j in J Fj is null
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
     public void restruct_a_class_from_missing_input_is_a_success_fields_bijective(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -844,7 +844,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
     public void restruct_a_class_from_missing_input_is_a_failure_fields_bijective(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -886,7 +886,7 @@ public class ReflectionRestructorTest {
      *  AND foreach Ki its value is Vi
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
     public void restruct_a_class_from_excessive_input_is_a_success(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -934,7 +934,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
     public void restruct_a_class_from_excessive_input_is_a_failure(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -979,7 +979,7 @@ public class ReflectionRestructorTest {
      *  AND foreach Ki its value is Vi
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
     public void restruct_a_class_from_excessive_input_is_a_success_fields_contains(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -993,7 +993,7 @@ public class ReflectionRestructorTest {
         mapFileds.put("secondField", secondKey);
         // AND a restructor R constructed with C and M
         final var restructor = Restructor.reflection(clazz, mapFileds,
-                inputSubsetType, SubsetType.CONTAINED).getValue();
+                inputSubsetType, SubsetType.CONTAINS).getValue();
         // AND a map I that map Ki -> Vi, where Vi are values of the type of Ki
         //     plus some other entries Kj -> Vj
         final var input = new HashMap<TypeK, Object>();
@@ -1027,7 +1027,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
     public void restruct_a_class_from_excessive_input_is_a_failure_fields_contains(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -1072,7 +1072,7 @@ public class ReflectionRestructorTest {
      *  AND foreach Ki its value is Vi
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
     public void restruct_a_class_from_excessive_input_is_a_success_fields_contained(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -1120,7 +1120,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
     public void restruct_a_class_from_excessive_input_is_a_failure_fields_contained(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -1165,7 +1165,7 @@ public class ReflectionRestructorTest {
      *  AND foreach Ki its value is Vi
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "NONE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "NONE"})
     public void restruct_a_class_from_excessive_input_is_a_success_fields_bijective(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
@@ -1213,7 +1213,7 @@ public class ReflectionRestructorTest {
      *  AND the Exception is of type SubsetException
      */
     @ParameterizedTest
-    @EnumSource(value = SubsetType.class, names = {"CONTAINS", "BIJECTIVE"})
+    @EnumSource(value = SubsetType.class, names = {"CONTAINED", "BIJECTIVE"})
     public void restruct_a_class_from_excessive_input_is_a_failure_fields_bijective(SubsetType inputSubsetType){
         // GIVEN a class C with a list of fields with names: F1, F2, ..., FN
         final var clazz = TypeO.class;
