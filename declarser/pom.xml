@@ -5,9 +5,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>kernel</module>
-    <module>csv</module>
-    <module>mapper</module>
+    <module>declarser-kernel</module>
+    <module>declarser-csv</module>
+    <module>declarser-mapper</module>
   </modules>
   <name>declarser</name>
   <description>A declarative parser framework</description>
