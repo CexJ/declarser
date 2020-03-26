@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
-    <artifactId>kernel</artifactId>
+    <artifactId>declarser-kernel</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.junit.platform</groupId>
