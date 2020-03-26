@@ -57,10 +57,10 @@ public final class CsvFieldComposer implements FieldComposer<Integer, String> {
     private Function<String, Try<?>> functionFrom(
             final Validator<String> pre,
             final Function<String, Try<?>> tra) {
-        return s -> { final var validationResult = pre.apply(s);
+        return s -> {
+            final var validationResult = pre.apply(s);
             return validationResult.isEmpty() ? tra.apply(s)
-                                              : Try.fail(validationResult.get());
-        };
+                                              : Try.fail(validationResult.get()); };
     }
 
 

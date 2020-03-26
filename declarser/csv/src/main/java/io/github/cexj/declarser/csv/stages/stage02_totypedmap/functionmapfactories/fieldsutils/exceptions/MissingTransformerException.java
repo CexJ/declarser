@@ -9,12 +9,14 @@ public final class MissingTransformerException extends Exception {
 
     private final Field field;
 
-    private MissingTransformerException(Field field) {
+    private MissingTransformerException(
+            final Field field) {
         super(String.format(messageFormatter, field.getName()));
         this.field = field;
     }
 
-    public static MissingTransformerException of(Field field) {
+    public static MissingTransformerException of(
+            final Field field) {
         return new MissingTransformerException(field);
     }
 

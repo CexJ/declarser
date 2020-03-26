@@ -8,12 +8,14 @@ public final class MissingArrayException extends Exception {
 
     private final Field field;
 
-    private MissingArrayException(Field field) {
+    private MissingArrayException(
+            final Field field) {
         super(String.format(messageFormatter, field.getType().toString(), field.getName()));
         this.field = field;
     }
 
-    public static MissingArrayException of(Field field) {
+    public static MissingArrayException of(
+            final Field field) {
         return new MissingArrayException(field);
     }
 

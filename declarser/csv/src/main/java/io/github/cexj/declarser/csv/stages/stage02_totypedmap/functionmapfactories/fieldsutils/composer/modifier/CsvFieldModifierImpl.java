@@ -26,9 +26,13 @@ final class CsvFieldModifierImpl implements CsvFieldModifier {
     @Override
     public Try<UnaryOperator<Function<String, Try<?>>>> compute(Field field) {
         return Optional.ofNullable(field.getAnnotation(CsvArray.class))
-                .map(arr -> field.getType().isArray() ? Try.success(getArrayFunction(arr.value()))
-                                                      : Try.<UnaryOperator<Function<String, Try<?>>>>fail(MissingArrayException.of(field)))
-                .orElse(                                Try.success(UnaryOperator.identity()));
+                .map(arrayModifierFromField(field))
+                .orElse(Try.success(UnaryOperator.identity()));
+    }
+
+    private Function<CsvArray, Try<UnaryOperator<Function<String, Try<?>>>>> arrayModifierFromField(Field field) {
+        return arr -> field.getType().isArray() ? Try.success(getArrayFunction(arr.value()))
+                                                : Try.fail(MissingArrayException.of(field));
     }
 
     private UnaryOperator<Function<String, Try<?>>> getArrayFunction(
