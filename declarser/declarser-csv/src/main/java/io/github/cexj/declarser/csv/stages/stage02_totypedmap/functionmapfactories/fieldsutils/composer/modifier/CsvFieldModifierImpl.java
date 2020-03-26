@@ -25,20 +25,20 @@ final class CsvFieldModifierImpl implements CsvFieldModifier {
     private CsvFieldModifierImpl(){}
 
     @Override
-    public Try<UnaryOperator<Parser<String>>> compute(Field field) {
+    public Try<UnaryOperator<Parser<String,?>>> compute(Field field) {
         return Optional.ofNullable(field.getAnnotation(CsvArray.class))
                 .map(arrayModifierFromField(field))
                 .orElse(Try.success(UnaryOperator.identity()));
     }
 
-    private Function<CsvArray, Try<UnaryOperator<Parser<String>>>> arrayModifierFromField(Field field) {
+    private Function<CsvArray, Try<UnaryOperator<Parser<String,?>>>> arrayModifierFromField(Field field) {
         return arr -> field.getType().isArray() ? Try.success(getArrayFunction(arr.value()))
                                                 : Try.fail(MissingArrayException.of(field));
     }
 
-    private UnaryOperator<Parser<String>> getArrayFunction(
+    private UnaryOperator<Parser<String,?>> getArrayFunction(
             final String arraySeparator){
-        return (Parser<String> fun) ->
+        return (Parser<String,?> fun) ->
                 s -> combine(Arrays.stream(s.split(arraySeparator))
                         .map(fun)
                         .collect(Collectors.toList()))

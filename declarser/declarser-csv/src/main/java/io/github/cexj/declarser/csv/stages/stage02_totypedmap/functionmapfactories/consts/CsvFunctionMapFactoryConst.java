@@ -8,7 +8,6 @@ import io.github.cexj.declarser.kernel.parsers.fromstring.tonumber.BigDecimalPar
 import io.github.cexj.declarser.kernel.parsers.fromstring.tonumber.BigIntegerParser;
 import io.github.cexj.declarser.kernel.parsers.fromstring.toprimitive.*;
 import io.github.cexj.declarser.kernel.parsers.fromstring.tostring.StringParser;
-import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,7 +22,7 @@ public final class CsvFunctionMapFactoryConst {
 
     private CsvFunctionMapFactoryConst(){}
 
-    public static final Map<Class<? extends Parser<String>>, Function<String[], Parser<String>>> sharedFunctionClassMap;
+    public static final Map<Class<? extends Parser<String,?>>, Function<String[], Parser<String,?>>> sharedFunctionClassMap;
     static {
         sharedFunctionClassMap = new HashMap<>();
         sharedFunctionClassMap.put(LocalDateParser.class, arr -> LocalDateParser.getInstance(arr[0]));
@@ -41,7 +40,7 @@ public final class CsvFunctionMapFactoryConst {
         sharedFunctionClassMap.put(StringParser.class, arr -> StringParser.getInstance());
     }
 
-    public static final Map<Class<?>, Parser<String>> autoFunctionClassMap;
+    public static final Map<Class<?>, Parser<String,?>> autoFunctionClassMap;
 
     public static final String LOCAL_DATE_DEFAULT_FORMAT = "yyyy'-'MM'-'dd";
 

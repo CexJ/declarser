@@ -38,8 +38,8 @@ public interface CsvDeclarserFactory {
         private ParallelizationStrategyEnum parallelizationStrategy = ParallelizationStrategyEnum.SEQUENTIAL;
         private Map<Class<? extends Validator<String>>,
                 Function<String[], Validator<String>>> customPreValidatorsMap = new HashMap<>();
-        private Map<Class<? extends Parser<String>>,
-                Function<String[], Parser<String>>> customConstructorMap =  new HashMap<>();
+        private Map<Class<? extends Parser<String,?>>,
+                Function<String[], Parser<String,?>>> customConstructorMap =  new HashMap<>();
         private SubsetType annotationsSubsetType = SubsetType.NONE;
 
         public Builder withParallelizationStrategy(
@@ -56,8 +56,8 @@ public interface CsvDeclarserFactory {
         }
 
         public Builder withCustomConstructorMap(
-                final Map<Class<? extends Parser<String>>,
-                        Function<String[], Parser<String>>> customConstructorMap) {
+                final Map<Class<? extends Parser<String,?>>,
+                        Function<String[], Parser<String,?>>> customConstructorMap) {
             if(customConstructorMap != null) this.customConstructorMap = customConstructorMap;
             return this;
         }

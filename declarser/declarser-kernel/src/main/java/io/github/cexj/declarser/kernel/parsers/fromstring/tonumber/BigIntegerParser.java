@@ -6,7 +6,7 @@ import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.math.BigInteger;
 
-public final class BigIntegerParser implements Parser<String> {
+public final class BigIntegerParser implements Parser<String,BigInteger> {
 
     private static class InstanceHolder {
         private static final BigIntegerParser instance = new BigIntegerParser();

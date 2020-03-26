@@ -4,7 +4,7 @@ import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.parsers.exceptions.ParserException;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
-public final class ShortParser implements Parser<String> {
+public final class ShortParser implements Parser<String,Short> {
 
     private static class InstanceHolder {
         private static final ShortParser instance = new ShortParser();

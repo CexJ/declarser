@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class LocalDateParser implements Parser<String> {
+public final class LocalDateParser implements Parser<String,LocalDate> {
 
     private final String format;
 

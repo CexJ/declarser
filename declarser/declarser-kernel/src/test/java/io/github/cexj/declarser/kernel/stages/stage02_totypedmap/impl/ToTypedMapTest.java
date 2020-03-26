@@ -38,7 +38,7 @@ public class ToTypedMapTest {
         // AND a value T of TypeT
         final var t = new TypeT();
         // AND a map FM from TypeK to Function: TypeV -> Try<?> with an Entry (K, F -> Success(T))
-        final var functionMap = new HashMap<TypeK, Parser<TypeV>>();
+        final var functionMap = new HashMap<TypeK, Parser<TypeV,?>>();
         functionMap.put(k, v -> Try.success(t));
         // AND a ToTypedMap created with FM
         final var toTypedMap = ToTypedMapImpl.of(functionMap, SubsetType.NONE, ParallelizationStrategyEnum.valueOf(name));
@@ -72,7 +72,7 @@ public class ToTypedMapTest {
         // AND an Exception E
         final var exception = new Exception("Typing exception");
         // AND a map FM from TypeK to Function: TypeV -> Try<?> with an entry (K, V -> Failure(E))
-        final var functionMap = new HashMap<TypeK, Parser<TypeV>>();
+        final var functionMap = new HashMap<TypeK, Parser<TypeV,?>>();
         functionMap.put(k, v -> Try.fail(exception));
         // AND a ToTypedMap created with FM
         final var toTypedMap = ToTypedMapImpl.of(functionMap, SubsetType.NONE, ParallelizationStrategyEnum.valueOf(name));
@@ -107,7 +107,7 @@ public class ToTypedMapTest {
         final var inputMap = new HashMap<TypeK,TypeV>();
         inputMap.put(k, v);
         // AND a map FM from TypeK to Function: TypeV -> Try<?> without an Entry for K
-        final var functionMap = new HashMap<TypeK, Parser<TypeV>>();
+        final var functionMap = new HashMap<TypeK, Parser<TypeV,?>>();
         // AND a ToTypedMap created with FM
         final var toTypedMap = ToTypedMapImpl.of(functionMap, SubsetType.CONTAINED, ParallelizationStrategyEnum.valueOf(name));
         // WHEN the typing method is invoked with M

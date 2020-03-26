@@ -12,6 +12,6 @@ import java.util.function.Function;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface CsvField {
-    Class<? extends Parser<String>> value();
+    Class<? extends Parser<String,?>> value();
     String[] params() default {};
 }

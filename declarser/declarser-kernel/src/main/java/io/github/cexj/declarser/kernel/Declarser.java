@@ -9,7 +9,7 @@ import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.util.function.Function;
 
-public interface Declarser<I,K,V,O> extends Parser<I> {
+public interface Declarser<I,K,V,O> extends Parser<I,O> {
 
     static <I,K,V,O> DeclarserImpl<I,K,V,O> of(
             final ToMap<I, K, V> toMap,

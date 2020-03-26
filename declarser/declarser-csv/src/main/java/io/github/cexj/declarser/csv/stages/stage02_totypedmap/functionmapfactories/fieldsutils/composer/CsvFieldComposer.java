@@ -45,7 +45,7 @@ public final class CsvFieldComposer implements FieldComposer<Integer, String> {
 
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 
-        final Try<Parser<String>> function =
+        final Try<Parser<String,?>> function =
                 preValidator.flatMap( pre ->
                 transformer.map(      tra ->  parserFrom(pre, tra)));
 
@@ -55,13 +55,13 @@ public final class CsvFieldComposer implements FieldComposer<Integer, String> {
                        Transformer.of(csvColumn.value(), mod.apply(fun))));
     }
 
-    private Parser<String> parserFrom(
+    @SuppressWarnings({"unchecked"})
+    private Parser<String,?> parserFrom(
             final Validator<String> pre,
-            final Function<String, Try<?>> tra) {
-        return s -> {
-            final var validationResult = pre.apply(s);
-            return validationResult.isEmpty() ? tra.apply(s)
-                                              : Try.fail(validationResult.get()); };
+            final Parser<String,?> tra) {
+        return s -> pre.apply(s)
+                .map(Try::fail)
+                .orElse((Try<Object>) tra.apply(s));
     }
 
 

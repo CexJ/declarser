@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ZonedDateTimeParser implements Parser<String> {
+public final class ZonedDateTimeParser implements Parser<String,ZonedDateTime> {
 
     private final String format;
 

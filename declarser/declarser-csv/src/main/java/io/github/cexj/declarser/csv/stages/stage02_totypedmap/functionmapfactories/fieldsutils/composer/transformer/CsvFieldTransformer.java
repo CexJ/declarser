@@ -12,13 +12,13 @@ public interface CsvFieldTransformer {
 
     static CsvFieldTransformer of(
             final CsvDeclarserFactory csvDeclarserFactory,
-            final Map<Class<? extends Parser<String>>, Function<String[], Parser<String>>> functionClassMap,
-            final Map<Class<?>, Parser<String>> autoFunctionClassMap) {
+            final Map<Class<? extends Parser<String,?>>, Function<String[], Parser<String,?>>> functionClassMap,
+            final Map<Class<?>, Parser<String,?>> autoFunctionClassMap) {
         return CsvFieldTransformerImpl.of(
                 csvDeclarserFactory,
                 functionClassMap,
                 autoFunctionClassMap);
     }
 
-    Try<Parser<String>> compute(Field field);
+    Try<Parser<String,?>> compute(Field field);
 }

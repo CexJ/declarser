@@ -17,15 +17,15 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
 
     private final static Class<?>[] EMPTY = new Class[]{};
 
-    private final Map<Class<? extends Parser<String>>, Function<String[], Parser<String>>> functionClassMap;
-    private final Map<Class<?>, Parser<String>> autoFunctionClassMap;
+    private final Map<Class<? extends Parser<String,?>>, Function<String[], Parser<String,?>>> functionClassMap;
+    private final Map<Class<?>, Parser<String,?>> autoFunctionClassMap;
     private final CsvDeclarserFactory csvDeclarserFactory;
 
 
     private CsvFieldTransformerImpl(
             final CsvDeclarserFactory csvDeclarserFactory,
-            final Map<Class<? extends Parser<String>>, Function<String[], Parser<String>>> functionClassMap,
-            final Map<Class<?>, Parser<String>> autoFunctionClassMap) {
+            final Map<Class<? extends Parser<String,?>>, Function<String[], Parser<String,?>>> functionClassMap,
+            final Map<Class<?>, Parser<String,?>> autoFunctionClassMap) {
         this.csvDeclarserFactory = csvDeclarserFactory;
         this.functionClassMap = new HashMap<>(functionClassMap);
         this.autoFunctionClassMap = autoFunctionClassMap;
@@ -33,8 +33,8 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
 
     static CsvFieldTransformerImpl of(
             CsvDeclarserFactory csvDeclarserFactory,
-            Map<Class<? extends Parser<String>>, Function<String[], Parser<String>>> functionClassMap,
-            Map<Class<?>, Parser<String>> autoFunctionClassMap) {
+            Map<Class<? extends Parser<String,?>>, Function<String[], Parser<String,?>>> functionClassMap,
+            Map<Class<?>, Parser<String,?>> autoFunctionClassMap) {
         return new CsvFieldTransformerImpl(
                 csvDeclarserFactory,
                 functionClassMap,
@@ -43,19 +43,35 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
 
 
     @Override
-    public Try<Parser<String>> compute(Field field) {
-        return Optional.ofNullable(field.getAnnotation(CsvField.class)).map(this::fieldTransformer)              .orElse(
-               Optional.ofNullable(field.getAnnotation(CsvNode.class)) .map(node -> nodeTransformer(field, node)).orElse(
-               Optional.ofNullable(autoFunctionClassMap.get(autoType(field.getType()))).map(Try::success)        .orElse(
-               Try.fail(MissingTransformerException.of(field)))));
+    public Try<Parser<String,?>> compute(Field field) {
+        return csvAnnotationCase(field)
+               .orElse(csvNodeAnnotationCase(field)
+               .orElse(autoCase(field)
+               .orElse(Try.fail(MissingTransformerException.of(field)))));
     }
 
-    private Class<?> autoType(Class<?> type) {
+    private Optional<Try<Parser<String, ?>>> csvAnnotationCase(
+            final Field field) {
+        return Optional.ofNullable(field.getAnnotation(CsvField.class)).map(this::fieldTransformer);
+    }
+
+    private Optional<Try<Parser<String, ?>>> csvNodeAnnotationCase(
+            final Field field) {
+        return Optional.ofNullable(field.getAnnotation(CsvNode.class)).map(node -> nodeTransformer(field, node));
+    }
+
+    private Optional<Try<Parser<String, ?>>> autoCase(
+            final Field field) {
+        return Optional.ofNullable(autoFunctionClassMap.get(autoType(field.getType()))).map(Try::success);
+    }
+
+    private Class<?> autoType(
+            final Class<?> type) {
         return type.isArray() ? type.getComponentType() : type;
     }
 
 
-    private Try<Parser<String>> nodeTransformer(
+    private Try<Parser<String,?>> nodeTransformer(
             final Field field,
             final CsvNode csvNode) {
         final var cellSeparator = csvNode.value();
@@ -64,15 +80,15 @@ final class CsvFieldTransformerImpl implements CsvFieldTransformer {
                 .map(dec -> dec);
     }
 
-    private Try<Parser<String>> fieldTransformer(
+    private Try<Parser<String,?>> fieldTransformer(
             final CsvField csvField) {
         final var annFunction = csvField.value();
         final var annParams = csvField.params();
 
         return Optional.ofNullable(functionClassMap.get(annFunction))
-                .map(f -> Try.success(f.apply(annParams)))
+                .map(f -> Try.<Parser<String,?>>success(f.apply(annParams)))
                 .orElse(Try.call(() -> annFunction.getConstructor(String[].class).newInstance((Object) annParams)))
-                .or(Try.call(() -> annFunction.getConstructor(EMPTY).newInstance()));
+                .or(Try.call(() ->  annFunction.getConstructor(EMPTY).newInstance()));
 
     }
 }

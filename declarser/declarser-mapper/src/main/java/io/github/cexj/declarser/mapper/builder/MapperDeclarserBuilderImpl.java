@@ -33,7 +33,6 @@ final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
     private final SubsetType subsetType;
 
     private final Set<String> toFieldNames;
-    private final Set<String> fromClassFieldNames;
     private final Set<String> fromCustomFieldNames;
     private final Set<String> fromFieldNames;
 
@@ -51,7 +50,7 @@ final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
         this.toFieldNames = Stream.of(toClazz.getDeclaredFields())
                 .map(Field::getName)
                 .collect(Collectors.toSet());
-        this.fromClassFieldNames = Stream.of(fromClazz.getDeclaredFields())
+        final var fromClassFieldNames = Stream.of(fromClazz.getDeclaredFields())
                 .map(Field::getName)
                 .collect(Collectors.toSet());
         this.fromCustomFieldNames = fieldFunctionMap.keySet();
@@ -136,12 +135,15 @@ final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
                 .collect(Collectors.toMap(Field::getName, Field::getName));
     }
 
-    private Map<String, Parser<Try<?>>> mapFunction() {
+    @SuppressWarnings("unchecked")
+    private Map<String, Parser<Try<?>,?>> mapFunction() {
         return Stream.of(Stream.of(
                 toClazz.getDeclaredFields()).map(Field::getName),
                 fieldFunctionMap.keySet().stream()).flatMap(i -> i)
                 .distinct()
-                .collect(Collectors.toMap(Function.identity(), fieldName -> (Parser<Try<?>>) t -> t));
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        fieldName -> (Parser<Try<?>,?>) t -> (Try<Object>) t));
     }
 
 

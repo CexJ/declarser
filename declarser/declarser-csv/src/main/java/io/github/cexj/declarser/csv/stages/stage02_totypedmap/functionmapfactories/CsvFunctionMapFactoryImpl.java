@@ -8,7 +8,6 @@ import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.trasformer
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 final class CsvFunctionMapFactoryImpl implements CsvFunctionMapFactory {
@@ -32,7 +31,7 @@ final class CsvFunctionMapFactoryImpl implements CsvFunctionMapFactory {
 
 
     @Override
-    public Try<Map<Integer, Parser<String>>> mapColumnToTransformer(
+    public Try<Map<Integer, Parser<String,?>>> mapColumnToTransformer(
             final Class<?> clazz){
         final var partition = fieldsExtractor.extract(clazz).stream()
                 .map(functionComposer::compute)
@@ -45,18 +44,18 @@ final class CsvFunctionMapFactoryImpl implements CsvFunctionMapFactory {
                                   : collectFailureMap(failures);
     }
 
-    private Try<Map<Integer, Parser<String>>> collectFailureMap(
+    private Try<Map<Integer, Parser<String,?>>> collectFailureMap(
             final List<Try<Transformer<Integer,String>>> errors) {
         return Try.fail(GroupedException.of(errors.stream()
                 .map(Try::getException)
                 .collect(Collectors.toList())));
     }
 
-    private Try<Map<Integer, Parser<String>>> collectSuccessMap(
+    private Try<Map<Integer, Parser<String,?>>> collectSuccessMap(
             final List<Try<Transformer<Integer,String>>> fields) {
         return Try.success(fields.stream()
                 .map(Try::getValue)
-                .collect(Collectors.toMap(Transformer::getKey, Transformer::getFunction)));
+                .collect(Collectors.toMap(Transformer::getKey, Transformer::getParser)));
     }
 }
 

@@ -19,7 +19,7 @@ final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 	private final Function<Map<K, V> , Map<K,Try<?>>> mapFunction;
 
 	private ToTypedMapImpl(
-			final Map<K, Parser<V>> functionMap,
+			final Map<K, Parser<V,?>> functionMap,
 			final SubsetType subsetType,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
 		super();
@@ -27,7 +27,7 @@ final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 	}
 
 	private Function<Map<K,V>, Map<K, Try<?>>> fromFunctionMapToMapFunction(
-			final Map<K, Parser<V>> functionMap,
+			final Map<K, Parser<V,?>> functionMap,
 			final SubsetType subsetType,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
 		return kvMap ->
@@ -48,7 +48,7 @@ final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 						kv.getValue()));
 	}
 
-	private Function<Parser<V>, ToTypedMapComposition<K, V>> parserToTypedMapCompositionFunction(Map.Entry<K, V> kv) {
+	private Function<Parser<V,?>, ToTypedMapComposition<K, V>> parserToTypedMapCompositionFunction(Map.Entry<K, V> kv) {
 		return fun ->
 				ToTypedMapComposition.of(
 						Transformer.of(kv.getKey(),fun),
@@ -56,7 +56,7 @@ final class ToTypedMapImpl<K,V> implements ToTypedMap<K, V> {
 	}
 
 	static <K,V> ToTypedMapImpl<K,V> of(
-			final Map<K, Parser<V>> mapFunction,
+			final Map<K, Parser<V,?>> mapFunction,
 			final SubsetType annotationsSubsetType,
 			final ParallelizationStrategyEnum parallelizationStrategy) {
 		return new ToTypedMapImpl<>(mapFunction, annotationsSubsetType, parallelizationStrategy);
@@ -83,7 +83,7 @@ final class ToTypedMapComposition<K,V>{
 	}
 
 	Try<?> apply(){
-		return transformer.getFunction().apply(value)
+		return transformer.getParser().apply(value)
 				.enrichException(ex -> TypingFieldException.of(transformer.getKey(), value, ex));
 	}
 

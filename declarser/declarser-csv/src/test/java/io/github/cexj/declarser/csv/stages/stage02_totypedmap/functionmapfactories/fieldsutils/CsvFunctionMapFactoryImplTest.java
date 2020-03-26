@@ -31,7 +31,7 @@ public class CsvFunctionMapFactoryImplTest {
     private static Set<Field> fields;
     private static Transformer<Integer, String> transformer;
     private static int key;
-    private static Parser<String> parser;
+    private static Parser<String,?> parser;
 
     /*
      * LET FC be a FieldComposer

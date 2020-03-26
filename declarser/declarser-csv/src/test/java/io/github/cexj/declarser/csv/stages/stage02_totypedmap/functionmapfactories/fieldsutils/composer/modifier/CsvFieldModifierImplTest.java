@@ -38,7 +38,7 @@ public class CsvFieldModifierImplTest {
         // AND a string I
         final var input = "input";
         // AND a function F that map I into Success(I) and Fail(E) the rest
-        final Parser<String> function = s -> input.equals(s) ? Try.success(value) : Try.fail(exception);
+        final Parser<String,?> function = s -> input.equals(s) ? Try.success(value) : Try.fail(exception);
         // AND a separator S
         final var separator = "-";
         // AND a field FI with the annotation CsvArray with separator S

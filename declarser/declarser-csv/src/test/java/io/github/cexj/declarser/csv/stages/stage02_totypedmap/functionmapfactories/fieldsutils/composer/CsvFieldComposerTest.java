@@ -37,9 +37,9 @@ public class CsvFieldComposerTest {
     private static Exception exception1 = new Exception();
     private static Exception exception2 = new Exception();
     private static Exception exception3 = new Exception();
-    private static UnaryOperator<Parser<String>> modifier;
+    private static UnaryOperator<Parser<String,?>> modifier;
     private static Validator<String> validator;
-    private static Parser<String> function;
+    private static Parser<String,?> function;
     private static CsvFieldModifier csvFieldModifier;
     private static CsvFieldPrevalidator csvFieldPrevalidator;
     private static CsvFieldTransformer csvFieldTransformer;
@@ -64,6 +64,7 @@ public class CsvFieldComposerTest {
      * AND CFP be a CsvFieldPrevalidator
      * AND CFT be a CsvFieldTransformer
      */
+    @SuppressWarnings("unchecked")
     @BeforeAll
     public static void init() throws NoSuchFieldException {
         // LET F be a field with CsvColumn with value K
@@ -86,7 +87,7 @@ public class CsvFieldComposerTest {
         exception3 = new Exception();
         // AND M be a UnaryOperator<Function<String, Try<?>>> such that
         //     it maps G into a map such that I1 -> Fail(E1) and G for the rest
-        modifier = f ->  s -> input1.equals(s) ? Try.fail(exception1) : f.apply(s);
+        modifier = f ->  s -> input1.equals(s) ? Try.fail(exception1) : (Try<Object>) f.apply(s);
         // AND V be a Validator<String> such that
         //     I2 -> Optional.of(E2) and Optional.empty for the rest
         validator = s -> input2.equals(s) ? Optional.of(exception2) : Optional.empty();
@@ -135,7 +136,7 @@ public class CsvFieldComposerTest {
         assertEquals(transformer.getKey(), key);
         // AND its function maps
         //     I1 -> Failure(E1)
-        final var transformerFunciton = transformer.getFunction();
+        final var transformerFunciton = transformer.getParser();
         final var output1 = transformerFunciton.apply(input1);
         assertTrue(output1.isFailure());
         assertEquals(output1.getException(), exception1);

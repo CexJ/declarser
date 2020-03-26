@@ -4,7 +4,7 @@ import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 import io.github.cexj.declarser.kernel.parsers.exceptions.ParserException;
 
-public final class DoubleParser implements Parser<String> {
+public final class DoubleParser implements Parser<String,Double> {
 
     private static class InstanceHolder {
         private static final DoubleParser instance = new DoubleParser();

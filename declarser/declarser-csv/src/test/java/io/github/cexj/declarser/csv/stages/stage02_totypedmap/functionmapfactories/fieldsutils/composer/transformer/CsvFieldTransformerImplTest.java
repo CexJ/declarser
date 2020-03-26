@@ -49,9 +49,9 @@ public class CsvFieldTransformerImplTest {
         // AND an exception E
         final var fail = new Exception();
         // AND a function F: String -> Try<?>  that map I -> Success(T) and other input into Fail(E)
-        final Parser<String> function = t -> input.equals(t) ? Try.success(type) : Try.fail(fail);
+        final Parser<String,?> function = t -> input.equals(t) ? Try.success(type) : Try.fail(fail);
         // AND a map M containing the entry (TypeT.class, F)
-        final var autoFunctionClassMap = new HashMap<Class<?>, Parser<String>>();
+        final var autoFunctionClassMap = new HashMap<Class<?>, Parser<String,?>>();
         autoFunctionClassMap.put(
                 TypeT.class,
                 function);
@@ -109,7 +109,7 @@ public class CsvFieldTransformerImplTest {
         // AND a transformer TTransformer with
         //      a constructor that initialize a String field input
         //      and an apply method that map input -> Success(T) and other input into Fail(E)
-        class TTransformer implements Parser<String>{
+        class TTransformer implements Parser<String,TypeT>{
             private final String input;
             public TTransformer(String input){
                 this.input = input;
@@ -120,7 +120,7 @@ public class CsvFieldTransformerImplTest {
             }
         }
         // AND a function C that construct an object TTransformer from an array of string
-        final Function<String[], Parser<String>> constructor = ss -> new TTransformer(ss[0]);
+        final Function<String[], Parser<String,?>> constructor = ss -> new TTransformer(ss[0]);
         // AND a field FI of type TypeT with
         //      the annotation CsvField with value TTransformer and {I} as params
         class ComposerSample {
@@ -130,7 +130,7 @@ public class CsvFieldTransformerImplTest {
         }
         final var field = ComposerSample.class.getDeclaredField("simpleData");
         // AND a map M containing the entry (TTransformer.class, C)
-        final var autoFunctionClassMap = new HashMap<Class<? extends Parser<String>>, Function<String[], Parser<String>>>();
+        final var autoFunctionClassMap = new HashMap<Class<? extends Parser<String,?>>, Function<String[], Parser<String,?>>>();
         autoFunctionClassMap.put(
                 TTransformer.class,
                 constructor);

@@ -45,8 +45,8 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
             final ParallelizationStrategyEnum parallelizationStrategy,
             final Map<Class<? extends Validator<String>>,
                     Function<String[], Validator<String>>> customPreValidatorsMap,
-            final Map<Class<? extends Parser<String>>,
-                    Function<String[], Parser<String>>> customConstructorMap,
+            final Map<Class<? extends Parser<String,?>>,
+                    Function<String[], Parser<String,?>>> customConstructorMap,
             final SubsetType annotationsSubsetType) {
         this.parallelizationStrategy = parallelizationStrategy;
         this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
@@ -77,8 +77,8 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
             final ParallelizationStrategyEnum parallelizationStrategy,
             final Map<Class<? extends Validator<String>>,
                     Function<String[], Validator<String>>> customPreValidatorsMap,
-            final Map<Class<? extends Parser<String>>,
-                    Function<String[], Parser<String>>> customConstructorMap,
+            final Map<Class<? extends Parser<String,?>>,
+                    Function<String[], Parser<String,?>>> customConstructorMap,
             final SubsetType annotationsSubsetType) {
         return new CsvDeclarserFactoryImp(
                 parallelizationStrategy,

@@ -6,7 +6,7 @@ import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.math.BigDecimal;
 
-public final class BigDecimalParser implements Parser<String> {
+public final class BigDecimalParser implements Parser<String,BigDecimal> {
 
     private static class InstanceHolder {
         private static final BigDecimalParser instance = new BigDecimalParser();

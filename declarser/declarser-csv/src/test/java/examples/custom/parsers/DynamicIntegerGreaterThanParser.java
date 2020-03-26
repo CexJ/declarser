@@ -7,7 +7,7 @@ import io.github.cexj.declarser.kernel.tryapi.Try;
 import javax.naming.directory.InvalidAttributesException;
 
 
-public class DynamicIntegerGreaterThanParser implements Parser<String> {
+public class DynamicIntegerGreaterThanParser implements Parser<String,Integer> {
 
     private int min;
 

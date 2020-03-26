@@ -18,8 +18,8 @@ public class CustomDynamicExampleTest {
     @Test
     public void parse_valid_input_custom_transformer_return_success() {
         final var csv = "11";
-        final var customConstructorMap = new HashMap<Class<? extends Parser<String>>,
-                Function<String[], Parser<String>>>();
+        final var customConstructorMap = new HashMap<Class<? extends Parser<String,?>>,
+                Function<String[], Parser<String,?>>>();
 
         customConstructorMap.put(DynamicIntegerGreaterThanParser.class,
                 s -> new DynamicIntegerGreaterThanParser(10));
@@ -38,8 +38,8 @@ public class CustomDynamicExampleTest {
     @Test
     public void parse_invalid_input_custom_transformer_return_failure() {
         final var csv = "9";
-        final var customConstructorMap = new HashMap<Class<? extends Parser<String>>,
-                Function<String[], Parser<String>>>();
+        final var customConstructorMap = new HashMap<Class<? extends Parser<String,?>>,
+                Function<String[], Parser<String,?>>>();
 
         customConstructorMap.put(DynamicIntegerGreaterThanParser.class,
                 s -> new DynamicIntegerGreaterThanParser(10));

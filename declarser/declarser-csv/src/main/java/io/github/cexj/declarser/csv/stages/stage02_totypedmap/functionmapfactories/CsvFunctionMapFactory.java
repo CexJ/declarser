@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public interface CsvFunctionMapFactory {
-    Try<Map<Integer, Parser<String>>> mapColumnToTransformer(
+    Try<Map<Integer, Parser<String,?>>> mapColumnToTransformer(
             Class<?> clazz);
 
     static CsvFunctionMapFactory of(

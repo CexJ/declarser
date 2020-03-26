@@ -1,24 +1,21 @@
 package io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.trasformer;
 
 import io.github.cexj.declarser.kernel.parsers.Parser;
-import io.github.cexj.declarser.kernel.tryapi.Try;
-
-import java.util.function.Function;
 
 public final class Transformer<K,T> {
     private final K key;
-    private final Parser<T> function;
+    private final Parser<T,?> parser;
 
     private Transformer(
             final K key,
-            final Parser<T> function) {
+            final Parser<T,?> function) {
         this.key = key;
-        this.function = function;
+        this.parser = function;
     }
 
     public static <K,T> Transformer<K,T> of(
             final K key,
-            final Parser<T> function) {
+            final Parser<T,?> function) {
         return new Transformer<>(key,function);
     }
 
@@ -26,7 +23,7 @@ public final class Transformer<K,T> {
         return key;
     }
 
-    public Parser<T> getFunction() {
-        return function;
+    public Parser<T,?> getParser() {
+        return parser;
     }
 }

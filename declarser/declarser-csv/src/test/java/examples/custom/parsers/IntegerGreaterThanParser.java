@@ -6,7 +6,7 @@ import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import javax.naming.directory.InvalidAttributesException;
 
-public class IntegerGreaterThanParser implements Parser<String> {
+public class IntegerGreaterThanParser implements Parser<String, Integer> {
 
     private int min;
 

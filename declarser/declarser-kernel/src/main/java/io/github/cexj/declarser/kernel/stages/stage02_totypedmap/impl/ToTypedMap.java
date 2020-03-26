@@ -11,7 +11,7 @@ import java.util.function.Function;
 public interface ToTypedMap<K, V> {
 
     static <K,V> ToTypedMap<K,V> of(
-            final Map<K, Parser<V>> mapFunction,
+            final Map<K, Parser<V,?>> mapFunction,
             final SubsetType subsetType,
             final ParallelizationStrategyEnum parallelizationStrategy) {
         return ToTypedMapImpl.of(

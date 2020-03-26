@@ -4,7 +4,7 @@ import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
 
-public final class StringParser implements Parser<String> {
+public final class StringParser implements Parser<String,String> {
 
     private static class InstanceHolder {
         private static final StringParser instance = new StringParser();
