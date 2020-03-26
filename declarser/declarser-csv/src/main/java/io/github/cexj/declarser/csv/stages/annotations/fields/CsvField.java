@@ -1,5 +1,6 @@
 package io.github.cexj.declarser.csv.stages.annotations.fields;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.lang.annotation.ElementType;
@@ -11,6 +12,6 @@ import java.util.function.Function;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface CsvField {
-    Class<? extends Function<String, Try<?>>> value();
+    Class<? extends Parser<String>> value();
     String[] params() default {};
 }

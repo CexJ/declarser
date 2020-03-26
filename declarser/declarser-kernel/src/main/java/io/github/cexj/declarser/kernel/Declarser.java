@@ -1,5 +1,6 @@
 package io.github.cexj.declarser.kernel;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.stages.stage01_tomap.impl.ToMap;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import io.github.cexj.declarser.kernel.stages.stage03_combinator.Combinator;
@@ -8,7 +9,7 @@ import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.util.function.Function;
 
-public interface Declarser<I,K,V,O> extends Function<I,Try<?>> {
+public interface Declarser<I,K,V,O> extends Parser<I> {
 
     static <I,K,V,O> DeclarserImpl<I,K,V,O> of(
             final ToMap<I, K, V> toMap,

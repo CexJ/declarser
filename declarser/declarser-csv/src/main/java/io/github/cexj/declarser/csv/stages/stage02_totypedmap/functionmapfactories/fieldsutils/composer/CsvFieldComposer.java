@@ -5,6 +5,7 @@ import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactori
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator.CsvFieldPrevalidator;
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.trasformer.Transformer;
 import io.github.cexj.declarser.kernel.tryapi.Try;
@@ -44,9 +45,9 @@ public final class CsvFieldComposer implements FieldComposer<Integer, String> {
 
         final var csvColumn = field.getAnnotation(CsvColumn.class);
 
-        final Try<Function<String, Try<?>>> function =
+        final Try<Parser<String>> function =
                 preValidator.flatMap( pre ->
-                transformer.map(      tra ->  functionFrom(pre, tra)));
+                transformer.map(      tra ->  parserFrom(pre, tra)));
 
 
         return function.flatMap( fun ->
@@ -54,7 +55,7 @@ public final class CsvFieldComposer implements FieldComposer<Integer, String> {
                        Transformer.of(csvColumn.value(), mod.apply(fun))));
     }
 
-    private Function<String, Try<?>> functionFrom(
+    private Parser<String> parserFrom(
             final Validator<String> pre,
             final Function<String, Try<?>> tra) {
         return s -> {

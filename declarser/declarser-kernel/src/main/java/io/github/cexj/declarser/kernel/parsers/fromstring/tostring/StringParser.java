@@ -1,10 +1,10 @@
 package io.github.cexj.declarser.kernel.parsers.fromstring.tostring;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
-import java.util.function.Function;
 
-public final class StringParser implements Function<String, Try<?>> {
+public final class StringParser implements Parser<String> {
 
     private static class InstanceHolder {
         private static final StringParser instance = new StringParser();

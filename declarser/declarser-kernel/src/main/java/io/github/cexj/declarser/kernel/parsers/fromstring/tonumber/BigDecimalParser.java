@@ -1,12 +1,12 @@
 package io.github.cexj.declarser.kernel.parsers.fromstring.tonumber;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.parsers.exceptions.ParserException;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.math.BigDecimal;
-import java.util.function.Function;
 
-public final class BigDecimalParser implements Function<String, Try<?>> {
+public final class BigDecimalParser implements Parser<String> {
 
     private static class InstanceHolder {
         private static final BigDecimalParser instance = new BigDecimalParser();

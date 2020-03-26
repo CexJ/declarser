@@ -1,5 +1,6 @@
 package io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.modifier;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.lang.reflect.Field;
@@ -12,5 +13,5 @@ public interface CsvFieldModifier {
         return CsvFieldModifierImpl.getInstance();
     }
 
-    Try<UnaryOperator<Function<String, Try<?>>>> compute(Field field);
+    Try<UnaryOperator<Parser<String>>> compute(Field field);
 }

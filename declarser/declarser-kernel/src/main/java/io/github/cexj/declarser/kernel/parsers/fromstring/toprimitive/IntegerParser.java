@@ -1,11 +1,10 @@
 package io.github.cexj.declarser.kernel.parsers.fromstring.toprimitive;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.parsers.exceptions.ParserException;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
-import java.util.function.Function;
-
-public final class IntegerParser implements Function<String, Try<?>> {
+public final class IntegerParser implements Parser<String> {
 
     private static class InstanceHolder {
         private static final IntegerParser instance = new IntegerParser();

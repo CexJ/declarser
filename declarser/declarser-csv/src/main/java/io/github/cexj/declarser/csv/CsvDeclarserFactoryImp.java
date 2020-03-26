@@ -12,6 +12,7 @@ import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactori
 import io.github.cexj.declarser.csv.validation.utils.extractor.CsvPreValidatorsExtractor;
 import io.github.cexj.declarser.kernel.Declarser;
 import io.github.cexj.declarser.kernel.enums.SubsetType;
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.stages.stage01_tomap.impl.ToMap;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import io.github.cexj.declarser.csv.stages.stage04_toobject.CsvFieldMapFactory;
@@ -44,8 +45,8 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
             final ParallelizationStrategyEnum parallelizationStrategy,
             final Map<Class<? extends Validator<String>>,
                     Function<String[], Validator<String>>> customPreValidatorsMap,
-            final Map<Class<? extends Function<String, Try<?>>>,
-                    Function<String[], Function<String, Try<?>>>> customConstructorMap,
+            final Map<Class<? extends Parser<String>>,
+                    Function<String[], Parser<String>>> customConstructorMap,
             final SubsetType annotationsSubsetType) {
         this.parallelizationStrategy = parallelizationStrategy;
         this.csvPreValidatorsFactory = CsvPreValidatorsFactory.of(CsvValidationConst.prevalidatorClassMap, customPreValidatorsMap);
@@ -76,8 +77,8 @@ final class CsvDeclarserFactoryImp implements CsvDeclarserFactory {
             final ParallelizationStrategyEnum parallelizationStrategy,
             final Map<Class<? extends Validator<String>>,
                     Function<String[], Validator<String>>> customPreValidatorsMap,
-            final Map<Class<? extends Function<String, Try<?>>>,
-                    Function<String[], Function<String, Try<?>>>> customConstructorMap,
+            final Map<Class<? extends Parser<String>>,
+                    Function<String[], Parser<String>>> customConstructorMap,
             final SubsetType annotationsSubsetType) {
         return new CsvDeclarserFactoryImp(
                 parallelizationStrategy,

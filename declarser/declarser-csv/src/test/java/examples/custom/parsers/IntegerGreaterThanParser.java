@@ -1,12 +1,12 @@
 package examples.custom.parsers;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.parsers.exceptions.ParserException;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import javax.naming.directory.InvalidAttributesException;
-import java.util.function.Function;
 
-public class IntegerGreaterThanParser implements Function<String, Try<?>> {
+public class IntegerGreaterThanParser implements Parser<String> {
 
     private int min;
 

@@ -2,10 +2,10 @@ package io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactor
 
 import io.github.cexj.declarser.csv.stages.annotations.fields.CsvArray;
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingArrayException;
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 import org.junit.jupiter.api.Test;
 
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
@@ -38,7 +38,7 @@ public class CsvFieldModifierImplTest {
         // AND a string I
         final var input = "input";
         // AND a function F that map I into Success(I) and Fail(E) the rest
-        final Function<String, Try<?>> function = s -> input.equals(s) ? Try.success(value) : Try.fail(exception);
+        final Parser<String> function = s -> input.equals(s) ? Try.success(value) : Try.fail(exception);
         // AND a separator S
         final var separator = "-";
         // AND a field FI with the annotation CsvArray with separator S

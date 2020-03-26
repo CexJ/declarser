@@ -3,6 +3,7 @@ package io.github.cexj.declarser.mapper.builder;
 import io.github.cexj.declarser.kernel.Declarser;
 import io.github.cexj.declarser.kernel.enums.SubsetType;
 import io.github.cexj.declarser.kernel.exceptions.SubsetTypeException;
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.stages.stage01_tomap.impl.ToMap;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.ToTypedMap;
 import io.github.cexj.declarser.kernel.stages.stage03_combinator.Combinator;
@@ -135,12 +136,12 @@ final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
                 .collect(Collectors.toMap(Field::getName, Field::getName));
     }
 
-    private Map<String, Function<Try<?>, Try<?>>> mapFunction() {
+    private Map<String, Parser<Try<?>>> mapFunction() {
         return Stream.of(Stream.of(
                 toClazz.getDeclaredFields()).map(Field::getName),
                 fieldFunctionMap.keySet().stream()).flatMap(i -> i)
                 .distinct()
-                .collect(Collectors.toMap(Function.identity(), fieldName -> (Function<Try<?>, Try<?>>) t -> t));
+                .collect(Collectors.toMap(Function.identity(), fieldName -> (Parser<Try<?>>) t -> t));
     }
 
 

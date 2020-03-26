@@ -4,6 +4,7 @@ import io.github.cexj.declarser.csv.stages.annotations.fields.CsvColumn;
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.modifier.CsvFieldModifier;
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.prevalidator.CsvFieldPrevalidator;
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.composer.transformer.CsvFieldTransformer;
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 import io.github.cexj.declarser.kernel.validations.Validator;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,7 +13,6 @@ import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,9 +37,9 @@ public class CsvFieldComposerTest {
     private static Exception exception1 = new Exception();
     private static Exception exception2 = new Exception();
     private static Exception exception3 = new Exception();
-    private static UnaryOperator<Function<String, Try<?>>> modifier;
+    private static UnaryOperator<Parser<String>> modifier;
     private static Validator<String> validator;
-    private static Function<String, Try<?>> function;
+    private static Parser<String> function;
     private static CsvFieldModifier csvFieldModifier;
     private static CsvFieldPrevalidator csvFieldPrevalidator;
     private static CsvFieldTransformer csvFieldTransformer;

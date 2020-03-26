@@ -3,6 +3,7 @@ package io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactor
 import io.github.cexj.declarser.csv.stages.annotations.fields.CsvArray;
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.fieldsutils.exceptions.MissingArrayException;
 import io.github.cexj.declarser.kernel.exceptions.GroupedException;
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
 import java.lang.reflect.Field;
@@ -24,20 +25,20 @@ final class CsvFieldModifierImpl implements CsvFieldModifier {
     private CsvFieldModifierImpl(){}
 
     @Override
-    public Try<UnaryOperator<Function<String, Try<?>>>> compute(Field field) {
+    public Try<UnaryOperator<Parser<String>>> compute(Field field) {
         return Optional.ofNullable(field.getAnnotation(CsvArray.class))
                 .map(arrayModifierFromField(field))
                 .orElse(Try.success(UnaryOperator.identity()));
     }
 
-    private Function<CsvArray, Try<UnaryOperator<Function<String, Try<?>>>>> arrayModifierFromField(Field field) {
+    private Function<CsvArray, Try<UnaryOperator<Parser<String>>>> arrayModifierFromField(Field field) {
         return arr -> field.getType().isArray() ? Try.success(getArrayFunction(arr.value()))
                                                 : Try.fail(MissingArrayException.of(field));
     }
 
-    private UnaryOperator<Function<String, Try<?>>> getArrayFunction(
+    private UnaryOperator<Parser<String>> getArrayFunction(
             final String arraySeparator){
-        return (Function<String, Try<?>> fun) ->
+        return (Parser<String> fun) ->
                 s -> combine(Arrays.stream(s.split(arraySeparator))
                         .map(fun)
                         .collect(Collectors.toList()))

@@ -1,5 +1,6 @@
 package io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.consts;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.parsers.fromstring.todate.LocalDateParser;
 import io.github.cexj.declarser.kernel.parsers.fromstring.todate.LocalDateTimeParser;
 import io.github.cexj.declarser.kernel.parsers.fromstring.todate.ZonedDateTimeParser;
@@ -22,7 +23,7 @@ public final class CsvFunctionMapFactoryConst {
 
     private CsvFunctionMapFactoryConst(){}
 
-    public static final Map<Class<? extends Function<String, Try<?>>>, Function<String[], Function<String, Try<?>>>> sharedFunctionClassMap;
+    public static final Map<Class<? extends Parser<String>>, Function<String[], Parser<String>>> sharedFunctionClassMap;
     static {
         sharedFunctionClassMap = new HashMap<>();
         sharedFunctionClassMap.put(LocalDateParser.class, arr -> LocalDateParser.getInstance(arr[0]));
@@ -40,7 +41,7 @@ public final class CsvFunctionMapFactoryConst {
         sharedFunctionClassMap.put(StringParser.class, arr -> StringParser.getInstance());
     }
 
-    public static final Map<Class<?>, Function<String, Try<?>>> autoFunctionClassMap;
+    public static final Map<Class<?>, Parser<String>> autoFunctionClassMap;
 
     public static final String LOCAL_DATE_DEFAULT_FORMAT = "yyyy'-'MM'-'dd";
 

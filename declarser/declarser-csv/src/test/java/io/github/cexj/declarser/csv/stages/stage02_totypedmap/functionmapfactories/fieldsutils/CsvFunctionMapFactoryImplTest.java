@@ -2,6 +2,7 @@ package io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactor
 
 import io.github.cexj.declarser.csv.stages.stage02_totypedmap.functionmapfactories.CsvFunctionMapFactory;
 import io.github.cexj.declarser.kernel.exceptions.GroupedException;
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldComposer;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.fieldsutils.FieldsExtractor;
 import io.github.cexj.declarser.kernel.stages.stage02_totypedmap.impl.trasformer.Transformer;
@@ -14,7 +15,6 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +31,7 @@ public class CsvFunctionMapFactoryImplTest {
     private static Set<Field> fields;
     private static Transformer<Integer, String> transformer;
     private static int key;
-    private static Function<String, Try<?>> function;
+    private static Parser<String> parser;
 
     /*
      * LET FC be a FieldComposer
@@ -47,9 +47,9 @@ public class CsvFunctionMapFactoryImplTest {
         functionComposer = Mockito.mock(FieldComposer.class);
         fieldsExtractor = Mockito.mock(FieldsExtractor.class);
         fields = new HashSet<>(Arrays.asList(DataSample.class.getDeclaredFields()));
-        function = s -> Try.success("OK");
+        parser = s -> Try.success("OK");
         key = 0;
-        transformer = Transformer.of(key, function);
+        transformer = Transformer.of(key, parser);
     }
 
     /*
@@ -77,7 +77,7 @@ public class CsvFunctionMapFactoryImplTest {
         assertEquals(value.size(), 1);
         value.forEach((k,v) -> {
                 assertEquals(k, key);
-                assertEquals(v, function);});
+                assertEquals(v, parser);});
     }
 
     /*

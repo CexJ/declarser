@@ -1,10 +1,9 @@
 package io.github.cexj.declarser.kernel.parsers.fromstring.toprimitive;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
-import java.util.function.Function;
-
-public final class BooleanParser implements Function<String, Try<?>> {
+public final class BooleanParser implements Parser<String> {
 
     private static class InstanceHolder {
         private static final BooleanParser instance = new BooleanParser();

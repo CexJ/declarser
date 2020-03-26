@@ -1,5 +1,6 @@
 package io.github.cexj.declarser.kernel.parsers.fromstring.todate;
 
+import io.github.cexj.declarser.kernel.parsers.Parser;
 import io.github.cexj.declarser.kernel.parsers.exceptions.ParserException;
 import io.github.cexj.declarser.kernel.tryapi.Try;
 
@@ -7,9 +8,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-public final class LocalDateParser implements Function<String, Try<?>> {
+public final class LocalDateParser implements Parser<String> {
 
     private final String format;
 
