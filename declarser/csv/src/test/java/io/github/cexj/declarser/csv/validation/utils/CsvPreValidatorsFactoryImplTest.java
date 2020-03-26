@@ -1,7 +1,5 @@
 package io.github.cexj.declarser.csv.validation.utils;
 
-import csv.validation.utils.utils.*;
-import io.github.cexj.csv.validation.utils.utils.*;
 import io.github.cexj.declarser.csv.validation.utils.utils.*;
 import io.github.cexj.declarser.kernel.exceptions.GroupedException;
 import io.github.cexj.declarser.kernel.validations.Validator;

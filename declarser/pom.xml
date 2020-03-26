@@ -2,12 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.cexj</groupId>
   <artifactId>declarser</artifactId>
-  <packaging>pom</packaging>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
   <modules>
     <module>kernel</module>
     <module>csv</module>
-      <module>mapper</module>
+    <module>mapper</module>
   </modules>
   <name>declarser</name>
   <description>A declarative parser framework</description>

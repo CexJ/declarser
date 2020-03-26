@@ -20,6 +20,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.github.cexj.declarser.kernel.enums.ParallelizationStrategyEnum.SEQUENTIAL;
+import static io.github.cexj.declarser.kernel.enums.SubsetType.CONTAINED;
+import static io.github.cexj.declarser.kernel.enums.SubsetType.NONE;
+
 final class MapperDeclarserBuilderImpl<I, O> implements MapperDeclarserBuilder{
 
     private final Class<I> fromClazz;

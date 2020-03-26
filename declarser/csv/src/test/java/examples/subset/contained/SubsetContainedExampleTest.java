@@ -4,6 +4,7 @@ import io.github.cexj.declarser.csv.CsvDeclarserFactory;
 import examples.subset.samples.SubsetExample;
 import org.junit.jupiter.api.Test;
 
+import static io.github.cexj.declarser.kernel.enums.SubsetType.CONTAINED;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SubsetContainedExampleTest {

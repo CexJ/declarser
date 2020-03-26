@@ -91,5 +91,10 @@ final class Failure<T> implements Try<T> {
 
 	}
 
-
+	@Override
+	public String toString() {
+		return "Failure{" +
+				"exception=" + exception +
+				'}';
+	}
 }

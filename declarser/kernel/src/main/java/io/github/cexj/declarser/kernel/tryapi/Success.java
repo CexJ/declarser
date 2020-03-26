@@ -100,4 +100,10 @@ final class Success<T> implements Try<T> {
 		consumer.accept(value);
 	}
 
+	@Override
+	public String toString() {
+		return "Success{" +
+				"value=" + value +
+				'}';
+	}
 }
