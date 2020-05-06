@@ -1,2 +1,2 @@
 # declarser
-A declarative object's parser
+A framework to construct declarative object's parsers
